@@ -33,7 +33,7 @@ public final class Constants {
         public static final int DpadXaxis = 5;
         public static final int DpadYaxis = 6;
         public static final int LeftJoystickX = 2;
-        public static final int LeftJoystickY = 3;
+        public static final int LeftJoystickY = 1;
         public static final int RightJoystickX = 3;
         public static final int RightJoystickY = 4;
     }
