@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public final class Constants {
     public static final class Motors {
-        
+        public static final int FrontLeft = 4;
+        public static final int FrontRight = 1;
+        public static final int BackLeft = 3;
+        public static final int BackRight = 2;
     }
     public static final class JoystickValues {
         public static final int A = 2;
@@ -32,7 +35,7 @@ public final class Constants {
         public static final int DpadXaxis = 5;
         public static final int DpadYaxis = 6;
         public static final int LeftJoystickX = 2;
-        public static final int LeftJoystickY = 3;
+        public static final int LeftJoystickY = 1;
         public static final int RightJoystickX = 3;
         public static final int RightJoystickY = 4;
     }
