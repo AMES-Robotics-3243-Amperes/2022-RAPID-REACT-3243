@@ -5,10 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.MecDriveCommand;
+import frc.robot.subsystems.MecanumDriveSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
 
 // ++ test comment to make sure the repo hopefully isn't broken maybe
 // ++ test
@@ -20,15 +23,22 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  //* Joystick Definiton here:
+  public static PS4Controller ControllerMain0 = new PS4Controller(Constants.Joystick.JoyStickMainPort);
+
   // The robot's subsystems and commands are defined here...
+  private final MecanumDriveSubsystem mMecDrive = new MecanumDriveSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+  public MecDriveCommand mMechDriveCommand = new MecDriveCommand(ControllerMain0, mMecDrive);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    mMecDrive.setDefaultCommand(mMechDriveCommand);
   }
 
   /**
