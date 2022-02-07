@@ -12,14 +12,4 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
-    public static final class MecanumDrive {
-        public static final int FrontRightMotor = 1; //CAN communication
-        public static final int BackRightMotor = 2; //CAN communication
-        public static final int FrontLeftMotor = 3; //CAN communication
-        public static final int BackLeftMotor = 4; //CAN communication
-    }
-    public static final class Joystick {
-        public static final int JoyStickMainPort = 0; //PS4 Joystick port here
-    }
-}
+public final class Constants {}
