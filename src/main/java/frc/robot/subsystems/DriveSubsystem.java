@@ -13,13 +13,16 @@ import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  private MecanumDrive speeds;
-  private CANSparkMax frontleftmotor = new CANSparkMax( Constants.Motors.FrontLeft, MotorType.kBrushless);
-  private CANSparkMax frontrightmotor = new CANSparkMax( Constants.Motors.FrontRight, MotorType.kBrushless);
-  private CANSparkMax backleftmotor = new CANSparkMax( Constants.Motors.BackLeft, MotorType.kBrushless);
-  private CANSparkMax backrightmotor = new CANSparkMax( Constants.Motors.BackRight, MotorType.kBrushless);
+  // ++ create motor objects
+  private CANSparkMax frontleftmotor = new CANSparkMax( Constants.DriveTrain.frontLeftID, MotorType.kBrushless);
+  private CANSparkMax frontrightmotor = new CANSparkMax( Constants.DriveTrain.frontRightID, MotorType.kBrushless);
+  private CANSparkMax backleftmotor = new CANSparkMax( Constants.DriveTrain.backLeftID, MotorType.kBrushless);
+  private CANSparkMax backrightmotor = new CANSparkMax( Constants.DriveTrain.backRightID, MotorType.kBrushless);
 
-  /** Creates a new ExampleSubsystem. */
+  // ++ create mecanum drive object
+  private MecanumDrive speeds;
+
+  
   public DriveSubsystem() {
     frontrightmotor.setInverted(true);
     backrightmotor.setInverted(true);

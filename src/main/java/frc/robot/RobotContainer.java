@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.DriveCommand;
 
+import frc.robot.Constants; 
+
 
 // ++ comment so I can rebase
 
@@ -22,20 +24,31 @@ import frc.robot.commands.DriveCommand;
  */
 public class RobotContainer {
 
-  public static XboxController controller = new XboxController(0);
-    
-  
 
-  // The robot's subsystems and commands are defined here...
+  // ++ SUBSYSTEMS AND COMMANDS ========================================
   // subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   // commands
-  private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, controller);
+  private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
+  // ++ =================================================
+
+
+
+  // ++ JOYSTICK STUFF ========================================
+  public static XboxController primaryController = new XboxController( Constants.Joystick.primaryControllerID );
+  public static XboxController secondaryController = new XboxController( Constants.Joystick.secondaryControllerID );
+    
+  
+
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    // ++ command stuff
     m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
+
+
     // Configure the button bindings
     configureButtonBindings();
   }
