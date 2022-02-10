@@ -35,8 +35,8 @@ public class RobotContainer {
 
 
   // ++ JOYSTICK STUFF ========================================
-  public static XboxController primaryController = new XboxController( Constants.Joystick.primaryControllerID );
-  public static XboxController secondaryController = new XboxController( Constants.Joystick.secondaryControllerID );
+  public static XboxController primaryController = new XboxController( Constants.Joysticks.primaryControllerID );
+  public static XboxController secondaryController = new XboxController( Constants.Joysticks.secondaryControllerID );
     
   
 
