@@ -23,7 +23,7 @@ public final class Constants {
     }
 
     
-    public static final class Joystick {
+    public static final class Joysticks {
         // ++ controller IDs
         public static final int primaryControllerID =0;
         public static final int secondaryControllerID = 1; 
