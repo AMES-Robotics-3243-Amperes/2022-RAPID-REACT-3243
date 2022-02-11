@@ -51,6 +51,8 @@ public final class Constants {
 
         // ++ other joystick constants
         public static final double deadZoneSize = 0.05;
+        // ++ This variable affects the smoothing strength of the low pass filter. Values from 0-1 inclusive, with larger valus smoothing it more.
+        public static final double lowPassFilterStrength = 0.5;
 
         // ++ joystick curve constants
         public static final int firstPower = 5;
