@@ -4,12 +4,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeIndexerSubsystem;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.SetIntakeCommand;
 
 import frc.robot.Constants; 
 
@@ -28,8 +31,11 @@ public class RobotContainer {
   // ++ SUBSYSTEMS AND COMMANDS ========================================
   // subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
+  private final IntakeIndexerSubsystem m_intakeSubsystem = new IntakeIndexerSubsystem();
   // commands
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
+  private final SetIntakeCommand m_RaiseIntakeCommand = new SetIntakeCommand(m_intakeSubsystem, 0);
+  private final SetIntakeCommand m_DropIntakeCommand = new SetIntakeCommand(m_intakeSubsystem, Constants.IntakeIndexer.intakeDropPos);
   // ++ =================================================
 
 

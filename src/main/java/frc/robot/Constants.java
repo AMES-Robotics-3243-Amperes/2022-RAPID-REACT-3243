@@ -31,6 +31,8 @@ public final class Constants {
         public static final int indexMotorID = 7;
         // Error tolerance for dropping the intake
         public static final double intakeTolerance = 0.05;
+        // Dropped position
+        public static final double intakeDropPos = 0.1;
     }
 
     public static final class Joysticks {
