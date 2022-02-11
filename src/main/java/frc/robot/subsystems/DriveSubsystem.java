@@ -42,6 +42,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ++ Shuffleboard
   private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID Tuning");
+  private final NetworkTableEntry pGain = pidTab.add("P gain", 1.0).getEntry();
+  private final NetworkTableEntry iGain = pidTab.add("I gain", 0.0).getEntry();
+  private final NetworkTableEntry dGain = pidTab.add("D gain", 0.0).getEntry();
 
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
@@ -65,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
-    setPID(1,0,0);
+    setPID(pGain.getDouble(1.0),iGain.getDouble(0.0),dGain.getDouble(0.0));
 
     frontLeftPIDController.setReference(flRef, ControlType.kVelocity);
     frontRightPIDController.setReference(frRef, ControlType.kVelocity);
