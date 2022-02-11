@@ -50,13 +50,14 @@ public final class Constants {
         public static final int DpadYaxis = 6;
 
         // ++ other joystick constants
-        public static final double deadZoneSize = 0.05;
+        public static final double deadZoneSize = 0.15;
 
         // ++ joystick curve constants
         public static final int firstPower = 5;
         public static final int secondPower = 3; 
-        public static double aCoeff = 0.1;
+        public static double aCoeff = 0.25;
         public static double bCoeff = (1.0 - aCoeff); 
+        public static double rotationDamper = 0.5; 
 
     }
 

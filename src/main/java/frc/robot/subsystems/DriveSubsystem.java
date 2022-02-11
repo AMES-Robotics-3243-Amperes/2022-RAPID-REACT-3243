@@ -14,24 +14,28 @@ import frc.robot.Constants;
 public class DriveSubsystem extends SubsystemBase {
 
   // ++ create motor objects
-  private CANSparkMax frontleftmotor = new CANSparkMax( Constants.DriveTrain.frontLeftID, MotorType.kBrushless);
-  private CANSparkMax frontrightmotor = new CANSparkMax( Constants.DriveTrain.frontRightID, MotorType.kBrushless);
-  private CANSparkMax backleftmotor = new CANSparkMax( Constants.DriveTrain.backLeftID, MotorType.kBrushless);
-  private CANSparkMax backrightmotor = new CANSparkMax( Constants.DriveTrain.backRightID, MotorType.kBrushless);
+  private CANSparkMax frontLeftMotor = new CANSparkMax( Constants.DriveTrain.frontLeftID, MotorType.kBrushless);
+  private CANSparkMax frontRightMotor = new CANSparkMax( Constants.DriveTrain.frontRightID, MotorType.kBrushless);
+  private CANSparkMax backLeftMotor = new CANSparkMax( Constants.DriveTrain.backLeftID, MotorType.kBrushless);
+  private CANSparkMax backRightMotor = new CANSparkMax( Constants.DriveTrain.backRightID, MotorType.kBrushless);
 
   // ++ create mecanum drive object
-  private MecanumDrive speeds;
+  private MecanumDrive mecanumDrive;
 
   
   public DriveSubsystem() {
-    frontrightmotor.setInverted(true);
-    backrightmotor.setInverted(true);
-    speeds = new MecanumDrive(frontleftmotor, backleftmotor, frontrightmotor, backrightmotor);
+    frontRightMotor.setInverted(true);
+    backRightMotor.setInverted(true);
+    // ++ suggesteMecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor)
+    mecanumDrive = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
+
   }
 
-  public void setMotors (double X_speed, double Y_speed, double Z_rotation) {
-    speeds.driveCartesian(Y_speed, X_speed, Z_rotation);
+  public void setMotors (double X_speed, double Y_speed, double rotation) {
+    // ++ this sets the speeds of the motors using the cartesian drive library
+    mecanumDrive.driveCartesian(-Y_speed, X_speed, rotation);
   }
+
 
   @Override
   public void periodic() {

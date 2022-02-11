@@ -7,7 +7,9 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
+
 import frc.robot.JoyUtil;
+import frc.robot.Constants; 
 
 /** An example command that uses an example subsystem. */
 public class DriveCommand extends CommandBase {
@@ -21,9 +23,9 @@ public class DriveCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DriveSubsystem subsystem, XboxController movingstick) {
-    joystick = movingstick;
+  public DriveCommand(DriveSubsystem subsystem, XboxController driveController) {
     m_DriveSubsystem = subsystem;
+    joystick = driveController; 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -32,23 +34,20 @@ public class DriveCommand extends CommandBase {
   @Override
   public void initialize() {}
 
-  private double multiplier(double axis) {
-    return (1+(3 * axis));
-  }
+
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x_axis = joystick.getLeftX()/4;
-    double y_axis = joystick.getLeftY()/4;
-    double z = joystick.getRightX()/4;
-    x_axis = JoyUtil.deadzone(x_axis);
-    y_axis = JoyUtil.deadzone(y_axis);
-    z = JoyUtil.deadzone(z);
-    x_axis *= multiplier(joystick.getRightTriggerAxis());
-    y_axis *= multiplier(joystick.getRightTriggerAxis());
-    z *= multiplier(joystick.getRightTriggerAxis());
-    m_DriveSubsystem.setMotors(x_axis, y_axis, z);
+    // ++ we want to curve the x and y speeds the same, but we'll probably do the rotation differently
+    double speedX = JoyUtil.joyCurve( JoyUtil.posWithDeadzone( joystick.getLeftX()));
+    double speedY = JoyUtil.joyCurve( JoyUtil.posWithDeadzone( joystick.getLeftY()));
+
+    double speedR = Constants.Joysticks.rotationDamper * JoyUtil.posWithDeadzone( joystick.getRightX()); 
+
+    m_DriveSubsystem.setMotors(speedX, speedY, speedR); 
+
   }
 
   // Called once the command ends or is interrupted.
