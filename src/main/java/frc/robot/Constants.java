@@ -30,6 +30,10 @@ public final class Constants {
         public static final Translation2d backRightMeters = new Translation2d(0.254,-0.257175);
         // ++ Radius of the wheels in meters
         public static final double wheelRadius = 0.0762;
+        // ++ PID values for teleop mecanum drive
+        public static final double kP = 1;
+        public static final double kI = 0;
+        public static final double kD = 0;
     }
 
     

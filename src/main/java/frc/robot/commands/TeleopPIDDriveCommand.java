@@ -36,6 +36,9 @@ public class TeleopPIDDriveCommand extends CommandBase {
   public void execute() {
     ChassisSpeeds vehicleSpeed = new ChassisSpeeds(controller.getRawAxis(Constants.Joysticks.LeftJoystickX), controller.getRawAxis(Constants.Joysticks.LeftJoystickY), controller.getRawAxis(Constants.Joysticks.RightJoystickX));
     MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
+    wheelSpeeds.desaturate(1);
+    m_DriveSubsystem.setVelocityReference(wheelSpeeds.frontLeftMetersPerSecond, wheelSpeeds.frontRightMetersPerSecond, wheelSpeeds.rearLeftMetersPerSecond, wheelSpeeds.rearRightMetersPerSecond);
+
   }
 
   // Called once the command ends or is interrupted.

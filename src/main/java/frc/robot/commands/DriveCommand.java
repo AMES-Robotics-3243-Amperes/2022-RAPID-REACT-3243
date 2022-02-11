@@ -48,7 +48,7 @@ public class DriveCommand extends CommandBase {
     x_axis *= multiplier(joystick.getRightTriggerAxis());
     y_axis *= multiplier(joystick.getRightTriggerAxis());
     z *= multiplier(joystick.getRightTriggerAxis());
-    m_DriveSubsystem.setMotors(x_axis, y_axis, z);
+    m_DriveSubsystem.driveCartesian(x_axis, y_axis, z);
   }
 
   // Called once the command ends or is interrupted.
