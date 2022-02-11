@@ -23,7 +23,16 @@ public final class Constants {
         public static final int backRightID = 2;
     }
 
-    
+    public static final class IntakeIndexer {
+        // ++ these are the values for the intake/indexer motors
+        // CAN IDs
+        public static final int dropMotorID = 5;
+        public static final int intakeMotorID = 6;
+        public static final int indexMotorID = 7;
+        // Error tolerance for dropping the intake
+        public static final double intakeTolerance = 0.05;
+    }
+
     public static final class Joysticks {
         // ++ controller IDs 
         public static final int primaryControllerID =0;
