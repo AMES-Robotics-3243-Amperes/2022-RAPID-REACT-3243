@@ -10,6 +10,8 @@ import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 
 public class IntakeIndexerSubsystem extends SubsystemBase {
   private final CANSparkMax dropMotor;
@@ -26,8 +28,9 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     dropEncoder.setPosition(0);
   }
 
-  public void setDrop(double speed) {
-    dropMotor.set(speed);
+  public void setDropPos(double pos) {
+    SparkMaxPIDController pid = dropMotor.getPIDController();
+    pid.setReference(pos, ControlType.kPosition);
   }
 
   public double getDropPos() {
