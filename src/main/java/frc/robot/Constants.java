@@ -24,10 +24,12 @@ public final class Constants {
         public static final int backLeftID = 3;
         public static final int backRightID = 2;
         // ++ There are the positions of the mecanum wheels in meters
-        public static final Translation2d frontLeftMeters = new Translation2d(0,0);
-        public static final Translation2d frontRightMeters = new Translation2d(0,0);
-        public static final Translation2d backLeftMeters = new Translation2d(0,0);
-        public static final Translation2d backRightMeters = new Translation2d(0,0);
+        public static final Translation2d frontLeftMeters = new Translation2d(-0.254,0.257175);
+        public static final Translation2d frontRightMeters = new Translation2d(0.254,0.257175);
+        public static final Translation2d backLeftMeters = new Translation2d(-0.254,-0.257175);
+        public static final Translation2d backRightMeters = new Translation2d(0.254,-0.257175);
+        // ++ Radius of the wheels in meters
+        public static final double wheelRadius = 0.0762;
     }
 
     
