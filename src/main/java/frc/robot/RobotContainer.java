@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.DriveCommand;
-
+import frc.robot.commands.TeleopPIDDriveCommand;
 import frc.robot.Constants; 
 
 
@@ -30,6 +30,7 @@ public class RobotContainer {
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   // commands
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
+  private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
   // ++ ================================================================
 
 
@@ -45,7 +46,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     // ++ command stuff
-    m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
+    m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
 
 
     // Configure the button bindings
