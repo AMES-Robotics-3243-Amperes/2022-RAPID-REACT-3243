@@ -23,3 +23,4 @@ Project is created with:
 ## Libraries
 ### If the libraries are not working make sure you have these libraries installed
 * https://www.revrobotics.com/content/sw/max/sdk/REVRobotics.json  
+* https://www.kauailabs.com/dist/frc/2022/navx_frc.json  
