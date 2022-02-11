@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -37,7 +40,9 @@ public class DriveSubsystem extends SubsystemBase {
   // ++ create mecanum drive object
   private MecanumDrive speeds;
 
-  
+  // ++ Shuffleboard
+  private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID Tuning");
+
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
     backRightMotor.setInverted(true);
@@ -53,22 +58,6 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftPIDController = backLeftMotor.getPIDController();
     backRightPIDController = backRightMotor.getPIDController();
 
-    frontLeftPIDController.setP(Constants.DriveTrain.kP);
-    frontLeftPIDController.setI(Constants.DriveTrain.kI);
-    frontLeftPIDController.setD(Constants.DriveTrain.kD);
-    
-    frontRightPIDController.setP(Constants.DriveTrain.kP);
-    frontRightPIDController.setI(Constants.DriveTrain.kI);
-    frontRightPIDController.setD(Constants.DriveTrain.kD);
-    
-    backLeftPIDController.setP(Constants.DriveTrain.kP);
-    backLeftPIDController.setI(Constants.DriveTrain.kI);
-    backLeftPIDController.setD(Constants.DriveTrain.kD);
-    
-    backRightPIDController.setP(Constants.DriveTrain.kP);
-    backRightPIDController.setI(Constants.DriveTrain.kI);
-    backRightPIDController.setD(Constants.DriveTrain.kD);
-
   }
 
   public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
@@ -76,10 +65,30 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
+    setPID(1,0,0);
+
     frontLeftPIDController.setReference(flRef, ControlType.kVelocity);
     frontRightPIDController.setReference(frRef, ControlType.kVelocity);
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
+  }
+
+  public void setPID(double kP, double kI, double kD) {
+    frontLeftPIDController.setP(kP);
+    frontLeftPIDController.setI(kI);
+    frontLeftPIDController.setD(kD);
+    
+    frontRightPIDController.setP(kP);
+    frontRightPIDController.setI(kI);
+    frontRightPIDController.setD(kD);
+    
+    backLeftPIDController.setP(kP);
+    backLeftPIDController.setI(kI);
+    backLeftPIDController.setD(kD);
+    
+    backRightPIDController.setP(kP);
+    backRightPIDController.setI(kI);
+    backRightPIDController.setD(kD);
   }
 
   @Override
