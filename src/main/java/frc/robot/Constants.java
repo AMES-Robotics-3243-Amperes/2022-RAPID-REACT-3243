@@ -70,4 +70,20 @@ public final class Constants {
 
     }
 
+    public static final class DriveTrain {
+        // ++ these are the channels for the drivetrain motors
+        // CAN
+        public static final int frontLeftID = 4;
+        public static final int frontRightID = 1;
+        public static final int backLeftID = 3;
+        public static final int backRightID = 2;
+    }
+
+    public static final class Shooter {
+        // ++ shooter constants
+        // CAN
+        public static final int flywheelMotorID = 5;
+        public static final int hoodMotorID = 6;
+    }
+
 }
