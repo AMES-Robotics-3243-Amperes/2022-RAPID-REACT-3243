@@ -28,6 +28,7 @@ public class TeleopPIDDriveCommand extends CommandBase {
   public TeleopPIDDriveCommand(DriveSubsystem subsystem, XboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_DriveSubsystem = subsystem;
+    addRequirements(m_DriveSubsystem);
     this.controller = controller;
 
     kinematics = new MecanumDriveKinematics(Constants.DriveTrain.frontLeftMeters, Constants.DriveTrain.frontRightMeters, Constants.DriveTrain.backLeftMeters, Constants.DriveTrain.backRightMeters);
