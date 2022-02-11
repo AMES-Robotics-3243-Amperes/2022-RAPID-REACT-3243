@@ -13,13 +13,29 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final class Motors {
-        public static final int FrontLeft = 4;
-        public static final int FrontRight = 1;
-        public static final int BackLeft = 3;
-        public static final int BackRight = 2;
+
+    public static final class DriveTrain {
+        // ++ these are the channels for the drivetran motors
+        // CAN
+        public static final int frontLeftID = 4;
+        public static final int frontRightID = 1;
+        public static final int backLeftID = 3;
+        public static final int backRightID = 2;
     }
-    public static final class JoystickValues {
+
+    
+    public static final class Joysticks {
+        // ++ controller IDs 
+        public static final int primaryControllerID =0;
+        public static final int secondaryControllerID = 1; 
+
+        // ++ joystick axis IDs 
+        public static final int LeftJoystickX = 2;
+        public static final int LeftJoystickY = 1;
+        public static final int RightJoystickX = 3;
+        public static final int RightJoystickY = 4;
+
+        // ++ joystick button IDs
         public static final int A = 2;
         public static final int B = 3;
         public static final int X = 1;
@@ -32,10 +48,16 @@ public final class Constants {
         public static final int RightTrigger = 8;
         public static final int DpadXaxis = 5;
         public static final int DpadYaxis = 6;
-        public static final int LeftJoystickX = 2;
-        public static final int LeftJoystickY = 1;
-        public static final int RightJoystickX = 3;
-        public static final int RightJoystickY = 4;
+
+        // ++ other joystick constants
+        public static final double deadZoneSize = 0.05;
+
+        // ++ joystick curve constants
+        public static final int firstPower = 5;
+        public static final int secondPower = 3; 
+        public static double aCoeff = 0.1;
+        public static double bCoeff = (1.0 - aCoeff); 
+
     }
-    public static final float deadzone = 0;
+
 }
