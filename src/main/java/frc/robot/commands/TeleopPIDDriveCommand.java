@@ -4,17 +4,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class TeleopPIDDriveCommand extends CommandBase {
 
-  private Matrix<Nat<Num>, Nat<Num>> vehiclesSpeeds = new Matrix(Nat.N3(), Nat.N1());
+  private final DriveSubsystem m_DriveSubsystem;
+  private final XboxController controller;
+  private final MecanumDriveKinematics kinematics;
 
   /** Creates a new TeleopPIDCommand. */
-  public TeleopPIDDriveCommand() {
+  public TeleopPIDDriveCommand(DriveSubsystem subsystem, XboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_DriveSubsystem = subsystem;
+    this.controller = controller;
+
+    kinematics = new MecanumDriveKinematics(Constants.DriveTrain.frontLeftMeters, Constants.DriveTrain.frontRightMeters, Constants.DriveTrain.backLeftMeters, Constants.DriveTrain.backRightMeters);
   }
 
   // Called when the command is initially scheduled.
@@ -23,7 +33,10 @@ public class TeleopPIDDriveCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(controller.getRawAxis(Constants.Joysticks.LeftJoystickX), controller.getRawAxis(Constants.Joysticks.LeftJoystickY), controller.getRawAxis(Constants.Joysticks.RightJoystickX));
+    MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
