@@ -77,21 +77,21 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setPID(double kP, double kI, double kD) {
-    frontLeftPIDController.setP(kP);
-    frontLeftPIDController.setI(kI);
-    frontLeftPIDController.setD(kD);
+    frontLeftPIDController.setP(kP, 0);
+    frontLeftPIDController.setI(kI, 0);
+    frontLeftPIDController.setD(kD, 0);
     
-    frontRightPIDController.setP(kP);
-    frontRightPIDController.setI(kI);
-    frontRightPIDController.setD(kD);
+    frontRightPIDController.setP(kP, 0);
+    frontRightPIDController.setI(kI, 0);
+    frontRightPIDController.setD(kD, 0);
     
-    backLeftPIDController.setP(kP);
-    backLeftPIDController.setI(kI);
-    backLeftPIDController.setD(kD);
+    backLeftPIDController.setP(kP, 0);
+    backLeftPIDController.setI(kI, 0);
+    backLeftPIDController.setD(kD, 0);
     
-    backRightPIDController.setP(kP);
-    backRightPIDController.setI(kI);
-    backRightPIDController.setD(kD);
+    backRightPIDController.setP(kP, 0);
+    backRightPIDController.setI(kI, 0);
+    backRightPIDController.setD(kD, 0);
   }
 
   @Override
