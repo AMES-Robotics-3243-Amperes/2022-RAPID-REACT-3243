@@ -21,6 +21,8 @@ public final class Constants {
         public static final int frontRightID = 1;
         public static final int backLeftID = 3;
         public static final int backRightID = 2;
+        // ++ other constants
+        public static double totalSpeedDamper = 0.;
     }
 
     

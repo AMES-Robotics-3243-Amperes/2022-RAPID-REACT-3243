@@ -45,8 +45,9 @@ public class DriveCommand extends CommandBase {
     double speedY = JoyUtil.joyCurve( JoyUtil.posWithDeadzone( joystick.getLeftY()));
 
     double speedR = Constants.Joysticks.rotationDamper * JoyUtil.posWithDeadzone( joystick.getRightX()); 
-
-    m_DriveSubsystem.setMotors(speedX, speedY, speedR); 
+    
+    double speedMultiplier = Constants.DriveTrain.totalSpeedDamper; 
+    m_DriveSubsystem.setMotors(speedX * speedMultiplier, speedY * speedMultiplier, speedR * speedMultiplier); 
 
   }
 
