@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class TeleopPIDDriveCommand extends CommandBase {
 
-  private Matrix vehiclesSpeeds;
+  private Matrix<Nat<Num>, Nat<Num>> vehiclesSpeeds = new Matrix(Nat.N3(), Nat.N1());
 
   /** Creates a new TeleopPIDCommand. */
   public TeleopPIDDriveCommand() {
