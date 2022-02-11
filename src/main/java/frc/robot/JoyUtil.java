@@ -1,7 +1,5 @@
 package frc.robot;
 
-import frc.robot.Constants; 
-
 public final class JoyUtil {
     /* ++ we'll use this class to write methods that help us process joystick inputs
     * and will mostly be for drive train things, and will include things like:
@@ -17,6 +15,11 @@ public final class JoyUtil {
         } else {
             return 0.0; 
         }
+    }
+
+    public static double lowPassFilter(double rawJoy, double prevFilterJoy) {
+        double filteredSpeed = ((Constants.Joysticks.lowPassFilterStrength * prevFilterJoy) + ((1- Constants.Joysticks.lowPassFilterStrength) * rawJoy));
+        return filteredSpeed;
     }
 
 
