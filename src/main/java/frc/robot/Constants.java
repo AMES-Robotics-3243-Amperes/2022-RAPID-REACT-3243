@@ -16,6 +16,7 @@ public final class Constants {
 
     public static final class DriveTrain {
         // ++ these are the channels for the drivetran motors
+        // CAN
         public static final int frontLeftID = 4;
         public static final int frontRightID = 1;
         public static final int backLeftID = 3;
@@ -24,11 +25,11 @@ public final class Constants {
 
     
     public static final class Joysticks {
-        // ++ controller IDs
+        // ++ controller IDs 
         public static final int primaryControllerID =0;
         public static final int secondaryControllerID = 1; 
 
-        // ++ joystick axis IDs
+        // ++ joystick axis IDs 
         public static final int LeftJoystickX = 2;
         public static final int LeftJoystickY = 1;
         public static final int RightJoystickX = 3;
@@ -50,6 +51,12 @@ public final class Constants {
 
         // ++ other joystick constants
         public static final double deadZoneSize = 0.05;
+
+        // ++ joystick curve constants
+        public static final int firstPower = 5;
+        public static final int secondPower = 3; 
+        public static double aCoeff = 0.1;
+        public static double bCoeff = (1.0 - aCoeff); 
 
     }
 
