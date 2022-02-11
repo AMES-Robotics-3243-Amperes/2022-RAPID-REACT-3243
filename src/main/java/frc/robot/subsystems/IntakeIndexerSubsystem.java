@@ -29,19 +29,23 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   }
 
   public void setDropPos(double pos) {
+    // ++ This method uses the CANSparkMax built-in PID controller to set a target position
     SparkMaxPIDController pid = dropMotor.getPIDController();
     pid.setReference(pos, ControlType.kPosition);
   }
 
   public double getDropPos() {
+    // ++ This method returns the position of the drop bar
     return dropEncoder.getPosition();
   }
 
   public void setIntakeSpeed(double speed) {
+    // ++ This method spins the intake bars
     intakeMotor.set(speed);
   }
 
   public void setIndexerSpeed(double speed) {
+    // ++ This method spins the indexer wheels.
     indexMotor.set(speed);
   }
 
