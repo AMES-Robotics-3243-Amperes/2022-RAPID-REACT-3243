@@ -8,7 +8,7 @@ Repository for AMES Amperes 2022 Rapid React season.
 * [Libraries](#Libraries)
 
 ## General info
-This is the official code for the official 2022 season
+This is the official code for the official FRC 2022 Rapid React season
 
 ## Technologies
 Project is created with:
