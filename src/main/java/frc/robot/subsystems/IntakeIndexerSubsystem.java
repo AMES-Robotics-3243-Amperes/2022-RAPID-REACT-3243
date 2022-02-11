@@ -37,6 +37,14 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     return dropEncoder.getPosition();
   }
 
+  public void setIntakeSpeed(double speed) {
+    intakeMotor.set(speed);
+  }
+
+  public void setIndexerSpeed(double speed) {
+    indexMotor.set(speed);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
