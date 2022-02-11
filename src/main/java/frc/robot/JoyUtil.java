@@ -151,5 +151,11 @@ public final class JoyUtil extends XboxController {
 //go u
 // bbbbbbbbbbbbbb
 
+        // if (Math.abs(axis) >= Constants.deadZoneSize) {
+        //     return axis;
+        // } else {
+        //     return 0.0; 
+        // }
+    }
 
 }
