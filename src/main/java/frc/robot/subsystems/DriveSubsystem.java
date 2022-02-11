@@ -64,7 +64,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
-    speeds.driveCartesian(Y_speed, X_speed, Z_rotation);
+    speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
   }
 
   public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
