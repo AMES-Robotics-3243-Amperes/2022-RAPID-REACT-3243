@@ -27,12 +27,15 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ make motor objects  
   private CANSparkMax flywheelMotor = new CANSparkMax( Constants.Shooter.flywheelMotorID, MotorType.kBrushless ); 
   private CANSparkMax hoodMotor = new CANSparkMax( Constants.Shooter.hoodMotorID, MotorType.kBrushless ); 
+  public RelativeEncoder hoodEncoder; 
 
   // ++ make encoder objects (this might not be the right kind of encoder or even work)
 
 
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem() {}
+  public ShooterSubsystem() {
+    hoodEncoder = hoodMotor.getEncoder(); 
+  }
 
 
 
