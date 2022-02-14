@@ -3,13 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import frc.robot.JoyUtil;
+import frc.robot.Constants; 
 
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 
-import frc.robot.JoyUtil;
-import frc.robot.Constants; 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /** An example command that uses an example subsystem. */
 public class DriveCommand extends CommandBase {
@@ -37,8 +41,11 @@ public class DriveCommand extends CommandBase {
   @Override
   public void initialize() {
 
+    System.out.println("DriveCommand in initialize");
     prevFilteredJoyX = 0.0;
+    System.out.println(prevFilteredJoyX);
     prevFilteredJoyY = 0.0;
+    System.out.println(prevFilteredJoyY);
     // ++ these are here in initialize() so they're set to 0 every time the method is scheduled
     // ++ that's potentially important because this command might stop being scheduled for some reason, so when it starts again,
     // ++ the previous value should be 0
@@ -50,6 +57,9 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("DriveComand in execute");
+    SmartDashboard.putNumber("prevFilteredJoyX", prevFilteredJoyX);
+    SmartDashboard.putNumber("prevFilteredJoyY", prevFilteredJoyY);
     // ++ we want to curve the x and y speeds the same, but we'll probably do the rotation differently
     double speedX =  JoyUtil.composeDriveJoyFunctions( joystick.getLeftX(), prevFilteredJoyX );
     double speedY =  JoyUtil.composeDriveJoyFunctions( joystick.getLeftY(), prevFilteredJoyY );
