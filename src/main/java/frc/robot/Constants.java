@@ -52,16 +52,17 @@ public final class Constants {
 
         // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------
         public static final double deadZoneSize = 0.15;
-        public static final double lowPassFilterStrength = 0.5;
+        // ++ lowPassFilterStrength should be between 0 & 1. The closer it is to 1, the smoother it is. 
+        public static final double lowPassFilterStrength = 0.88;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
-        public static double driveSpeedDamper = 0.75; 
+        public static double driveSpeedDamper = 0.65; 
         public static double rotationDamper = 0.15; 
 
         // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------
-        public static double aCoeff = 0.9;
-        public static final int firstPower = 5;
+        public static double aCoeff = 0.7;
+        public static final int firstPower = 3;
 
-        public static final int secondPower = 3; 
+        public static final int secondPower = 1; 
         public static double bCoeff = (1.0 - aCoeff); 
 
     }
