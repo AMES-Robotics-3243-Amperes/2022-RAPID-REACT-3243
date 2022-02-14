@@ -15,29 +15,28 @@ package frc.robot;
 public final class Constants {
 
     public static final class DriveTrain {
-        // ++ these are the channels for the drivetran motors
+        // ++ MOTOR CONTORLLER IDS ---------------------------------------------------------
         // CAN
         public static final int frontLeftID = 4;
         public static final int frontRightID = 1;
         public static final int backLeftID = 3;
         public static final int backRightID = 2;
-        // ++ other constants
-        public static double totalSpeedDamper = 0.;
     }
 
     
     public static final class Joysticks {
-        // ++ controller IDs 
-        public static final int primaryControllerID =0;
+        // ++ CONTROLLER IDS --------------------------------------------------------------------
+        public static final int primaryControllerID = 0;
         public static final int secondaryControllerID = 1; 
 
-        // ++ joystick axis IDs 
+        // ++ JOYSTICK AXIS IDS ---------------------------------------------------------------------
+        // ++ these are maybe wrong/redundant with the xbox controllers/libraries?
         public static final int LeftJoystickX = 2;
         public static final int LeftJoystickY = 1;
         public static final int RightJoystickX = 3;
         public static final int RightJoystickY = 4;
 
-        // ++ joystick button IDs
+        // ++ JOYSTICK BUTTON IDS -------------------------------------------------------------------
         public static final int A = 2;
         public static final int B = 3;
         public static final int X = 1;
@@ -51,15 +50,19 @@ public final class Constants {
         public static final int DpadXaxis = 5;
         public static final int DpadYaxis = 6;
 
-        // ++ other joystick constants
+        // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------
         public static final double deadZoneSize = 0.15;
+        public static final double lowPassFilterStrength = 0.5;
+        // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
+        public static double driveSpeedDamper = 0.75; 
+        public static double rotationDamper = 0.15; 
 
-        // ++ joystick curve constants
+        // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------
+        public static double aCoeff = 0.9;
         public static final int firstPower = 5;
+
         public static final int secondPower = 3; 
-        public static double aCoeff = 0.25;
         public static double bCoeff = (1.0 - aCoeff); 
-        public static double rotationDamper = 0.5; 
 
     }
 

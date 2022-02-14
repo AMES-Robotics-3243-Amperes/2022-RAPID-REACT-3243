@@ -33,6 +33,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setMotors (double X_speed, double Y_speed, double rotation) {
     // ++ this sets the speeds of the motors using the cartesian drive library
+    // ++ inputs in order of x, y, and r
+    // ++ inverts the y-velocity because the joystick's inverted
     mecanumDrive.driveCartesian(-Y_speed, X_speed, rotation);
   }
 

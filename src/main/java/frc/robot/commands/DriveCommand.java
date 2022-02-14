@@ -17,6 +17,9 @@ public class DriveCommand extends CommandBase {
   private final DriveSubsystem m_DriveSubsystem;
   private final XboxController joystick;
 
+  public double prevFilteredJoyX; 
+  public double prevFilteredJoyY;
+
 
   /**
    * Creates a new ExampleCommand.
@@ -32,8 +35,15 @@ public class DriveCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
 
+    prevFilteredJoyX = 0.0;
+    prevFilteredJoyY = 0.0;
+    // ++ these are here in initialize() so they're set to 0 every time the method is scheduled
+    // ++ that's potentially important because this command might stop being scheduled for some reason, so when it starts again,
+    // ++ the previous value should be 0
+
+  }
 
 
 
@@ -41,13 +51,18 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     // ++ we want to curve the x and y speeds the same, but we'll probably do the rotation differently
-    double speedX = JoyUtil.joyCurve( JoyUtil.posWithDeadzone( joystick.getLeftX()));
-    double speedY = JoyUtil.joyCurve( JoyUtil.posWithDeadzone( joystick.getLeftY()));
+    double speedX =  JoyUtil.composeDriveJoyFunctions( joystick.getLeftX(), prevFilteredJoyX );
+    double speedY =  JoyUtil.composeDriveJoyFunctions( joystick.getLeftY(), prevFilteredJoyY );
+
+    // ++ these set the old "previous" values to the most recent previous values, which are then used the next time this runs
+    prevFilteredJoyX = JoyUtil.lowPassFilter( joystick.getLeftX(), prevFilteredJoyX );
+    prevFilteredJoyY = JoyUtil.lowPassFilter( joystick.getLeftY(), prevFilteredJoyY );
+
 
     double speedR = Constants.Joysticks.rotationDamper * JoyUtil.posWithDeadzone( joystick.getRightX()); 
     
-    double speedMultiplier = Constants.DriveTrain.totalSpeedDamper; 
-    m_DriveSubsystem.setMotors(speedX * speedMultiplier, speedY * speedMultiplier, speedR * speedMultiplier); 
+    // ++ input speeds in the order X, Y, and R
+    m_DriveSubsystem.setMotors(speedX, speedY, speedR); 
 
   }
 
