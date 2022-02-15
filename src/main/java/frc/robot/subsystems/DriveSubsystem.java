@@ -70,10 +70,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
     setPID(pGain.getDouble(1.0),iGain.getDouble(0.0),dGain.getDouble(0.0));
 
-    frontLeftPIDController.setReference(flRef, ControlType.kVelocity);
-    frontRightPIDController.setReference(frRef, ControlType.kVelocity);
-    backLeftPIDController.setReference(blRef, ControlType.kVelocity);
-    backRightPIDController.setReference(brRef, ControlType.kVelocity);
+    frontLeftMotor.set(flRef);
+    frontRightMotor.set(frRef);
+    backLeftMotor.set(blRef);
+    backRightMotor.set(brRef);
   }
 
   public void setPID(double kP, double kI, double kD) {
