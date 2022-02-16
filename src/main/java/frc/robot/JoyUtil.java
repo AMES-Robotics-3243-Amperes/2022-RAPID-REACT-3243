@@ -26,10 +26,10 @@ public final class JoyUtil {
     }
 
 
-    public static double lowPassFilter(double pos, double prevFilterJoy) {
+    public static double driveLowPassFilter(double pos, double prevFilterJoy) {
         // ++ this method smoothes out the joystick input so 
         // ++ "prevFilterJoy" is the previous output of this function
-        double filteredSpeed = ((Constants.Joysticks.lowPassFilterStrength * prevFilterJoy) + ((1- Constants.Joysticks.lowPassFilterStrength) * pos));
+        double filteredSpeed = ((Constants.Joysticks.driveLowPassFilterStrength * prevFilterJoy) + ((1- Constants.Joysticks.driveLowPassFilterStrength) * pos));
         return filteredSpeed;
     }
 
@@ -61,7 +61,7 @@ public final class JoyUtil {
         */ 
 
         double withDead = posWithDeadzone(rawJoyPos);
-        double withFilter = lowPassFilter(withDead, prevFilterJoy);
+        double withFilter = driveLowPassFilter(withDead, prevFilterJoy);
         double withCurve = joyCurve(withFilter); 
         double withDampened = withCurve * Constants.Joysticks.driveSpeedDamper; 
 

@@ -65,8 +65,8 @@ public class DriveCommand extends CommandBase {
     double speedY =  JoyUtil.composeDriveJoyFunctions( joystick.getLeftY(), prevFilteredJoyY );
 
     // ++ these set the old "previous" values to the most recent previous values, which are then used the next time this runs
-    prevFilteredJoyX = JoyUtil.lowPassFilter( joystick.getLeftX(), prevFilteredJoyX );
-    prevFilteredJoyY = JoyUtil.lowPassFilter( joystick.getLeftY(), prevFilteredJoyY );
+    prevFilteredJoyX = JoyUtil.driveLowPassFilter( joystick.getLeftX(), prevFilteredJoyX );
+    prevFilteredJoyY = JoyUtil.driveLowPassFilter( joystick.getLeftY(), prevFilteredJoyY );
 
 
     double speedR = Constants.Joysticks.rotationDamper * JoyUtil.posWithDeadzone( joystick.getRightX()); 
