@@ -42,14 +42,15 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ++ Shuffleboard
   private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID Tuning");
-  private final NetworkTableEntry pGain = pidTab.add("P gain", 1.0).getEntry();
-  private final NetworkTableEntry iGain = pidTab.add("I gain", 0.0).getEntry();
-  private final NetworkTableEntry dGain = pidTab.add("D gain", 0.0).getEntry();
+  public NetworkTableEntry pGain;
+  public NetworkTableEntry iGain;
+  public NetworkTableEntry dGain;
 
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
     backRightMotor.setInverted(true);
     speeds = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
+    
 
     frontLeftEncoder = frontLeftMotor.getEncoder();
     frontRightEncoder = frontRightMotor.getEncoder();
@@ -67,9 +68,14 @@ public class DriveSubsystem extends SubsystemBase {
     speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
   }
 
-  public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
-    setPID(pGain.getDouble(1.0),iGain.getDouble(0.0),dGain.getDouble(0.0));
+  public void getShuffleboardPID() {
+    pGain = pidTab.add("P gain", 1.0).getEntry();
+    iGain = pidTab.add("I gain", 0.0).getEntry();
+    dGain = pidTab.add("D gain", 0.0).getEntry();
+  }
 
+  public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
+    
     // frontLeftMotor.set(flRef);
     // frontRightMotor.set(frRef);
     // backLeftMotor.set(blRef);
@@ -79,6 +85,8 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightPIDController.setReference(frRef, ControlType.kVelocity);
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
+
+    speeds.feed();
   }
 
   public void setPID(double kP, double kI, double kD) {

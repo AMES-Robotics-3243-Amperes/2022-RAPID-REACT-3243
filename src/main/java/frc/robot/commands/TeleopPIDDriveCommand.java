@@ -34,24 +34,24 @@ public class TeleopPIDDriveCommand extends CommandBase {
     addRequirements(m_DriveSubsystem);
     this.controller = controller;
 
+    // Creates a mecanum kinematics class to find the correct wheel speeds when driving, using the measurements from the center of the robot to the centers of the wheels
     kinematics = new MecanumDriveKinematics(Constants.DriveTrain.frontLeftMeters, Constants.DriveTrain.frontRightMeters, Constants.DriveTrain.backLeftMeters, Constants.DriveTrain.backRightMeters);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_DriveSubsystem.getShuffleboardPID();
+    m_DriveSubsystem.setPID(m_DriveSubsystem.pGain.getDouble(1.0),m_DriveSubsystem.iGain.getDouble(0.0),m_DriveSubsystem.dGain.getDouble(0.0));
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     ChassisSpeeds vehicleSpeed = new ChassisSpeeds(-JoyUtil.deadzone(controller.getLeftY()) * linearMultiplier, -JoyUtil.deadzone(controller.getLeftX()) * linearMultiplier, -JoyUtil.deadzone(controller.getRightX()) * angularMultiplier);
-    SmartDashboard.putNumber("Forward/Back", vehicleSpeed.vxMetersPerSecond);
-    SmartDashboard.putNumber("Left/Right", vehicleSpeed.vyMetersPerSecond);
-    SmartDashboard.putNumber("Rotation", vehicleSpeed.omegaRadiansPerSecond);
     MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
     // wheelSpeeds.desaturate(1);
-    SmartDashboard.putNumber("Front Left", wheelSpeeds.frontLeftMetersPerSecond);
-    SmartDashboard.putNumber("Front Right", wheelSpeeds.frontRightMetersPerSecond);
     m_DriveSubsystem.setVelocityReference(wheelSpeeds.frontLeftMetersPerSecond, wheelSpeeds.frontRightMetersPerSecond, wheelSpeeds.rearLeftMetersPerSecond, wheelSpeeds.rearRightMetersPerSecond);
 
   }
