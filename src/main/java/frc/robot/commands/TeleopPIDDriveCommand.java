@@ -23,8 +23,8 @@ public class TeleopPIDDriveCommand extends CommandBase {
   private final DriveSubsystem m_DriveSubsystem;
   private final XboxController controller;
   private final MecanumDriveKinematics kinematics;
-  private final Double linearMultiplier = 0.4;
-  private final Double angularMultiplier = 0.4;
+  private final Double linearMultiplier = 1.0;
+  private final Double angularMultiplier = 1.0;
 
 
   /** Creates a new TeleopPIDCommand. */
@@ -52,6 +52,7 @@ public class TeleopPIDDriveCommand extends CommandBase {
     ChassisSpeeds vehicleSpeed = new ChassisSpeeds(-JoyUtil.deadzone(controller.getLeftY()) * linearMultiplier, -JoyUtil.deadzone(controller.getLeftX()) * linearMultiplier, -JoyUtil.deadzone(controller.getRightX()) * angularMultiplier);
     MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
     // wheelSpeeds.desaturate(1);
+    SmartDashboard.putNumber("fl Wheel Speeds", wheelSpeeds.frontLeftMetersPerSecond);
     m_DriveSubsystem.setVelocityReference(wheelSpeeds.frontLeftMetersPerSecond, wheelSpeeds.frontRightMetersPerSecond, wheelSpeeds.rearLeftMetersPerSecond, wheelSpeeds.rearRightMetersPerSecond);
 
   }

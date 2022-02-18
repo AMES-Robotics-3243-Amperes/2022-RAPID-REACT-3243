@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -38,7 +41,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMaxPIDController backRightPIDController;
 
   // ++ create mecanum drive object
-  private MecanumDrive speeds;
+  // private MecanumDrive speeds;
 
   // ++ Shuffleboard
   private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID Tuning");
@@ -46,10 +49,14 @@ public class DriveSubsystem extends SubsystemBase {
   public NetworkTableEntry iGain;
   public NetworkTableEntry dGain;
 
+  private SimpleWidget pGainWidget;
+  private SimpleWidget iGainWidget;
+  private SimpleWidget dGainWidget;
+
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
     backRightMotor.setInverted(true);
-    speeds = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
+    // speeds = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
     
 
     frontLeftEncoder = frontLeftMotor.getEncoder();
@@ -57,21 +64,30 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftEncoder = backLeftMotor.getEncoder();
     backRightEncoder = backRightMotor.getEncoder();
 
+    frontLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    frontRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    backLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    backRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+
     frontLeftPIDController = frontLeftMotor.getPIDController();
     frontRightPIDController = frontRightMotor.getPIDController();
     backLeftPIDController = backLeftMotor.getPIDController();
     backRightPIDController = backRightMotor.getPIDController();
 
+    pGainWidget = pidTab.add("P gain", 1.0);
+    iGainWidget = pidTab.add("I gain", 0.0);
+    dGainWidget = pidTab.add("D gain", 0.0);
+
   }
 
   public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
-    speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
+    // speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
   }
 
   public void getShuffleboardPID() {
-    pGain = pidTab.add("P gain", 1.0).getEntry();
-    iGain = pidTab.add("I gain", 0.0).getEntry();
-    dGain = pidTab.add("D gain", 0.0).getEntry();
+    pGain = pGainWidget.getEntry();
+    iGain = iGainWidget.getEntry();
+    dGain = dGainWidget.getEntry();
   }
 
   public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
@@ -86,25 +102,33 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
 
-    speeds.feed();
+    SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
+
+    // speeds.feed();
   }
 
   public void setPID(double kP, double kI, double kD) {
-    frontLeftPIDController.setP(kP, 0);
-    frontLeftPIDController.setI(kI, 0);
-    frontLeftPIDController.setD(kD, 0);
+    frontLeftPIDController.setP(kP);
+    frontLeftPIDController.setI(kI);
+    frontLeftPIDController.setD(kD);
     
-    frontRightPIDController.setP(kP, 0);
-    frontRightPIDController.setI(kI, 0);
-    frontRightPIDController.setD(kD, 0);
+    frontRightPIDController.setP(kP);
+    frontRightPIDController.setI(kI);
+    frontRightPIDController.setD(kD);
     
-    backLeftPIDController.setP(kP, 0);
-    backLeftPIDController.setI(kI, 0);
-    backLeftPIDController.setD(kD, 0);
+    backLeftPIDController.setP(kP);
+    backLeftPIDController.setI(kI);
+    backLeftPIDController.setD(kD);
     
-    backRightPIDController.setP(kP, 0);
-    backRightPIDController.setI(kI, 0);
-    backRightPIDController.setD(kD, 0);
+    backRightPIDController.setP(kP);
+    backRightPIDController.setI(kI);
+    backRightPIDController.setD(kD);
+
+    frontLeftPIDController.setIAccum(0);
+    frontRightPIDController.setIAccum(0);
+    backLeftPIDController.setIAccum(0);
+    backRightPIDController.setIAccum(0);
   }
 
   @Override
