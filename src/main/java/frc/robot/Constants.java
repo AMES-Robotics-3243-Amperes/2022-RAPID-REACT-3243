@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
 
     public static final class DriveTrain {
-        // ++ these are the channels for the drivetran motors
+        // ++ MOTOR CONTORLLER IDS ---------------------------------------------------------
         // CAN
         public static final int frontLeftID = 4;
         public static final int frontRightID = 1;
@@ -25,17 +25,18 @@ public final class Constants {
 
     
     public static final class Joysticks {
-        // ++ controller IDs 
-        public static final int primaryControllerID =0;
+        // ++ CONTROLLER IDS --------------------------------------------------------------------
+        public static final int primaryControllerID = 0;
         public static final int secondaryControllerID = 1; 
 
-        // ++ joystick axis IDs 
+        // ++ JOYSTICK AXIS IDS ---------------------------------------------------------------------
+        // ++ these are maybe wrong/redundant with the xbox controllers/libraries?
         public static final int LeftJoystickX = 2;
         public static final int LeftJoystickY = 1;
         public static final int RightJoystickX = 3;
         public static final int RightJoystickY = 4;
 
-        // ++ joystick button IDs
+        // ++ JOYSTICK BUTTON IDS -------------------------------------------------------------------
         public static final int A = 2;
         public static final int B = 3;
         public static final int X = 1;
@@ -49,16 +50,23 @@ public final class Constants {
         public static final int DpadXaxis = 5;
         public static final int DpadYaxis = 6;
 
-        // ++ other joystick constants
-        public static final double deadZoneSize = 0.05;
-        // ++ This variable affects the smoothing strength of the low pass filter. Values from 0-1 inclusive, with larger valus smoothing it more.
-        public static final double lowPassFilterStrength = 0.5;
 
-        // ++ joystick curve constants
-        public static final int firstPower = 5;
-        public static final int secondPower = 3; 
-        public static double aCoeff = 0.1;
-        public static double bCoeff = (1.0 - aCoeff); 
+        // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------
+        public static final double deadZoneSize = 0.15;
+        // ++ lowPassFilterStrength should be between 0 & 1. The closer it is to 1, the smoother it is. 
+        public static final double driveLowPassFilterStrength = 0.88;
+        public static final double rotationLowPassFilterStrength = 0.2;
+        // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
+        public static final double driveSpeedDamper = 0.65; 
+        public static final double rotationDamper = 0.15; 
+
+
+        // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------
+        public static final double aCoeff = 0.7;
+        public static final int firstPower = 3;
+
+        public static final int secondPower = 1; 
+        public static final double bCoeff = (1.0 - aCoeff); 
 
     }
 
