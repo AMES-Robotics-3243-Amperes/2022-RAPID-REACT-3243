@@ -19,7 +19,15 @@ import frc.robot.commands.DriveCommand;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
+
+
+  // ++ JOYSTICK STUFF ========================================
+  // ++ we make a JoyUtil object instead of an XboxController object; JoyUtil inherits XboxController
+  public static JoyUtil primaryController = new JoyUtil( Constants.Joysticks.primaryControllerID );
+  public static JoyUtil secondaryController = new JoyUtil( Constants.Joysticks.secondaryControllerID );
+
 
 
   // ++ SUBSYSTEMS AND COMMANDS ========================================
@@ -29,15 +37,7 @@ public class RobotContainer {
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
   // ++ =================================================
 
-
-
-  // ++ JOYSTICK STUFF ========================================
-  public static XboxController primaryController = new XboxController( Constants.Joysticks.primaryControllerID );
-  public static XboxController secondaryController = new XboxController( Constants.Joysticks.secondaryControllerID );
-    
-  
-
-
+ 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
