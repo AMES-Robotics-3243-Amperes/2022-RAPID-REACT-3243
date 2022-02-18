@@ -50,6 +50,7 @@ public final class Constants {
         public static final int DpadXaxis = 5;
         public static final int DpadYaxis = 6;
 
+
         // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------
         public static final double deadZoneSize = 0.15;
         // ++ lowPassFilterStrength should be between 0 & 1. The closer it is to 1, the smoother it is. 
@@ -58,6 +59,7 @@ public final class Constants {
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
         public static final double driveSpeedDamper = 0.65; 
         public static final double rotationDamper = 0.15; 
+
 
         // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------
         public static final double aCoeff = 0.7;

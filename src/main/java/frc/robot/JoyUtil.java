@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public final class JoyUtil extends XboxController {
 
+
     /* ++ we'll use this class to write methods that help us process joystick inputs
     * and will mostly be for drive train things, and will include things like:
     * deadzone functions and joystick input curves, and anything else we need. 
@@ -89,6 +90,7 @@ public final class JoyUtil extends XboxController {
         }
     }
 
+  
     public static double lowPassFilter(double pos, double prevFilterJoy, double filterStrength) {
         // ++ this method smoothes out the joystick input so 
         // ++ "prevFilterJoy" is the previous output of this function
@@ -137,8 +139,6 @@ public final class JoyUtil extends XboxController {
         // ++ we return "withCurve" because the curve is the last method so far, and
         // it'll need to be changed if/when more functions are added
     }
-
-
 
 
 
