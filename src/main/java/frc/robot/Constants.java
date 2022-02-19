@@ -41,6 +41,7 @@ public final class Constants {
 
 
         public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
+        public static final double positionConversionRation = ((wheelDiameter * Math.PI)/10.71);
     }
 
     

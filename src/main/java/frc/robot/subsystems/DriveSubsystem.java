@@ -69,6 +69,11 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
     backRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
 
+    frontLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+    frontRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+    backLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+    backRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+
     frontLeftPIDController = frontLeftMotor.getPIDController();
     frontRightPIDController = frontRightMotor.getPIDController();
     backLeftPIDController = backLeftMotor.getPIDController();
