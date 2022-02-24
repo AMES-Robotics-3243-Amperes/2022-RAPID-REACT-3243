@@ -69,7 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
   );
 
   // + mecanum drive odometry object for calculating position of robot based on wheel speeds
-  MecanumDriveOdometry odometry = new MecanumDriveOdometry(kinematics, getGyroRotation(), pose);
+  MecanumDriveOdometry odometry;
 
 
   // ++ Shuffleboard
@@ -116,6 +116,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     resetPose();
 
+    odometry = new MecanumDriveOdometry(kinematics, getGyroRotation(), pose);
+
   }
 
   // ++ returns a Rotation2d object with the robot's current angle, in radians
@@ -130,7 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ++ resets the Pose2d and encoder positions of all the motors
   public void resetPose() {
-    Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
+    pose = new Pose2d(6.0, 4.0, new Rotation2d());
     ChassisSpeeds chassisPos = new ChassisSpeeds(pose.getX(), pose.getY(), pose.getRotation().getRadians());
     MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
     frontLeftEncoder.setPosition(wheelPos.frontLeftMetersPerSecond);
@@ -145,7 +147,6 @@ public class DriveSubsystem extends SubsystemBase {
     // backLeftPIDController.setReference(backLeftEncoder.getPosition(), ControlType.kPosition);
     // backRightPIDController.setReference(backRightEncoder.getPosition(), ControlType.kPosition);
 
-    imu.resetDisplacement();
   }
 
   // ++ changes the robots position based off of current position
@@ -243,7 +244,15 @@ public class DriveSubsystem extends SubsystemBase {
       backRightEncoder.getVelocity()
   );
   // ++ Use odometry object for calculating position
+  ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
+  ChassisSpeeds actualSpeed = new ChassisSpeeds(imu.getVelocityX(), imu.getVelocityY(), 0.0);
+
   pose = odometry.update(getGyroRotation(), wheelspeeds);
+
+  imu.getDisplacementX();
+
+  imu.resetDisplacement();
+
   // ++ Update field object for shuffleboard
   field.setRobotPose(pose);
   }
