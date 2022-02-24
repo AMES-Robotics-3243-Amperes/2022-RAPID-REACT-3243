@@ -26,7 +26,6 @@ public class TeleopPIDDriveCommand extends CommandBase {
   private final Double linearMultiplier = 1.0;
   private final Double angularMultiplier = 1.0;
 
-
   /** Creates a new TeleopPIDCommand. */
   public TeleopPIDDriveCommand(DriveSubsystem subsystem, XboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
