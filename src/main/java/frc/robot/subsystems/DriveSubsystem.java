@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 
@@ -62,10 +63,13 @@ public class DriveSubsystem extends SubsystemBase {
   // ++ Pose object for keeping track of robot position
   Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
 
-  // ++ mecanum drive kinematics object
+  // ++ mecanum drive kinematics object for calculating wheel speeds and positions from chassis speeds and positions
   MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     Constants.DriveTrain.frontLeftMeters, Constants.DriveTrain.frontRightMeters, Constants.DriveTrain.backLeftMeters, Constants.DriveTrain.backRightMeters
   );
+
+  // + mecanum drive odometry object for calculating position of robot based on wheel speeds
+  MecanumDriveOdometry odometry = new MecanumDriveOdometry(kinematics, getGyroRotation(), pose);
 
 
   // ++ Shuffleboard
@@ -144,6 +148,7 @@ public class DriveSubsystem extends SubsystemBase {
     imu.resetDisplacement();
   }
 
+  // ++ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {
     ChassisSpeeds chassisTransform = new ChassisSpeeds(transform.getX(), transform.getY(), transform.getRotation().getRadians());
     MecanumDriveWheelSpeeds wheelTransform = kinematics.toWheelSpeeds(chassisTransform);
@@ -159,6 +164,7 @@ public class DriveSubsystem extends SubsystemBase {
     backRightPIDController.setReference(backRightPos, ControlType.kPosition);
   }
 
+  // ++ sets the absolute robot position
   public void setRobotPosition(Pose2d position) {
     ChassisSpeeds chassisPos = new ChassisSpeeds(position.getX(), position.getY(), position.getRotation().getRadians());
     MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
@@ -174,12 +180,14 @@ public class DriveSubsystem extends SubsystemBase {
     backRightPIDController.setReference(backRightPos, ControlType.kPosition);
   }
 
+  // ++ Updates the PID tuning widgets on shuffleboard
   public void getShuffleboardPID() {
     pGain = pGainWidget.getEntry();
     iGain = iGainWidget.getEntry();
     dGain = dGainWidget.getEntry();
   }
 
+  // ++ Sets the velocity reference of the 4 PID loops, for driving in teleop
   public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
     
     // frontLeftMotor.set(flRef);
@@ -198,6 +206,7 @@ public class DriveSubsystem extends SubsystemBase {
     // speeds.feed();
   }
 
+  // ++ Sets the P, I, and D gains of the 4 PID loops
   public void setPID(double kP, double kI, double kD) {
     frontLeftPIDController.setP(kP);
     frontLeftPIDController.setI(kI);
@@ -227,11 +236,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double xPos = 6.0 + imu.getDisplacementX();
-    double yPos = 4.0 + imu.getDisplacementY();
-    pose = new Pose2d(xPos, yPos, getGyroRotation());
-
-    field.setRobotPose(pose);
+    MecanumDriveWheelSpeeds wheelspeeds = new MecanumDriveWheelSpeeds(
+      frontLeftEncoder.getVelocity(),
+      frontRightEncoder.getVelocity(),
+      backLeftEncoder.getVelocity(),
+      backRightEncoder.getVelocity()
+  );
+  // ++ Use odometry object for calculating position
+  pose = odometry.update(getGyroRotation(), wheelspeeds);
+  // ++ Update field object for shuffleboard
+  field.setRobotPose(pose);
   }
 
   @Override
