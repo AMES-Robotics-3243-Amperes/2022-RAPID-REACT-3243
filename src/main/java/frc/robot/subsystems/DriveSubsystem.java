@@ -203,7 +203,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
     SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
-
+  
     // speeds.feed();
   }
 
@@ -238,23 +238,25 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     MecanumDriveWheelSpeeds wheelspeeds = new MecanumDriveWheelSpeeds(
-      frontLeftEncoder.getVelocity(),
-      frontRightEncoder.getVelocity(),
-      backLeftEncoder.getVelocity(),
-      backRightEncoder.getVelocity()
-  );
-  // ++ Use odometry object for calculating position
-  ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
-  ChassisSpeeds actualSpeed = new ChassisSpeeds(imu.getVelocityX(), imu.getVelocityY(), 0.0);
+        frontLeftEncoder.getVelocity(),
+        frontRightEncoder.getVelocity(),
+        backLeftEncoder.getVelocity(),
+        backRightEncoder.getVelocity()
+    );
+    // ++ Use odometry object for calculating position
+    ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
+    ChassisSpeeds actualSpeed = new ChassisSpeeds(imu.getVelocityX(), imu.getVelocityY(), 0.0);
 
-  pose = odometry.update(getGyroRotation(), wheelspeeds);
+    pose = odometry.update(getGyroRotation(), wheelspeeds);
 
-  imu.getDisplacementX();
+    imu.getDisplacementX();
 
-  imu.resetDisplacement();
-
-  // ++ Update field object for shuffleboard
-  field.setRobotPose(pose);
+    imu.resetDisplacement();
+    SmartDashboard.putNumber("Robot x", pose.getX());
+    SmartDashboard.putNumber("Robot y", pose.getY());
+    SmartDashboard.putNumber("Robot rotation", pose.getRotation().getDegrees());
+    // ++ Update field object for shuffleboard
+    field.setRobotPose(pose);
   }
 
   @Override
