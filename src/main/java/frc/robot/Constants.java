@@ -23,6 +23,14 @@ public final class Constants {
         public static final int backRightID = 2;
     }
 
+    public static final class Climber {
+        public static final int climber_motor_R = 1;
+        public static final int climber_motor_L = 2;
+        public static final int grabber_R1 = 3;
+        public static final int grabber_R2 = 4;
+        public static final int grabber_L1 = 5;
+        public static final int grabber_L2 = 6;
+    }
     
     public static final class Joysticks {
         // ++ CONTROLLER IDS --------------------------------------------------------------------

@@ -8,8 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.DriveCommand;
+
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.commands.ClimberCommand;
 
 // ++ comment so I can rebase
 
@@ -36,8 +40,10 @@ public class RobotContainer {
   // ++ SUBSYSTEMS AND COMMANDS ========================================
   // subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
+  private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
   // commands
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
+  private final ClimberCommand m_ClimberCommand = new ClimberCommand(m_ClimberSubsystem, secondaryController);
   // ++ =================================================
 
  
@@ -47,7 +53,7 @@ public class RobotContainer {
 
     // ++ command stuff
     m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
-
+    m_ClimberSubsystem.setDefaultCommand(m_ClimberCommand);
 
     // Configure the button bindings
     configureButtonBindings();
