@@ -247,7 +247,26 @@ public class DriveSubsystem extends SubsystemBase {
     ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
     ChassisSpeeds actualSpeed = new ChassisSpeeds(imu.getVelocityX(), imu.getVelocityY(), 0.0);
 
-    pose = odometry.update(getGyroRotation(), wheelspeeds);
+    Double xError = expectedSpeed.vxMetersPerSecond - actualSpeed.vxMetersPerSecond;
+    Double yError = expectedSpeed.vyMetersPerSecond - actualSpeed.vyMetersPerSecond;
+    
+    Double speedError = Math.sqrt(Math.pow(xError, 2) + Math.pow(yError, 2));
+
+    SmartDashboard.putNumber("Speed Error", speedError);
+
+    // ~~ Updates robot position based on whether odometry or the accelerometer would be more accurate
+    if (speedError < Constants.DriveTrain.speedErrorThreshold) {
+      pose = odometry.update(getGyroRotation(), wheelspeeds);
+    } 
+    else {
+      Double newX = pose.getX() + imu.getDisplacementX();
+      Double newY = pose.getY() + imu.getDisplacementY();
+      Rotation2d newR = pose.getRotation();
+
+      pose = new Pose2d(newX, newY, newR);
+
+    }
+    
 
     imu.getDisplacementX();
 

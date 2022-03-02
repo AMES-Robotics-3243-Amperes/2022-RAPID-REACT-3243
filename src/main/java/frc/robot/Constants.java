@@ -23,7 +23,7 @@ public final class Constants {
         public static final int frontRightID = 1;
         public static final int backLeftID = 3;
         public static final int backRightID = 2;
-        // ++ There are the positions of the mecanum wheels in meters
+        // ~~ There are the positions of the mecanum wheels in meters
         // public static final Translation2d frontLeftMeters = new Translation2d(-0.254,0.257175);
         // public static final Translation2d frontRightMeters = new Translation2d(0.254,0.257175);
         // public static final Translation2d backLeftMeters = new Translation2d(-0.254,-0.257175);
@@ -32,16 +32,17 @@ public final class Constants {
         public static final Translation2d frontRightMeters = new Translation2d(0.257175,-0.254);
         public static final Translation2d backLeftMeters = new Translation2d(-0.257175,0.254);
         public static final Translation2d backRightMeters = new Translation2d(-0.257175,-0.254);
-        // ++ Radius of the wheels in meters
+        // ~~ Radius of the wheels in meters
         public static final double wheelDiameter = 0.1524;
-        // ++ PID values for teleop mecanum drive
+        // ~~ PID values for teleop mecanum drive
         public static final double kP = 0.72;
         public static final double kI = 0;
         public static final double kD = 0;
-
-
+        // ~~ Conversion ratios for drivetrain encoders
         public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
         public static final double positionConversionRation = ((wheelDiameter * Math.PI)/10.71);
+        // ~~ Speed error threshold for crash detection
+        public static final double speedErrorThreshold = 0.1;
     }
 
     
