@@ -262,6 +262,8 @@ public class DriveSubsystem extends SubsystemBase {
     if (speedError < speedErrorThreshold.getDouble(0.1)) {
       // ~~ Calculates position based on odometry
       pose = odometry.update(getGyroRotation(), wheelspeeds);
+
+      SmartDashboard.putBoolean("Slipping?", false);
     } 
     else {
       // ~~ Calculates position based on imu
@@ -274,6 +276,8 @@ public class DriveSubsystem extends SubsystemBase {
       // ~~ Updates odometry object with data from imu
       odometry.update(getGyroRotation(), wheelspeeds);
       odometry.resetPosition(pose, getGyroRotation());
+
+      SmartDashboard.putBoolean("Slipping?", true);
 
     }
 
