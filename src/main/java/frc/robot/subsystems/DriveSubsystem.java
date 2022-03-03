@@ -254,23 +254,27 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Speed Error", speedError);
 
-    // ~~ Updates robot position based on whether odometry or the accelerometer would be more accurate
+    // ~~ Checks if the robot's wheels are slipping to determine if odometry or the imu would be more accurate
     if (speedError < Constants.DriveTrain.speedErrorThreshold) {
+      // ~~ Calculates position based on odometry
       pose = odometry.update(getGyroRotation(), wheelspeeds);
     } 
     else {
+      // ~~ Calculates position based on imu
       Double newX = pose.getX() + imu.getDisplacementX();
       Double newY = pose.getY() + imu.getDisplacementY();
       Rotation2d newR = pose.getRotation();
 
       pose = new Pose2d(newX, newY, newR);
 
-    }
-    
+      // ~~ Updates odometry object with data from imu
+      odometry.update(getGyroRotation(), wheelspeeds);
+      odometry.resetPosition(pose, getGyroRotation());
 
-    imu.getDisplacementX();
+    }
 
     imu.resetDisplacement();
+    
     SmartDashboard.putNumber("Robot x", pose.getX());
     SmartDashboard.putNumber("Robot y", pose.getY());
     SmartDashboard.putNumber("Robot rotation", pose.getRotation().getDegrees());
