@@ -53,6 +53,18 @@ public class ClimberCommand extends CommandBase {
     half_1 = joystick.getRightTriggerAxis()/2;
     half_2 = joystick.getLeftTriggerAxis()/-2;
     m_ClimberSubsystem.spinClimber(half_1+half_2);
+
+    if (joystick.getXButton() && !joystick.getYButton()) {
+      m_ClimberSubsystem.spinGrabbers(0, 0.2);
+    } else if (joystick.getYButton()) {
+      m_ClimberSubsystem.spinGrabbers(0, -0.2);
+    }
+
+    if (joystick.getAButton() && !joystick.getBButton()) {
+      m_ClimberSubsystem.spinGrabbers(1, 0.2);
+    } else if (joystick.getBButton()) {
+      m_ClimberSubsystem.spinGrabbers(1, -0.2);
+    }
   }
 
   // Called once the command ends or is interrupted.
