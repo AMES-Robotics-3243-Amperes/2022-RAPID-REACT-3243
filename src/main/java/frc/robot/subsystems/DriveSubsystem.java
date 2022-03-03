@@ -77,10 +77,12 @@ public class DriveSubsystem extends SubsystemBase {
   public NetworkTableEntry pGain;
   public NetworkTableEntry iGain;
   public NetworkTableEntry dGain;
+  public NetworkTableEntry speedErrorThreshold;
 
   private SimpleWidget pGainWidget;
   private SimpleWidget iGainWidget;
   private SimpleWidget dGainWidget;
+  private SimpleWidget speedErrorThresholdWidget;
 
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
@@ -111,6 +113,7 @@ public class DriveSubsystem extends SubsystemBase {
     pGainWidget = pidTab.add("P gain", 1.0);
     iGainWidget = pidTab.add("I gain", 0.0);
     dGainWidget = pidTab.add("D gain", 0.0);
+    speedErrorThresholdWidget = pidTab.add("Speed Error Tolerance", 0.1);
 
     resetGyroRotation();
 
@@ -186,6 +189,7 @@ public class DriveSubsystem extends SubsystemBase {
     pGain = pGainWidget.getEntry();
     iGain = iGainWidget.getEntry();
     dGain = dGainWidget.getEntry();
+    speedErrorThreshold = speedErrorThresholdWidget.getEntry();
   }
 
   // ++ Sets the velocity reference of the 4 PID loops, for driving in teleop
@@ -255,7 +259,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Speed Error", speedError);
 
     // ~~ Checks if the robot's wheels are slipping to determine if odometry or the imu would be more accurate
-    if (speedError < Constants.DriveTrain.speedErrorThreshold) {
+    if (speedError < speedErrorThreshold.getDouble(0.1)) {
       // ~~ Calculates position based on odometry
       pose = odometry.update(getGyroRotation(), wheelspeeds);
     } 
@@ -274,7 +278,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     imu.resetDisplacement();
-    
+
     SmartDashboard.putNumber("Robot x", pose.getX());
     SmartDashboard.putNumber("Robot y", pose.getY());
     SmartDashboard.putNumber("Robot rotation", pose.getRotation().getDegrees());
