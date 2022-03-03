@@ -9,7 +9,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
-
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** An example command that uses an example subsystem. */
@@ -64,6 +64,10 @@ public class ClimberCommand extends CommandBase {
       m_ClimberSubsystem.spinGrabbers(1, 0.2);
     } else if (joystick.getBButton()) {
       m_ClimberSubsystem.spinGrabbers(1, -0.2);
+    }
+    if (m_ClimberSubsystem.isTooHot){
+      joystick.setRumble(RumbleType.kLeftRumble, 1);
+      joystick.setRumble(RumbleType.kRightRumble, 1);
     }
   }
 

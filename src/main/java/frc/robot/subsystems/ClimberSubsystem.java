@@ -11,7 +11,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ClimberSubsystem extends SubsystemBase {
 
@@ -44,6 +44,9 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private int climberSoftCurrentLimit = 15;
   public int climberHardCurrentLimit = 20;
+
+  private double maxTemp = 40;
+  public boolean isTooHot = false;
 
   public ClimberSubsystem () {
     // :) setting the soft current limits
@@ -119,6 +122,15 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
     grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
     grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
+
+    // :) putting temperatures on smartdashboard
+    SmartDashboard.putNumber("Avg. Temp of grabber motors 0 (Celcius)", (grabberL0.getMotorTemperature()+grabberR0.getMotorTemperature())/2);
+    SmartDashboard.putNumber("Avg. Temp of grabber motors 1 (Celcius)", (grabberL1.getMotorTemperature()+grabberR1.getMotorTemperature())/2);
+    if (grabberL0.getMotorTemperature()>maxTemp || grabberL1.getMotorTemperature()>maxTemp || grabberR0.getMotorTemperature()>maxTemp || grabberR1.getMotorTemperature()>maxTemp) {
+      isTooHot = true;
+    } else {
+      isTooHot = false;
+    }
   }
 
   @Override
