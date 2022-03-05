@@ -24,15 +24,20 @@ public final class Constants {
     }
 
     public static final class IntakeIndexer {
-        // ++ these are the values for the intake/indexer motors
-        // CAN IDs
+        // ~~ these are the values for the intake/indexer motors
+        // ~~ CAN IDs
         public static final int dropMotorID = 5;
         public static final int intakeMotorID = 6;
         public static final int indexMotorID = 7;
-        // Error tolerance for dropping the intake
-        public static final double intakeTolerance = 0.05;
-        // Dropped position
+        // ~~ Dropped position
         public static final double intakeDropPos = 0.1;
+        // ~~ Encoder conversion ratios to account for gearbox ratios
+        public static final double dropVelocityConversionRatio = 1;
+        public static final double intakeVelocityConversionRatio = 1;
+        public static final double indexVelocityConversionRatio = 1;
+        public static final double dropPositionConversionRatio = 1;
+        public static final double intakePositionConversionRatio = 1;
+        public static final double indexPositionConversionRatio = 1;
     }
 
     public static final class Joysticks {
