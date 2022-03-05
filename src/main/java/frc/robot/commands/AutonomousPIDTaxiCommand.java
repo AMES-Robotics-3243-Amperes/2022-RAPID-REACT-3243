@@ -24,8 +24,8 @@ public class AutonomousPIDTaxiCommand extends CommandBase {
     m_subsystem.setPID(m_subsystem.pGain.getDouble(1.0),m_subsystem.iGain.getDouble(0.0),m_subsystem.dGain.getDouble(0.0));
     m_subsystem.resetPose();
     m_subsystem.resetGyroRotation();
-    Pose2d fieldposition = new Pose2d(3, 3, new Rotation2d());
-    m_subsystem.setRobotPosition(fieldposition);
+    Pose2d transform = new Pose2d(0, -2.4, new Rotation2d());
+    m_subsystem.changeRobotPosition(transform);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

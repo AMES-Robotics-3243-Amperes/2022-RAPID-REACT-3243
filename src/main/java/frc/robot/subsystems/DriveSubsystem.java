@@ -203,9 +203,6 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightPIDController.setReference(frRef, ControlType.kVelocity);
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
-
-    SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
   
     // speeds.feed();
   }
@@ -286,6 +283,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Robot x", pose.getX());
     SmartDashboard.putNumber("Robot y", pose.getY());
     SmartDashboard.putNumber("Robot rotation", pose.getRotation().getDegrees());
+
+    SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
     // ++ Update field object for shuffleboard
     field.setRobotPose(pose);
   }

@@ -39,8 +39,8 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
         // ~~ Conversion ratios for drivetrain encoders
-        public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
-        public static final double positionConversionRation = ((wheelDiameter * Math.PI)/10.71);
+        public static final double velocityConversionRatio = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71 * 60));
+        public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
         // ~~ Speed error threshold for crash detection
         public static final double speedErrorThreshold = 0.1;
     }
