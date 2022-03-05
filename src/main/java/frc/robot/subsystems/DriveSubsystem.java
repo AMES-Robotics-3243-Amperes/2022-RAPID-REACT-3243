@@ -189,7 +189,6 @@ public class DriveSubsystem extends SubsystemBase {
     pGain = pGainWidget.getEntry();
     iGain = iGainWidget.getEntry();
     dGain = dGainWidget.getEntry();
-    speedErrorThreshold = speedErrorThresholdWidget.getEntry();
   }
 
   // ++ Sets the velocity reference of the 4 PID loops, for driving in teleop
@@ -247,6 +246,7 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftEncoder.getVelocity(),
         backRightEncoder.getVelocity()
     );
+    speedErrorThreshold = speedErrorThresholdWidget.getEntry();
     // ++ Use odometry object for calculating position
     ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
     ChassisSpeeds actualSpeed = new ChassisSpeeds(imu.getVelocityX(), imu.getVelocityY(), 0.0);
