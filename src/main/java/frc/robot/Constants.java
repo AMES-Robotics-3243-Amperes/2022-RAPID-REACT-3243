@@ -38,6 +38,11 @@ public final class Constants {
         public static final double dropPositionConversionRatio = 1;
         public static final double intakePositionConversionRatio = 1;
         public static final double indexPositionConversionRatio = 1;
+        // ~~ Accept and Rebuff Constants
+        public static final double acceptRotations = 1;
+        public static final double rebuffRotations = 1;
+        public static final double rebuffDuration = 1;
+        public static final double rebuffSpeed = 1;
     }
 
     public static final class Joysticks {

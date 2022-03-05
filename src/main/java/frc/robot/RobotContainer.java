@@ -13,6 +13,9 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeIndexerSubsystem;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SetIntakeCommand;
+import frc.robot.commands.RebuffCommand;
+import frc.robot.commands.AcceptCommand;
+import frc.robot.commands.SpinIntakeCommand;
 
 import frc.robot.Constants; 
 
@@ -31,11 +34,14 @@ public class RobotContainer {
   // ++ SUBSYSTEMS AND COMMANDS ========================================
   // subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
-  private final IntakeIndexerSubsystem m_intakeSubsystem = new IntakeIndexerSubsystem();
+  private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem = new IntakeIndexerSubsystem();
   // commands
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
-  private final SetIntakeCommand m_RaiseIntakeCommand = new SetIntakeCommand(m_intakeSubsystem, 0);
-  private final SetIntakeCommand m_DropIntakeCommand = new SetIntakeCommand(m_intakeSubsystem, Constants.IntakeIndexer.intakeDropPos);
+  private final SetIntakeCommand m_RaiseIntakeCommand = new SetIntakeCommand(m_IntakeIndexerSubsystem, 0);
+  private final SetIntakeCommand m_DropIntakeCommand = new SetIntakeCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.intakeDropPos);
+  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.acceptRotations);
+  private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.rebuffRotations, Constants.IntakeIndexer.rebuffSpeed, Constants.IntakeIndexer.rebuffDuration);
+  private final SpinIntakeCommand m_SpinIntakeCommand = new SpinIntakeCommand(m_IntakeIndexerSubsystem, primaryController);
   // ++ =================================================
 
 
@@ -53,6 +59,7 @@ public class RobotContainer {
 
     // ++ command stuff
     m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
+    m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
 
 
     // Configure the button bindings

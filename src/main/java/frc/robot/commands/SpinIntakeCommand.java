@@ -4,32 +4,33 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeIndexerSubsystem;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+public class SpinIntakeCommand extends CommandBase {
 
-public class SetIntakeCommand extends CommandBase {
   private final IntakeIndexerSubsystem m_subsystem;
-  private final double targetPos;
+  private final XboxController m_controller;
 
-  /** Creates a new SetIntakeCommand. */
-  public SetIntakeCommand(IntakeIndexerSubsystem subsystem, double position) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  /** Creates a new SpinIntakeCommand. */
+  public SpinIntakeCommand(IntakeIndexerSubsystem subsystem, XboxController controller) {
     m_subsystem = subsystem;
-    targetPos = position;
-
+    m_controller = controller;
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_subsystem.setDropPos(targetPos);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    double speed = m_controller.getLeftTriggerAxis();
+    m_subsystem.setIntakeSpeed(speed);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -38,6 +39,6 @@ public class SetIntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
