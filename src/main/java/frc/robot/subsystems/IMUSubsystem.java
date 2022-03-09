@@ -7,34 +7,47 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
 
 public class IMUSubsystem extends SubsystemBase {
 
   // ~~ IMU object - gyro and accelerometer
-  AHRS imu = new AHRS();
+  private final AHRS imu = new AHRS();
 
-  // ~~ table object
-  NetworkTable imuTable = NetworkTableInstance.getDefault().getTable("limelight");
-  
-  // ~~ LimeLight values -- table entry objects
-  NetworkTableEntry tYaw = imuTable.getEntry("yaw");                // ~~ yaw - rotation around vertical axis
-  NetworkTableEntry tPitch = imuTable.getEntry("pitch");            // ~~ pitch - rotation around left/right axis
-  NetworkTableEntry tRoll = imuTable.getEntry("roll");              // ~~ roll - rotation around front/back axis
-
-  NetworkTableEntry tXVelocity = imuTable.getEntry("x velocity");   // ~~ x velocity
-  NetworkTableEntry tYVelocity = imuTable.getEntry("y velocity");   // ~~ y velocity
-  NetworkTableEntry tZVelocity = imuTable.getEntry("z velocity");   // ~~ z velocity
-
-  NetworkTableEntry tXPos = imuTable.getEntry("x offset");          // ~~ x offset
-  NetworkTableEntry tYPos = imuTable.getEntry("y offset");          // ~~ y offset
-  NetworkTableEntry tZPos = imuTable.getEntry("z offset");          // ~~ z offset
+  private final ShuffleboardTab imuTab;
+  private SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
+  private NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
 
   
   /** Creates a new IMUSubsystem. */
-  public IMUSubsystem() {}
+  public IMUSubsystem() {
+    
+    imuTab = Shuffleboard.getTab("IMU");
+    wYaw = imuTab.add("yaw", 0.0);
+    wRoll = imuTab.add("roll", 0.0);
+    wPitch = imuTab.add("pitch", 0.0);
+    wXVelocity = imuTab.add("x velocity", 0.0);
+    wYVelocity = imuTab.add("y velocity", 0.0);
+    wXVelocity = imuTab.add("z velocity", 0.0);
+    wXPos = imuTab.add("x position", 0.0);
+    wYPos = imuTab.add("y position", 0.0);
+    wZPos = imuTab.add("z position", 0.0);
+
+    tYaw = wYaw.getEntry();
+    tRoll = wRoll.getEntry();
+    tPitch = wPitch.getEntry();
+    tXVelocity = wXVelocity.getEntry();
+    tYVelocity = wYVelocity.getEntry();
+    tZVelocity = wZVelocity.getEntry();
+    tXPos = wXPos.getEntry();
+    tYPos = wYPos.getEntry();
+    tZPos = wZPos.getEntry();
+    
+  }
 
   @Override
   public void periodic() {
