@@ -21,13 +21,13 @@ import frc.robot.JoyUtil;
 public class TeleopPIDDriveCommand extends CommandBase {
 
   private final DriveSubsystem m_DriveSubsystem;
-  private final XboxController controller;
+  private final JoyUtil controller;
   private final MecanumDriveKinematics kinematics;
   private final Double linearMultiplier = 1.0;
   private final Double angularMultiplier = 1.0;
 
   /** Creates a new TeleopPIDCommand. */
-  public TeleopPIDDriveCommand(DriveSubsystem subsystem, XboxController controller) {
+  public TeleopPIDDriveCommand(DriveSubsystem subsystem, JoyUtil controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_DriveSubsystem = subsystem;
     addRequirements(m_DriveSubsystem);
@@ -48,7 +48,7 @@ public class TeleopPIDDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(-JoyUtil.deadzone(controller.getLeftY()) * linearMultiplier, -JoyUtil.deadzone(controller.getLeftX()) * linearMultiplier, -JoyUtil.deadzone(controller.getRightX()) * angularMultiplier);
+    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(controller.getDriveYWithAdjustments() * linearMultiplier, controller.getDriveXWithAdjustments() * linearMultiplier, controller.getRotationWithAdjustments() * angularMultiplier);
     MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
     // wheelSpeeds.desaturate(1);
     SmartDashboard.putNumber("fl Wheel Speeds", wheelSpeeds.frontLeftMetersPerSecond);
