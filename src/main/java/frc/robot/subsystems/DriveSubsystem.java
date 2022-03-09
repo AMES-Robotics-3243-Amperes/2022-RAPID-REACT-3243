@@ -71,7 +71,6 @@ public class DriveSubsystem extends SubsystemBase {
   // + mecanum drive odometry object for calculating position of robot based on wheel speeds
   MecanumDriveOdometry odometry;
 
-
   // ++ Shuffleboard
   private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID Tuning");
   public NetworkTableEntry pGain;
@@ -84,9 +83,11 @@ public class DriveSubsystem extends SubsystemBase {
   private SimpleWidget dGainWidget;
   private SimpleWidget speedErrorThresholdWidget;
 
+
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
     backRightMotor.setInverted(true);
+    
     // speeds = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
     
 
@@ -234,6 +235,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
     // speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
   }
+
 
   @Override
   public void periodic() {

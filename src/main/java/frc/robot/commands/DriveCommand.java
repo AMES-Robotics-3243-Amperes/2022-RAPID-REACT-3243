@@ -3,17 +3,23 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import frc.robot.JoyUtil;
+import frc.robot.Constants; 
 
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.JoyUtil;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /** An example command that uses an example subsystem. */
 public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_DriveSubsystem;
-  private final XboxController joystick;
+  private final JoyUtil joystick;
 
 
   /**
@@ -21,34 +27,43 @@ public class DriveCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DriveSubsystem subsystem, XboxController movingstick) {
-    joystick = movingstick;
+  public DriveCommand(DriveSubsystem subsystem, JoyUtil driveController) {
     m_DriveSubsystem = subsystem;
+    joystick = driveController; 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
 
-  private double multiplier(double axis) {
-    return (1+(3 * axis));
+    System.out.println("DriveCommand in initialize");
+    joystick.zeroPreviousFiltered();
+
+    // ++ these are here in initialize() so they're set to 0 every time the method is scheduled
+    // ++ that's potentially important because this command might stop being scheduled for some reason, so when it starts again,
+    // ++ the previous value should be 0
+
   }
+
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x_axis = joystick.getLeftX()/4;
-    double y_axis = joystick.getLeftY()/4;
-    double z = joystick.getRightX()/4;
-    x_axis = JoyUtil.deadzone(x_axis);
-    y_axis = JoyUtil.deadzone(y_axis);
-    z = JoyUtil.deadzone(z);
-    x_axis *= multiplier(joystick.getRightTriggerAxis());
-    y_axis *= multiplier(joystick.getRightTriggerAxis());
-    z *= multiplier(joystick.getRightTriggerAxis());
-    m_DriveSubsystem.driveCartesian(x_axis, y_axis, z);
+
+    System.out.println("DriveComand in execute");
+
+    // ++ all these methods are defined in the JoyUtil class
+    // ++ DRIVE 
+    double speedX = joystick.getDriveXWithAdjustments();
+    double speedY = joystick.getDriveYWithAdjustments(); 
+    // ++ ROTATION
+    double speedR = joystick.getRotationWithAdjustments();
+    // ++ SET -- input speeds in the order X, Y, and R
+    m_DriveSubsystem.setMotors(speedX, speedY, speedR); 
+
   }
 
   // Called once the command ends or is interrupted.
