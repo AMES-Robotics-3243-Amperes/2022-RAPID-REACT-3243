@@ -9,15 +9,16 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeIndexerSubsystem;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.SetIntakeCommand;
 import frc.robot.commands.RebuffCommand;
 import frc.robot.commands.AcceptCommand;
 import frc.robot.commands.SpinIntakeCommand;
 
-import frc.robot.Constants; 
+import frc.robot.Constants;
+import frc.robot.Constants.Joysticks; 
 
 
 // ++ comment so I can rebase
@@ -37,8 +38,6 @@ public class RobotContainer {
   private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem = new IntakeIndexerSubsystem();
   // commands
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
-  private final SetIntakeCommand m_RaiseIntakeCommand = new SetIntakeCommand(m_IntakeIndexerSubsystem, 0);
-  private final SetIntakeCommand m_DropIntakeCommand = new SetIntakeCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.intakeDropPos);
   private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.acceptRotations);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.rebuffRotations, Constants.IntakeIndexer.rebuffSpeed, Constants.IntakeIndexer.rebuffDuration);
   private final SpinIntakeCommand m_SpinIntakeCommand = new SpinIntakeCommand(m_IntakeIndexerSubsystem, primaryController);
@@ -49,6 +48,8 @@ public class RobotContainer {
   // ++ JOYSTICK STUFF ========================================
   public static XboxController primaryController = new XboxController( Constants.Joysticks.primaryControllerID );
   public static XboxController secondaryController = new XboxController( Constants.Joysticks.secondaryControllerID );
+  public static JoystickButton pb_rightBumper = new JoystickButton(primaryController, Constants.Joysticks.RightBumper);
+  public static JoystickButton pb_leftBumper = new JoystickButton(primaryController, Constants.Joysticks.LeftBumper);
     
   
 
@@ -72,7 +73,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    pb_leftBumper.whenPressed(m_RebuffCommand);
+    pb_rightBumper.whenPressed(m_AcceptCommand);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

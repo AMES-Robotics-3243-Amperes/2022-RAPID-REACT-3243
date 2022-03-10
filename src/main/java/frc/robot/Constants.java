@@ -33,11 +33,11 @@ public final class Constants {
         public static final double intakeDropPos = 0.1;
         // ~~ Encoder conversion ratios to account for gearbox ratios
         public static final double dropVelocityConversionRatio = 1;
-        public static final double intakeVelocityConversionRatio = 1;
-        public static final double indexVelocityConversionRatio = 1;
+        public static final double intakeVelocityConversionRatio = (1/12);
+        public static final double indexVelocityConversionRatio = (1/120);
         public static final double dropPositionConversionRatio = 1;
-        public static final double intakePositionConversionRatio = 1;
-        public static final double indexPositionConversionRatio = 1;
+        public static final double intakePositionConversionRatio = (1/12);
+        public static final double indexPositionConversionRatio = (1/120);
         // ~~ Accept and Rebuff Constants
         public static final double acceptRotations = 1;
         public static final double rebuffRotations = 1;

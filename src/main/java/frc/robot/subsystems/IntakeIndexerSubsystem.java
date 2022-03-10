@@ -14,46 +14,46 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
 public class IntakeIndexerSubsystem extends SubsystemBase {
-  private final CANSparkMax dropMotor;
+  // private final CANSparkMax dropMotor;
   private final CANSparkMax intakeMotor;
   private final CANSparkMax indexMotor;
 
-  private final RelativeEncoder dropEncoder;
+  // private final RelativeEncoder dropEncoder;
   private final RelativeEncoder intakeEncoder;
   private final RelativeEncoder indexEncoder;
 
-  private final SparkMaxPIDController dropPID;
+  // private final SparkMaxPIDController dropPID;
   private final SparkMaxPIDController intakePID;
   private final SparkMaxPIDController indexPID;
 
   /** Creates a new IntakeIndexerSubsystem. */
   public IntakeIndexerSubsystem() {
-    dropMotor = new CANSparkMax(Constants.IntakeIndexer.dropMotorID, MotorType.kBrushless);
+    // dropMotor = new CANSparkMax(Constants.IntakeIndexer.dropMotorID, MotorType.kBrushless);
     intakeMotor = new CANSparkMax(Constants.IntakeIndexer.intakeMotorID, MotorType.kBrushless);
     indexMotor = new CANSparkMax(Constants.IntakeIndexer.indexMotorID, MotorType.kBrushless);
 
-    dropEncoder = dropMotor.getEncoder();
+    // dropEncoder = dropMotor.getEncoder();
     intakeEncoder = intakeMotor.getEncoder();
     indexEncoder = indexMotor.getEncoder();
 
-    dropPID = dropMotor.getPIDController();
+    // dropPID = dropMotor.getPIDController();
     intakePID = intakeMotor.getPIDController();
     indexPID = indexMotor.getPIDController();
 
     // ~~ Conversion ratios to account for gearbox ratios
-    dropEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.dropVelocityConversionRatio);
-    dropEncoder.setPositionConversionFactor(Constants.IntakeIndexer.dropPositionConversionRatio);
+    // dropEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.dropVelocityConversionRatio);
+    // dropEncoder.setPositionConversionFactor(Constants.IntakeIndexer.dropPositionConversionRatio);
     intakeEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.intakeVelocityConversionRatio);
     intakeEncoder.setPositionConversionFactor(Constants.IntakeIndexer.intakePositionConversionRatio);
     indexEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.indexVelocityConversionRatio);
     indexEncoder.setPositionConversionFactor(Constants.IntakeIndexer.indexPositionConversionRatio);
 
-    dropEncoder.setPosition(0);
+    // dropEncoder.setPosition(0);
     intakeEncoder.setPosition(0);
     indexEncoder.setPosition(0);
   }
 
-  public void setDropSpeed(double speed) {
+  /* public void setDropSpeed(double speed) {
     dropMotor.set(speed);
   }
 
@@ -65,7 +65,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public double getDropPos() {
     // ~~ This method returns the position of the drop bar
     return dropEncoder.getPosition();
-  }
+  } */
 
   public void setIntakeSpeed(double speed) {
     // ~~ This method spins the intake bars
