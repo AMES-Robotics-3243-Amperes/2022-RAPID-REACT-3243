@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -24,10 +26,12 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   // private final RelativeEncoder dropEncoder;
   private final RelativeEncoder intakeEncoder;
   private final RelativeEncoder indexEncoder;
+  private final RelativeEncoder flywheelEncoder;
 
   // private final SparkMaxPIDController dropPID;
   private final SparkMaxPIDController intakePID;
   private final SparkMaxPIDController indexPID;
+  private final SparkMaxPIDController flywheelPID;
 
   /** Creates a new IntakeIndexerSubsystem. */
   public IntakeIndexerSubsystem() {
@@ -39,10 +43,12 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     // dropEncoder = dropMotor.getEncoder();
     intakeEncoder = intakeMotor.getEncoder();
     indexEncoder = indexMotor.getEncoder();
+    flywheelEncoder = flyWheel.getEncoder();
 
     // dropPID = dropMotor.getPIDController();
     intakePID = intakeMotor.getPIDController();
     indexPID = indexMotor.getPIDController();
+    flywheelPID = flyWheel.getPIDController();
 
     // ~~ Conversion ratios to account for gearbox ratios
     // dropEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.dropVelocityConversionRatio);
@@ -56,13 +62,15 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     intakeEncoder.setPosition(0);
     indexEncoder.setPosition(0);
 
-    intakeMotor.setSmartCurrentLimit(20);
-    intakeMotor.setSecondaryCurrentLimit(30);
+    intakeMotor.setSmartCurrentLimit(35);
+    intakeMotor.setSecondaryCurrentLimit(40);
 
     indexMotor.setSmartCurrentLimit(20);
     indexMotor.setSecondaryCurrentLimit(30);
 
-    indexPID.setP(0.4);
+    indexPID.setP(0.3);
+    flywheelPID.setP(0.05);
+    flywheelPID.setI(0);
   }
 
   /* public void setDropSpeed(double speed) {
@@ -81,7 +89,8 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
 
   public void setIntakeSpeed(double speed) {
     // ~~ This method spins the intake bars
-    intakeMotor.set(speed * 30);
+    intakeMotor.set(speed);
+    System.out.println(speed);
   }
 
   public void setFlywheelSpeed(double speed) {
@@ -97,12 +106,12 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     // ~~ Moves the indexer wheels a set amount
     indexEncoder.setPosition(0);
     indexPID.setReference(rotations, ControlType.kPosition);
-    System.out.println("Indexer Stepped");
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Flywheel Speed", flywheelEncoder.getVelocity());
   }
 }
 

@@ -27,20 +27,20 @@ public final class Constants {
         // ~~ these are the values for the intake/indexer motors
         // ~~ CAN IDs
         public static final int flyWheelID = 9;
-        public static final int intakeMotorID = 7;
-        public static final int indexMotorID = 8;
+        public static final int intakeMotorID = 8;
+        public static final int indexMotorID = 7;
         // ~~ Dropped position
         public static final double intakeDropPos = 0.1;
         // ~~ Encoder conversion ratios to account for gearbox ratios
-        public static final double dropVelocityConversionRatio = 1;
+        public static final double flywheelVelocityConversionRatio = 1;
         public static final double intakeVelocityConversionRatio = (1/12);
         public static final double indexVelocityConversionRatio = (1/120);
-        public static final double dropPositionConversionRatio = 1;
+        public static final double flywheelPositionConversionRatio = 1;
         public static final double intakePositionConversionRatio = (1/12);
         public static final double indexPositionConversionRatio = (1/120);
         // ~~ Accept and Rebuff Constants
-        public static final double acceptRotations = 1;
-        public static final double rebuffRotations = 1;
+        public static final double acceptRotations = 30;
+        public static final double rebuffRotations = -30;
         public static final double rebuffDuration = 1;
         public static final double rebuffSpeed = 1;
     }
