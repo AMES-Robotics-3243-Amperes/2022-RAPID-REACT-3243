@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -70,18 +71,31 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberL1PID.setP(0.8);
     grabberR0PID.setP(0.8);
     grabberR1PID.setP(0.8);
-    climberMotorLPID.setP(0.8);
-    climberMotorRPID.setP(0.8);
+    climberMotorLPID.setP(1.5);
+    climberMotorRPID.setP(1.5);
+
+    // :) setting the I in the motor PIDs
+    climberMotorLPID.setI(0.001);
+    climberMotorRPID.setI(0.001);
 
     // :) resetting the encoder positions for the motors to 0
     climberMotorREncoder.setPosition(0);
     climberMotorLEncoder.setPosition(0);
 
     // :) left side is inverted
+    //climberMotorR.setInverted(true);
     grabberL0.setInverted(true);
     grabberL1.setInverted(true);
     grabberR0.setInverted(false);
     grabberR1.setInverted(false);
+
+
+    //set motors to follow
+    //climberMotorL.follow(climberMotorR,true);
+
+    //set motor coast/brake
+    climberMotorL.setIdleMode(IdleMode.kCoast);
+    climberMotorR.setIdleMode(IdleMode.kCoast);
   }
 
   public void calibrateGrabbers(){
@@ -89,7 +103,6 @@ public class ClimberSubsystem extends SubsystemBase {
     spinGrabbers(1,1);
   }
 
-  
 
   public void actuateGrabber(CANSparkMax grabberpid, double to_angle){
     // :) actuate grabber motors, to a specified angle
@@ -108,7 +121,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void spinClimber(double speed){
     // :) spin climber both motors at a speed
-    climberAngle += speed;
+    climberAngle += speed*2;
   }
 
   @Override
@@ -116,8 +129,8 @@ public class ClimberSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // :) update and spin the motors to their angles
-    climberMotorLPID.setReference(climberAngle, ControlType.kPosition);
     climberMotorRPID.setReference(climberAngle, ControlType.kPosition);
+    //climberMotorRPID.setReference(-climberAngle, ControlType.kPosition);
     grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
     grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
     grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
