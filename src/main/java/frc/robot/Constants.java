@@ -26,8 +26,8 @@ public final class Constants {
     public static final class IntakeIndexer {
         // ~~ these are the values for the intake/indexer motors
         // ~~ CAN IDs
-        public static final int dropMotorID = 5;
-        public static final int intakeMotorID = 6;
+        public static final int flyWheelID = 9;
+        public static final int intakeMotorID = 8;
         public static final int indexMotorID = 7;
         // ~~ Dropped position
         public static final double intakeDropPos = 0.1;

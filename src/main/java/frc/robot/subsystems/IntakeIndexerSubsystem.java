@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,6 +19,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   // private final CANSparkMax dropMotor;
   private final CANSparkMax intakeMotor;
   private final CANSparkMax indexMotor;
+  private final CANSparkMax flyWheel;
 
   // private final RelativeEncoder dropEncoder;
   private final RelativeEncoder intakeEncoder;
@@ -31,6 +34,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     // dropMotor = new CANSparkMax(Constants.IntakeIndexer.dropMotorID, MotorType.kBrushless);
     intakeMotor = new CANSparkMax(Constants.IntakeIndexer.intakeMotorID, MotorType.kBrushless);
     indexMotor = new CANSparkMax(Constants.IntakeIndexer.indexMotorID, MotorType.kBrushless);
+    flyWheel = new CANSparkMax(Constants.IntakeIndexer.flyWheelID, MotorType.kBrushless);
 
     // dropEncoder = dropMotor.getEncoder();
     intakeEncoder = intakeMotor.getEncoder();
@@ -70,6 +74,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void setIntakeSpeed(double speed) {
     // ~~ This method spins the intake bars
     intakeMotor.set(speed);
+    flyWheel.set(speed);
   }
 
   public void setIndexerSpeed(double speed) {
