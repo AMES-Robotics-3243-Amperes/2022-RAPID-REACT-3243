@@ -30,6 +30,8 @@ public class SpinIntakeCommand extends CommandBase {
   public void execute() {
     double speed = m_controller.getLeftTriggerAxis();
     m_subsystem.setIntakeSpeed(speed);
+    double speed2 = m_controller.getRightTriggerAxis();
+    m_subsystem.setFlywheelSpeed(speed2);
   }
 
   // Called once the command ends or is interrupted.

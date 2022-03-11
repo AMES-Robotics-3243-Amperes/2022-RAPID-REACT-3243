@@ -27,8 +27,8 @@ public final class Constants {
         // ~~ these are the values for the intake/indexer motors
         // ~~ CAN IDs
         public static final int flyWheelID = 9;
-        public static final int intakeMotorID = 8;
-        public static final int indexMotorID = 7;
+        public static final int intakeMotorID = 7;
+        public static final int indexMotorID = 8;
         // ~~ Dropped position
         public static final double intakeDropPos = 0.1;
         // ~~ Encoder conversion ratios to account for gearbox ratios

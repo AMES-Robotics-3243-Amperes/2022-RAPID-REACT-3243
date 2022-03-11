@@ -55,6 +55,14 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     // dropEncoder.setPosition(0);
     intakeEncoder.setPosition(0);
     indexEncoder.setPosition(0);
+
+    intakeMotor.setSmartCurrentLimit(20);
+    intakeMotor.setSecondaryCurrentLimit(30);
+
+    indexMotor.setSmartCurrentLimit(20);
+    indexMotor.setSecondaryCurrentLimit(30);
+
+    indexPID.setP(0.4);
   }
 
   /* public void setDropSpeed(double speed) {
@@ -73,7 +81,10 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
 
   public void setIntakeSpeed(double speed) {
     // ~~ This method spins the intake bars
-    intakeMotor.set(speed);
+    intakeMotor.set(speed * 30);
+  }
+
+  public void setFlywheelSpeed(double speed) {
     flyWheel.set(speed);
   }
 
@@ -86,6 +97,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     // ~~ Moves the indexer wheels a set amount
     indexEncoder.setPosition(0);
     indexPID.setReference(rotations, ControlType.kPosition);
+    System.out.println("Indexer Stepped");
   }
 
   @Override
