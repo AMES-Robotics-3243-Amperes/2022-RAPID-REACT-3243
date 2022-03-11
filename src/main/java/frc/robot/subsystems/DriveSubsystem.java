@@ -30,7 +30,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setMotors (double X_speed, double Y_speed, double Z_rotation) {
-    speeds.driveCartesian(Y_speed, X_speed, Z_rotation);
+    speeds.driveCartesian(X_speed, Y_speed, Z_rotation);
   }
 
   @Override
