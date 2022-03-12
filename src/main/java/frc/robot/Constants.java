@@ -24,8 +24,8 @@ public final class Constants {
     }
 
     public static final class Climber {
-        public static final int climberMotorR = 10;
-        public static final int climberMotorL = 11;
+        public static final int climberMotorR = 11;
+        public static final int climberMotorL = 10;
         public static final int grabberR0 = 12;
         public static final int grabberR1 = 14;
         public static final int grabberL0 = 13;

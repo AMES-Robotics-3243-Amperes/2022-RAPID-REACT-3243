@@ -18,84 +18,95 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private CANSparkMax climberMotorR = new CANSparkMax(Constants.Climber.climberMotorR, MotorType.kBrushless);
   private CANSparkMax climberMotorL = new CANSparkMax(Constants.Climber.climberMotorL, MotorType.kBrushless);
-  private CANSparkMax grabberR0 = new CANSparkMax(Constants.Climber.grabberR0, MotorType.kBrushless);
-  private CANSparkMax grabberR1 = new CANSparkMax(Constants.Climber.grabberR1, MotorType.kBrushless);
-  private CANSparkMax grabberL0 = new CANSparkMax(Constants.Climber.grabberL0, MotorType.kBrushless);
-  private CANSparkMax grabberL1 = new CANSparkMax(Constants.Climber.grabberL1, MotorType.kBrushless);
+  // private CANSparkMax grabberR0 = new CANSparkMax(Constants.Climber.grabberR0, MotorType.kBrushless);
+  // private CANSparkMax grabberR1 = new CANSparkMax(Constants.Climber.grabberR1, MotorType.kBrushless);
+  // private CANSparkMax grabberL0 = new CANSparkMax(Constants.Climber.grabberL0, MotorType.kBrushless);
+  // private CANSparkMax grabberL1 = new CANSparkMax(Constants.Climber.grabberL1, MotorType.kBrushless);
 
   private SparkMaxPIDController climberMotorRPID = climberMotorR.getPIDController();
   private SparkMaxPIDController climberMotorLPID = climberMotorL.getPIDController();
-  private SparkMaxPIDController grabberR0PID = grabberR0.getPIDController();
-  private SparkMaxPIDController grabberR1PID = grabberR1.getPIDController();
-  private SparkMaxPIDController grabberL0PID = grabberL0.getPIDController();
-  private SparkMaxPIDController grabberL1PID = grabberL1.getPIDController();
+  // private SparkMaxPIDController grabberR0PID = grabberR0.getPIDController();
+  // private SparkMaxPIDController grabberR1PID = grabberR1.getPIDController();
+  // private SparkMaxPIDController grabberL0PID = grabberL0.getPIDController();
+  // private SparkMaxPIDController grabberL1PID = grabberL1.getPIDController();
 
-  private RelativeEncoder climberMotorREncoder = climberMotorR.getEncoder();
-  private RelativeEncoder climberMotorLEncoder = climberMotorL.getEncoder();
-  private RelativeEncoder grabberR0Encoder = grabberR0.getEncoder();
-  private RelativeEncoder grabberR1Encoder = grabberR1.getEncoder();
-  private RelativeEncoder grabberL0Encoder = grabberL0.getEncoder();
-  private RelativeEncoder grabberL1Encoder = grabberL1.getEncoder();
+  public RelativeEncoder climberMotorREncoder = climberMotorR.getEncoder();
+  public RelativeEncoder climberMotorLEncoder = climberMotorL.getEncoder();
+  // private RelativeEncoder grabberR0Encoder = grabberR0.getEncoder();
+  // private RelativeEncoder grabberR1Encoder = grabberR1.getEncoder();
+  // private RelativeEncoder grabberL0Encoder = grabberL0.getEncoder();
+  // private RelativeEncoder grabberL1Encoder = grabberL1.getEncoder();
 
   public double climberAngle = 0;
   public double grabberAngles[] = {0,0};
 
-  private int grabberSoftCurrentLimit = 25;
-  public int grabberHardCurrentLimit = 30;
+  private int grabberSoftCurrentLimit = 15;
+  public int grabberHardCurrentLimit = 20;
 
-  private int climberSoftCurrentLimit = 15;
-  public int climberHardCurrentLimit = 20;
+  private int climberSoftCurrentLimit = 40;
+  public int climberHardCurrentLimit = 60;
 
   private double maxTemp = 40;
   public boolean isTooHot = false;
 
   public ClimberSubsystem () {
+    // :) reset things
+    climberAngle = 0;
+
     // :) setting the soft current limits
     climberMotorL.setSmartCurrentLimit(climberSoftCurrentLimit);
     climberMotorR.setSmartCurrentLimit(climberSoftCurrentLimit);
-    grabberL0.setSmartCurrentLimit(grabberSoftCurrentLimit);
-    grabberL1.setSmartCurrentLimit(grabberSoftCurrentLimit);
-    grabberR0.setSmartCurrentLimit(grabberSoftCurrentLimit);
-    grabberR1.setSmartCurrentLimit(grabberSoftCurrentLimit);
+    // grabberL0.setSmartCurrentLimit(grabberSoftCurrentLimit);
+    // grabberL1.setSmartCurrentLimit(grabberSoftCurrentLimit);
+    // grabberR0.setSmartCurrentLimit(grabberSoftCurrentLimit);
+    // grabberR1.setSmartCurrentLimit(grabberSoftCurrentLimit);
 
     // :) setting the hard current limits
     climberMotorL.setSecondaryCurrentLimit(climberHardCurrentLimit);
     climberMotorR.setSecondaryCurrentLimit(climberHardCurrentLimit);
-    grabberL0.setSecondaryCurrentLimit(grabberHardCurrentLimit);
-    grabberL1.setSecondaryCurrentLimit(grabberHardCurrentLimit);
-    grabberR0.setSecondaryCurrentLimit(grabberHardCurrentLimit);
-    grabberR1.setSecondaryCurrentLimit(grabberHardCurrentLimit);
+    // grabberL0.setSecondaryCurrentLimit(grabberHardCurrentLimit);
+    // grabberL1.setSecondaryCurrentLimit(grabberHardCurrentLimit);
+    // grabberR0.setSecondaryCurrentLimit(grabberHardCurrentLimit);
+    // grabberR1.setSecondaryCurrentLimit(grabberHardCurrentLimit);
 
     // :) setting the P in the motor PIDs
-    grabberL0PID.setP(0.8);
-    grabberL1PID.setP(0.8);
-    grabberR0PID.setP(0.8);
-    grabberR1PID.setP(0.8);
-    climberMotorLPID.setP(1.5);
-    climberMotorRPID.setP(1.5);
+    // grabberL0PID.setP(0.8);
+    // grabberL1PID.setP(0.8);
+    // grabberR0PID.setP(0.8);
+    // grabberR1PID.setP(0.8);
+    climberMotorLPID.setP(0.8);
+    climberMotorRPID.setP(0.8);
 
     // :) setting the I in the motor PIDs
-    climberMotorLPID.setI(0.001);
-    climberMotorRPID.setI(0.001);
+    //climberMotorLPID.setI(0.001);
+    //climberMotorRPID.setI(0.001);
 
     // :) resetting the encoder positions for the motors to 0
     climberMotorREncoder.setPosition(0);
     climberMotorLEncoder.setPosition(0);
 
     // :) left side is inverted
-    //climberMotorR.setInverted(true);
-    grabberL0.setInverted(true);
-    grabberL1.setInverted(true);
-    grabberR0.setInverted(false);
-    grabberR1.setInverted(false);
+    // grabberL0.setInverted(true);
+    // grabberL1.setInverted(true);
+    // grabberR0.setInverted(false);
+    // grabberR1.setInverted(false);
 
 
     //set motors to follow
-    //climberMotorL.follow(climberMotorR,true);
+    climberMotorL.follow(climberMotorR,true);
 
     //set motor coast/brake
     climberMotorL.setIdleMode(IdleMode.kCoast);
     climberMotorR.setIdleMode(IdleMode.kCoast);
+
+  }
+
+  public void initialize(){
+    // :) resetting the encoder positions for the motors to 0
+    climberMotorREncoder.setPosition(0);
+    climberMotorLEncoder.setPosition(0);
+
+    climberAngle = 0;
   }
 
   public void calibrateGrabbers(){
@@ -121,7 +132,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void spinClimber(double speed){
     // :) spin climber both motors at a speed
-    climberAngle += speed*2;
+    climberAngle += speed;
+    //climberMotorR.set(speed);
   }
 
   @Override
@@ -129,17 +141,20 @@ public class ClimberSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // :) update and spin the motors to their angles
+    //climberMotorLPID.setReference(climberAngle, ControlType.kPosition);
     climberMotorRPID.setReference(climberAngle, ControlType.kPosition);
-    //climberMotorRPID.setReference(-climberAngle, ControlType.kPosition);
-    grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
-    grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
-    grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
-    grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
+    // grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
+    // grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
+    // grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
+    // grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
 
-    // :) putting temperatures on smartdashboard
-    SmartDashboard.putNumber("Avg. Temp of grabber motors 0 (Celcius)", (grabberL0.getMotorTemperature()+grabberR0.getMotorTemperature())/2);
-    SmartDashboard.putNumber("Avg. Temp of grabber motors 1 (Celcius)", (grabberL1.getMotorTemperature()+grabberR1.getMotorTemperature())/2);
-    if (grabberL0.getMotorTemperature()>maxTemp || grabberL1.getMotorTemperature()>maxTemp || grabberR0.getMotorTemperature()>maxTemp || grabberR1.getMotorTemperature()>maxTemp) {
+    // :) putting temperatures and/or current draw of motors on smartdashboard
+    // SmartDashboard.putNumber("Avg. Temp of grabber motors 0 (Celcius)", (grabberL0.getMotorTemperature()+grabberR0.getMotorTemperature())/2);
+    // SmartDashboard.putNumber("Avg. Temp of grabber motors 1 (Celcius)", (grabberL1.getMotorTemperature()+grabberR1.getMotorTemperature())/2);
+    SmartDashboard.putNumber("Avg. Temp of climber motors (Celcius)", (climberMotorL.getMotorTemperature()+climberMotorR.getMotorTemperature())/2);
+    SmartDashboard.putNumber("Current of climber L", climberMotorL.getOutputCurrent());
+    SmartDashboard.putNumber("Current of climber R", climberMotorR.getOutputCurrent());
+    if (climberMotorR.getMotorTemperature()>maxTemp || climberMotorL.getMotorTemperature()>maxTemp) { //grabberL0.getMotorTemperature()>maxTemp || grabberL1.getMotorTemperature()>maxTemp || grabberR0.getMotorTemperature()>maxTemp || grabberR1.getMotorTemperature()>maxTemp
       isTooHot = true;
     } else {
       isTooHot = false;
