@@ -54,9 +54,6 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMaxPIDController backLeftPIDController;
   private final SparkMaxPIDController backRightPIDController;
 
-  // ++ Gyro and Acceleromter
-  AHRS imu = new AHRS();
-
   // ++ Field Object for visulaization in shuffleboard or simulation
   Field2d field = new Field2d();
 
@@ -83,6 +80,15 @@ public class DriveSubsystem extends SubsystemBase {
   private SimpleWidget dGainWidget;
   private SimpleWidget speedErrorThresholdWidget;
 
+  private NetworkTableEntry tGyroYaw;
+  private NetworkTableEntry tXPos;
+  private NetworkTableEntry tYPos;
+  private NetworkTableEntry tXSpeed;
+  private NetworkTableEntry tYSpeed;
+
+  private double gyroOffset = 0.0;
+  private double xChange = 0.0;
+  private double yChange = 0.0;
 
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
@@ -116,6 +122,12 @@ public class DriveSubsystem extends SubsystemBase {
     dGainWidget = pidTab.add("D gain", 0.0);
     speedErrorThresholdWidget = pidTab.add("Speed Error Tolerance", 0.1);
 
+    tGyroYaw = Shuffleboard.getTab("IMU").add("yaw", 0.0).getEntry();
+    tXPos = Shuffleboard.getTab("IMU").add("x position", 0.0).getEntry();
+    tYPos = Shuffleboard.getTab("IMU").add("y position", 0.0).getEntry();
+    tXSpeed = Shuffleboard.getTab("IMU").add("x velocity", 0.0).getEntry();
+    tYSpeed = Shuffleboard.getTab("IMU").add("y velocity", 0.0).getEntry();
+
     resetGyroRotation();
 
     resetPose();
@@ -126,12 +138,15 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ++ returns a Rotation2d object with the robot's current angle, in radians
   public Rotation2d getGyroRotation() {
-    Rotation2d rotation = new Rotation2d(-imu.getYaw() * Math.PI / 180);
+    double angle = tGyroYaw.getDouble(0.0);
+    angle *= (Math.PI / 180);
+    angle -= gyroOffset;
+    Rotation2d rotation = new Rotation2d(angle);
     return rotation;
   }
 
   public void resetGyroRotation() {
-    imu.zeroYaw();
+    gyroOffset = getGyroRotation().getRadians();
   }
 
   // ++ resets the Pose2d and encoder positions of all the motors
@@ -239,6 +254,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    xChange = tXPos.getDouble(0.0) - xChange;
+    yChange = tYPos.getDouble(0.0) - yChange;
+
     MecanumDriveWheelSpeeds wheelspeeds = new MecanumDriveWheelSpeeds(
         frontLeftEncoder.getVelocity(),
         frontRightEncoder.getVelocity(),
@@ -248,7 +267,7 @@ public class DriveSubsystem extends SubsystemBase {
     speedErrorThreshold = speedErrorThresholdWidget.getEntry();
     // ++ Use odometry object for calculating position
     ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
-    ChassisSpeeds actualSpeed = new ChassisSpeeds(imu.getVelocityX(), imu.getVelocityY(), 0.0);
+    ChassisSpeeds actualSpeed = new ChassisSpeeds(tXSpeed.getDouble(0.0), tYSpeed.getDouble(0.0), 0.0);
 
     Double xError = expectedSpeed.vxMetersPerSecond - actualSpeed.vxMetersPerSecond;
     Double yError = expectedSpeed.vyMetersPerSecond - actualSpeed.vyMetersPerSecond;
@@ -266,8 +285,8 @@ public class DriveSubsystem extends SubsystemBase {
     } 
     else {
       // ~~ Calculates position based on imu
-      Double newX = pose.getX() + imu.getDisplacementX();
-      Double newY = pose.getY() + imu.getDisplacementY();
+      Double newX = pose.getX() + xChange;
+      Double newY = pose.getY() + yChange;
       Rotation2d newR = pose.getRotation();
 
       pose = new Pose2d(newX, newY, newR);
@@ -279,8 +298,6 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean("Slipping?", true);
 
     }
-
-    imu.resetDisplacement();
 
     SmartDashboard.putNumber("Robot x", pose.getX());
     SmartDashboard.putNumber("Robot y", pose.getY());
