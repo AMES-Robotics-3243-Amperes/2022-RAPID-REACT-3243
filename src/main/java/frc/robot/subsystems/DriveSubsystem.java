@@ -36,39 +36,39 @@ import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  // ++ create motor objects
+  // ~~++ create motor objects
   private final CANSparkMax frontLeftMotor = new CANSparkMax( Constants.DriveTrain.frontLeftID, MotorType.kBrushless);
   private final CANSparkMax frontRightMotor = new CANSparkMax( Constants.DriveTrain.frontRightID, MotorType.kBrushless);
   private final CANSparkMax backLeftMotor = new CANSparkMax( Constants.DriveTrain.backLeftID, MotorType.kBrushless);
   private final CANSparkMax backRightMotor = new CANSparkMax( Constants.DriveTrain.backRightID, MotorType.kBrushless);
 
-  // ++ create encoder objects
+  // ~~ create encoder objects
   private final RelativeEncoder frontLeftEncoder;
   private final RelativeEncoder frontRightEncoder;
   private final RelativeEncoder backLeftEncoder;
   private final RelativeEncoder backRightEncoder;
 
-  // ++ create PID controller objects
+  // ~~ create PID controller objects
   private final SparkMaxPIDController frontLeftPIDController;
   private final SparkMaxPIDController frontRightPIDController;
   private final SparkMaxPIDController backLeftPIDController;
   private final SparkMaxPIDController backRightPIDController;
 
-  // ++ Field Object for visulaization in shuffleboard or simulation
+  // ~~ Field Object for visulaization in shuffleboard or simulation
   Field2d field = new Field2d();
 
-  // ++ Pose object for keeping track of robot position
+  // ~~ Pose object for keeping track of robot position
   Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
 
-  // ++ mecanum drive kinematics object for calculating wheel speeds and positions from chassis speeds and positions
+  // ~~ mecanum drive kinematics object for calculating wheel speeds and positions from chassis speeds and positions
   MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     Constants.DriveTrain.frontLeftMeters, Constants.DriveTrain.frontRightMeters, Constants.DriveTrain.backLeftMeters, Constants.DriveTrain.backRightMeters
   );
 
-  // + mecanum drive odometry object for calculating position of robot based on wheel speeds
+  // ~~ mecanum drive odometry object for calculating position of robot based on wheel speeds
   MecanumDriveOdometry odometry;
 
-  // ++ Shuffleboard
+  // ~~ Shuffleboard
   private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID Tuning");
   public NetworkTableEntry pGain;
   public NetworkTableEntry iGain;
@@ -89,6 +89,7 @@ public class DriveSubsystem extends SubsystemBase {
   private double gyroOffset = 0.0;
   private double xChange = 0.0;
   private double yChange = 0.0;
+
 
   public DriveSubsystem() {
     frontRightMotor.setInverted(true);
@@ -136,7 +137,26 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
-  // ++ returns a Rotation2d object with the robot's current angle, in radians
+  // ++ IMPORTANT ONE THAT ACTUALLY DOES THE DRIVING
+  // ~~ Sets the velocity reference of the 4 PID loops, for driving in teleop
+  public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
+    
+    // frontLeftMotor.set(flRef);
+    // frontRightMotor.set(frRef);
+    // backLeftMotor.set(blRef);
+    // backRightMotor.set(brRef);
+
+    frontLeftPIDController.setReference(flRef, ControlType.kVelocity);
+    frontRightPIDController.setReference(frRef, ControlType.kVelocity);
+    backLeftPIDController.setReference(blRef, ControlType.kVelocity);
+    backRightPIDController.setReference(brRef, ControlType.kVelocity);
+  
+    // speeds.feed();
+  }
+
+
+
+  // ~~ returns a Rotation2d object with the robot's current angle, in radians
   public Rotation2d getGyroRotation() {
     double angle = tGyroYaw.getDouble(0.0);
     angle *= (Math.PI / 180);
@@ -149,7 +169,7 @@ public class DriveSubsystem extends SubsystemBase {
     gyroOffset = getGyroRotation().getRadians();
   }
 
-  // ++ resets the Pose2d and encoder positions of all the motors
+  // ~~ resets the Pose2d and encoder positions of all the motors
   public void resetPose() {
     pose = new Pose2d(6.0, 4.0, new Rotation2d());
     ChassisSpeeds chassisPos = new ChassisSpeeds(pose.getX(), pose.getY(), pose.getRotation().getRadians());
@@ -168,7 +188,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
-  // ++ changes the robots position based off of current position
+  // ~~ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {
     ChassisSpeeds chassisTransform = new ChassisSpeeds(transform.getX(), transform.getY(), transform.getRotation().getRadians());
     MecanumDriveWheelSpeeds wheelTransform = kinematics.toWheelSpeeds(chassisTransform);
@@ -184,7 +204,7 @@ public class DriveSubsystem extends SubsystemBase {
     backRightPIDController.setReference(backRightPos, ControlType.kPosition);
   }
 
-  // ++ sets the absolute robot position
+  // ~~ sets the absolute robot position
   public void setRobotPosition(Pose2d position) {
     ChassisSpeeds chassisPos = new ChassisSpeeds(position.getX(), position.getY(), position.getRotation().getRadians());
     MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
@@ -200,31 +220,16 @@ public class DriveSubsystem extends SubsystemBase {
     backRightPIDController.setReference(backRightPos, ControlType.kPosition);
   }
 
-  // ++ Updates the PID tuning widgets on shuffleboard
+  // ~~ Updates the PID tuning widgets on shuffleboard
   public void getShuffleboardPID() {
     pGain = pGainWidget.getEntry();
     iGain = iGainWidget.getEntry();
     dGain = dGainWidget.getEntry();
   }
 
-  // ++ Sets the velocity reference of the 4 PID loops, for driving in teleop
-  public void setVelocityReference (double flRef, double frRef, double blRef, double brRef) {
-    
-    // frontLeftMotor.set(flRef);
-    // frontRightMotor.set(frRef);
-    // backLeftMotor.set(blRef);
-    // backRightMotor.set(brRef);
 
-    frontLeftPIDController.setReference(flRef, ControlType.kVelocity);
-    frontRightPIDController.setReference(frRef, ControlType.kVelocity);
-    backLeftPIDController.setReference(blRef, ControlType.kVelocity);
-    backRightPIDController.setReference(brRef, ControlType.kVelocity);
-  
-    // speeds.feed();
-  }
-
-  // ++ Sets the P, I, and D gains of the 4 PID loops
-  public void setPID(double kP, double kI, double kD) {
+  // ~~ Sets the P, I, and D gains of the 4 PID loops
+  public void setPIDValues(double kP, double kI, double kD) {
     frontLeftPIDController.setP(kP);
     frontLeftPIDController.setI(kI);
     frontLeftPIDController.setD(kD);
@@ -248,6 +253,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
+    // ++ I think this method is now redundant with PID stuff?
     // speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
   }
 
@@ -265,7 +271,7 @@ public class DriveSubsystem extends SubsystemBase {
         backRightEncoder.getVelocity()
     );
     speedErrorThreshold = speedErrorThresholdWidget.getEntry();
-    // ++ Use odometry object for calculating position
+    // ~~ Use odometry object for calculating position
     ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
     ChassisSpeeds actualSpeed = new ChassisSpeeds(tXSpeed.getDouble(0.0), tYSpeed.getDouble(0.0), 0.0);
 
@@ -305,7 +311,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
     SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
-    // ++ Update field object for shuffleboard
+    // ~~ Update field object for shuffleboard
     field.setRobotPose(pose);
   }
 

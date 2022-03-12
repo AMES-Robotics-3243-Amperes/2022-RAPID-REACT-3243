@@ -21,7 +21,7 @@ public class AutonomousPIDTaxiCommand extends CommandBase {
   @Override
   public void initialize() {
     m_subsystem.getShuffleboardPID();
-    m_subsystem.setPID(m_subsystem.pGain.getDouble(1.0),m_subsystem.iGain.getDouble(0.0),m_subsystem.dGain.getDouble(0.0));
+    m_subsystem.setPIDValues(m_subsystem.pGain.getDouble(1.0),m_subsystem.iGain.getDouble(0.0),m_subsystem.dGain.getDouble(0.0));
     m_subsystem.resetPose();
     m_subsystem.resetGyroRotation();
     Pose2d transform = new Pose2d(0, -2.4, new Rotation2d());
