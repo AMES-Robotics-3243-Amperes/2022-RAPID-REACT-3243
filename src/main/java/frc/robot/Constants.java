@@ -17,10 +17,29 @@ public final class Constants {
     public static final class DriveTrain {
         // ++ MOTOR CONTORLLER IDS ---------------------------------------------------------
         // CAN
+
+        // ss Electrical gave them names so I put them here.
+
+        // ss Frank
         public static final int frontLeftID = 4;
+        // ss Fil
         public static final int frontRightID = 1;
+        // ss Freddie
         public static final int backLeftID = 3;
+        // ss Flo
         public static final int backRightID = 2;
+        // ss Pew Pew
+        public static final int shooterHoodID = 5;
+        // ss Isa
+        public static final int indexerID = 7;
+        // ss Thing 2
+        public static final int climberLeftID = 10;
+        // ss Thing 1
+        public static final int climberRightID = 11;
+        // ss Ace
+        public static final int flywheelID = 9;
+        // ss Lisha
+        public static final int intakeID = 8;
     }
 
     
