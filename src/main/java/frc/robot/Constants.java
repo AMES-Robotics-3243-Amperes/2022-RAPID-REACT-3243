@@ -37,9 +37,9 @@ public final class Constants {
         // ~~ Radius of the wheels in meters
         public static final double wheelDiameter = 0.1524;
         // ~~ PID values for teleop mecanum drive
-        public static final double kP = 0.72;
-        public static final double kI = 0;
-        public static final double kD = 0;
+        public static final double teleopPGain = 0.72;
+        public static final double teleopIGain = 0;
+        public static final double teleopDGain = 0;
         // ~~ Conversion ratios for drivetrain encoders
             // ++ probably between the velocity of the wheel and the motor (idk which direction)
         public static final double velocityConversionRatio = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71 * 60));

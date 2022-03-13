@@ -23,8 +23,7 @@ public class TeleopPIDDriveCommand extends CommandBase {
   private final DriveSubsystem m_DriveSubsystem;
   private final JoyUtil controller;
   private final MecanumDriveKinematics kinematics;
-  private final Double linearMultiplier = 1.0;
-  private final Double angularMultiplier = 1.0;
+
 
   /** Creates a new TeleopPIDCommand. */
   public TeleopPIDDriveCommand(DriveSubsystem subsystem, JoyUtil controller) {
@@ -48,7 +47,7 @@ public class TeleopPIDDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(controller.getDriveYWithAdjustments() * linearMultiplier, controller.getDriveXWithAdjustments() * linearMultiplier, controller.getRotationWithAdjustments() * angularMultiplier);
+    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(controller.getDriveYWithAdjustments(), controller.getDriveXWithAdjustments(), controller.getRotationWithAdjustments());
     MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
     // wheelSpeeds.desaturate(1);
     SmartDashboard.putNumber("fl Wheel Speeds", wheelSpeeds.frontLeftMetersPerSecond);
