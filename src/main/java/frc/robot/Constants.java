@@ -59,6 +59,9 @@ public final class Constants {
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
         public static final double driveSpeedDamper = 0.65; 
         public static final double rotationDamper = 0.15; 
+        // ss This is the multiplier for Fast Mode
+        // explained in JoyUtil.java
+        public static final double fastModeMaxMultiplier = 1.0;
 
 
         // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------

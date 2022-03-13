@@ -131,11 +131,22 @@ public final class JoyUtil extends XboxController {
         double withDead = posWithDeadzone(rawJoyPos);
         double withFilter = lowPassFilter(withDead, prevFilterJoy, filterStrength);
         double withCurve = joyCurve(withFilter); 
-        double withDampened = withCurve * damperStrength; 
+        /* ss finalMultiplier is the damperStrength scaled by the ((Right Trigger scaled by the fastModeMaxMultiplier) + 1)
+        * for instance, if the damperStrength is 0.5 and the fastModeMaxMultiplier is 3, 
+        * when the Right Trigger is 0, Fast Mode is off and the fastModeMaxMultiplier is nullified,
+        * and the finalMultiplier is just damperStrength
+        * when the Right Trigger is 0.5, fastModeMaxMultiplier is halved (1.5), and adds 1 for 2.5
+        * so damperStrength, the default multiplier, is scaled up by half of the Maximum Multiplier
+        * and when the Right Trigger is 1, it's scaled up by the Maximum.
+        * hope that makes sense
+        */
+        double finalMultiplier = damperStrength * ((getRightTriggerAxis() * Constants.Joysticks.fastModeMaxMultiplier) + 1);
+        double withMultiplier = withCurve * finalMultiplier;
+
 
         // ++ I decided to make seperate variables for everything to make it a little more readable
 
-        return withDampened;
+        return withMultiplier;
         // ++ we return "withCurve" because the curve is the last method so far, and
         // it'll need to be changed if/when more functions are added
     }
