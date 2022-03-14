@@ -62,7 +62,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ mecanum drive kinematics object for calculating wheel speeds and positions from chassis speeds and positions
   MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
-    Constants.DriveTrain.frontLeftMeters, Constants.DriveTrain.frontRightMeters, Constants.DriveTrain.backLeftMeters, Constants.DriveTrain.backRightMeters
+    Constants.DriveTrain.frontLeftMeters, 
+    Constants.DriveTrain.frontRightMeters, 
+    Constants.DriveTrain.backLeftMeters, 
+    Constants.DriveTrain.backRightMeters
   );
 
   // ~~ mecanum drive odometry object for calculating position of robot based on wheel speeds
