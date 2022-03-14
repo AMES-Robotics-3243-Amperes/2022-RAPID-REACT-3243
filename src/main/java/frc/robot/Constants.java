@@ -20,9 +20,9 @@ public final class Constants {
         // ++ MOTOR CONTORLLER IDS ---------------------------------------------------------
         // CAN
         public static final int frontLeftID = 4;
-        public static final int frontRightID = 1;
-        public static final int backLeftID = 3;
-        public static final int backRightID = 2;
+        public static final int frontRightID = 3;
+        public static final int backLeftID = 2;
+        public static final int backRightID = 1;
         // ++ ---------------------------------------------------------------
         // ~~ There are the positions of the mecanum wheels in meters
         public static final Translation2d frontLeftMeters = new Translation2d(0.257175,0.254);
@@ -37,7 +37,7 @@ public final class Constants {
         // ~~ Radius of the wheels in meters
         public static final double wheelDiameter = 0.1524;
         // ~~ PID values for teleop mecanum drive
-        public static final double teleopPGain = 0.72;
+        public static final double teleopPGain = 0.5;
         public static final double teleopIGain = 0;
         public static final double teleopDGain = 0;
         // ~~ Conversion ratios for drivetrain encoders
