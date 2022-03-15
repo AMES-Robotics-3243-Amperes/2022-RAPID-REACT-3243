@@ -80,12 +80,6 @@ public class DriveSubsystem extends SubsystemBase {
   private SimpleWidget dGainWidget;
   private SimpleWidget speedErrorThresholdWidget;
 
-  private NetworkTableEntry tGyroYaw;
-  private NetworkTableEntry tXPos;
-  private NetworkTableEntry tYPos;
-  private NetworkTableEntry tXSpeed;
-  private NetworkTableEntry tYSpeed;
-
   private double gyroOffset = 0.0;
   private double xChange = 0.0;
   private double yChange = 0.0;
@@ -123,12 +117,6 @@ public class DriveSubsystem extends SubsystemBase {
     dGainWidget = pidTab.add("D gain", 0.0);
     speedErrorThresholdWidget = pidTab.add("Speed Error Tolerance", 0.1);
 
-    tGyroYaw = Shuffleboard.getTab("IMU").add("yaw", 0.0).getEntry();
-    tXPos = Shuffleboard.getTab("IMU").add("x position", 0.0).getEntry();
-    tYPos = Shuffleboard.getTab("IMU").add("y position", 0.0).getEntry();
-    tXSpeed = Shuffleboard.getTab("IMU").add("x velocity", 0.0).getEntry();
-    tYSpeed = Shuffleboard.getTab("IMU").add("y velocity", 0.0).getEntry();
-
     resetGyroRotation();
 
     resetPose();
@@ -158,7 +146,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ returns a Rotation2d object with the robot's current angle, in radians
   public Rotation2d getGyroRotation() {
-    double angle = tGyroYaw.getDouble(0.0);
+    double angle = IMUSubsystem.getYaw();
     angle *= (Math.PI / 180);
     angle -= gyroOffset;
     Rotation2d rotation = new Rotation2d(angle);
@@ -261,8 +249,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    xChange = tXPos.getDouble(0.0) - xChange;
-    yChange = tYPos.getDouble(0.0) - yChange;
+    xChange = IMUSubsystem.getXPosition() - xChange;
+    yChange = IMUSubsystem.getYPosition() - yChange;
 
     MecanumDriveWheelSpeeds wheelspeeds = new MecanumDriveWheelSpeeds(
         frontLeftEncoder.getVelocity(),
@@ -273,7 +261,7 @@ public class DriveSubsystem extends SubsystemBase {
     speedErrorThreshold = speedErrorThresholdWidget.getEntry();
     // ~~ Use odometry object for calculating position
     ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
-    ChassisSpeeds actualSpeed = new ChassisSpeeds(tXSpeed.getDouble(0.0), tYSpeed.getDouble(0.0), 0.0);
+    ChassisSpeeds actualSpeed = new ChassisSpeeds(IMUSubsystem.getXVelocity(), IMUSubsystem.getYVelocity(), 0.0);
 
     Double xError = expectedSpeed.vxMetersPerSecond - actualSpeed.vxMetersPerSecond;
     Double yError = expectedSpeed.vyMetersPerSecond - actualSpeed.vyMetersPerSecond;
