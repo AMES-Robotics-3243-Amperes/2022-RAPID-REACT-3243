@@ -16,7 +16,7 @@ import com.kauailabs.navx.frc.AHRS;
 public class IMUSubsystem extends SubsystemBase {
 
   // ~~ IMU object - gyro and accelerometer
-  private final AHRS imu = new AHRS();
+  private static final AHRS imu = new AHRS();
 
   private final ShuffleboardTab imuTab;
   private SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
@@ -47,6 +47,42 @@ public class IMUSubsystem extends SubsystemBase {
     tYPos = wYPos.getEntry();
     tZPos = wZPos.getEntry();
     
+  }
+
+  public static double getYaw() {
+    return imu.getYaw();
+  }
+
+  public static double getPitch() {
+    return imu.getPitch();
+  }
+
+  public static double getRoll() {
+    return imu.getRoll();
+  }
+
+  public static double getXVelocity() {
+    return imu.getVelocityX();
+  }
+
+  public static double getYVelocity() {
+    return imu.getVelocityY();
+  }
+
+  public static double getZVelocity() {
+    return imu.getVelocityZ();
+  }
+
+  public static double getXPosition() {
+    return imu.getDisplacementX();
+  }
+
+  public static double getYPosition() {
+    return imu.getDisplacementY();
+  }
+
+  public static double getZPosition() {
+    return imu.getDisplacementZ();
   }
 
   @Override
