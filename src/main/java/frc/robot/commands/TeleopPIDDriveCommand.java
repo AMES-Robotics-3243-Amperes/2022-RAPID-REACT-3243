@@ -47,11 +47,22 @@ public class TeleopPIDDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(controller.getDriveYWithAdjustments(), controller.getDriveXWithAdjustments(), controller.getRotationWithAdjustments());
+    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(
+      controller.getDriveYWithAdjustments(), 
+      controller.getDriveXWithAdjustments(), 
+      controller.getRotationWithAdjustments()
+      );
+
     MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
     // wheelSpeeds.desaturate(1);
     SmartDashboard.putNumber("fl Wheel Speeds", wheelSpeeds.frontLeftMetersPerSecond);
-    m_DriveSubsystem.setVelocityReference(wheelSpeeds.frontLeftMetersPerSecond, wheelSpeeds.frontRightMetersPerSecond, wheelSpeeds.rearLeftMetersPerSecond, wheelSpeeds.rearRightMetersPerSecond);
+    
+    m_DriveSubsystem.setVelocityReference(
+      wheelSpeeds.frontLeftMetersPerSecond, 
+      wheelSpeeds.frontRightMetersPerSecond, 
+      wheelSpeeds.rearLeftMetersPerSecond, 
+      wheelSpeeds.rearRightMetersPerSecond
+    );
     
   }
 

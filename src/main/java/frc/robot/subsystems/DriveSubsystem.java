@@ -165,8 +165,16 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
 
-    SmartDashboard.putNumber("FL target speed", flRef);
+    SmartDashboard.putNumber("FL target speed -----------------------", flRef);
+    SmartDashboard.putNumber("FR target speed -----------------------", frRef);
+    SmartDashboard.putNumber("BL target speed -----------------------", blRef);
+    SmartDashboard.putNumber("BR target speed -----------------------", brRef);
+
+
     SmartDashboard.putNumber("FL actual speed", frontLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("FR actual speed", frontRightEncoder.getVelocity());
+    SmartDashboard.putNumber("BL actual speed", backLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("BR actual speed", backRightEncoder.getVelocity());
   
     // speeds.feed();
   }
