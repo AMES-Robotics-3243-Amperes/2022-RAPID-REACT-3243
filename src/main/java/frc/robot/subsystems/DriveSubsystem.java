@@ -116,10 +116,10 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftEncoder = backLeftMotor.getEncoder();
     backRightEncoder = backRightMotor.getEncoder();
 
-    frontLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
-    frontRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
-    backLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
-    backRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    // frontLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    // frontRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    // backLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    // backRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
 
     // frontLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
     // frontRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
@@ -165,16 +165,16 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
 
-    SmartDashboard.putNumber("FL target speed -----------------------", flRef);
-    SmartDashboard.putNumber("FR target speed -----------------------", frRef);
-    SmartDashboard.putNumber("BL target speed -----------------------", blRef);
-    SmartDashboard.putNumber("BR target speed -----------------------", brRef);
+    SmartDashboard.putNumber("FL target speed", flRef);
+    SmartDashboard.putNumber("FR target speed", frRef);
+    SmartDashboard.putNumber("BL target speed", blRef);
+    SmartDashboard.putNumber("BR target speed", brRef);
 
 
-    SmartDashboard.putNumber("FL actual speed", frontLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("FR actual speed", frontRightEncoder.getVelocity());
-    SmartDashboard.putNumber("BL actual speed", backLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("BR actual speed", backRightEncoder.getVelocity());
+    SmartDashboard.putNumber("FL ACTUAL speed", frontLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("FR ACTUAL speed", frontRightEncoder.getVelocity());
+    SmartDashboard.putNumber("BL ACTUAL speed", backLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("BR ACTUAL speed", backRightEncoder.getVelocity());
   
     // speeds.feed();
   }
