@@ -83,6 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
   private SimpleWidget dGainWidget;
   private SimpleWidget speedErrorThresholdWidget;
 
+
   private NetworkTableEntry tGyroYaw;
   private NetworkTableEntry tXPos;
   private NetworkTableEntry tYPos;
@@ -95,8 +96,17 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   public DriveSubsystem() {
-    frontRightMotor.setInverted(true);
-    backRightMotor.setInverted(true);
+    // ++ invert the motors that need to be inverted (both sides are here so robot doesn't need to be 
+    // ++ restarted every time the settings are adjusted)
+    // ++ LEFT  \/
+    frontLeftMotor.setInverted(true);
+    backLeftMotor.setInverted(true);
+    // ++ RIGHT \/
+    frontRightMotor.setInverted(false);
+    backRightMotor.setInverted(false);
+    // ++ -------------------
+
+
     
     // MecanumDrive drivetrain = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
     
@@ -154,6 +164,9 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightPIDController.setReference(frRef, ControlType.kVelocity);
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
+
+    SmartDashboard.putNumber("FL target speed", flRef);
+    SmartDashboard.putNumber("FL actual speed", frontLeftEncoder.getVelocity());
   
     // speeds.feed();
   }

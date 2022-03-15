@@ -37,7 +37,7 @@ public final class Constants {
         // ~~ Radius of the wheels in meters
         public static final double wheelDiameter = 0.1524;
         // ~~ PID values for teleop mecanum drive
-        public static final double teleopPGain = 0.5;
+        public static final double teleopPGain = 0.2;
         public static final double teleopIGain = 0;
         public static final double teleopDGain = 0;
         // ~~ Conversion ratios for drivetrain encoders
@@ -82,8 +82,8 @@ public final class Constants {
         public static final double driveLowPassFilterStrength = 0.88;
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
-        public static final double driveSpeedDamper = 0.65; 
-        public static final double rotationDamper = 0.15; 
+        public static final double driveSpeedDamper = 0.75; 
+        public static final double rotationDamper = 0.5; 
 
 
         // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------
