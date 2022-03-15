@@ -139,6 +139,9 @@ public final class JoyUtil extends XboxController {
         * so damperStrength, the default multiplier, is scaled up by half of the Maximum Multiplier
         * and when the Right Trigger is 1, it's scaled up by the Maximum.
         * hope that makes sense
+        * I did this because it's a multiplier and it would sure be a shame 
+        * if nullifying the fastmodemultiplier caused the finalmultiplier to be 0,
+        * disabling non fast mode
         */
         double finalMultiplier = damperStrength * ((getRightTriggerAxis() * Constants.Joysticks.fastModeMaxMultiplier) + 1);
         double withMultiplier = withCurve * finalMultiplier;
