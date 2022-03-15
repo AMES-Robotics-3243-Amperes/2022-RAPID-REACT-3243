@@ -43,8 +43,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private int grabberSoftCurrentLimit = 15;
   public int grabberHardCurrentLimit = 20;
 
-  private int climberSoftCurrentLimit = 40;
-  public int climberHardCurrentLimit = 60;
+  private int climberSoftCurrentLimit = 80;
+  public int climberHardCurrentLimit = 80;
 
   private double maxTemp = 40;
   public boolean isTooHot = false;
