@@ -54,7 +54,7 @@ public class TeleopPIDDriveCommand extends CommandBase {
       );
 
     MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
-    // wheelSpeeds.desaturate(1);
+    wheelSpeeds.desaturate(Constants.DriveTrain.maxWheelSpeed);
     SmartDashboard.putNumber("fl Wheel Speeds", wheelSpeeds.frontLeftMetersPerSecond);
     
     m_DriveSubsystem.setVelocityReference(

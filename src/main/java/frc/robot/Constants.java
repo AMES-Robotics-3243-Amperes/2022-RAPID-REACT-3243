@@ -40,10 +40,14 @@ public final class Constants {
         public static final double teleopPGain = 0.2;
         public static final double teleopIGain = 0;
         public static final double teleopDGain = 0;
+        // ++ maximum RPM of the drivetrain NEOs \/
+        public static final double maxNEORPM = 5500.0;
         // ~~ Conversion ratios for drivetrain encoders
-            // ++ probably between the velocity of the wheel and the motor (idk which direction)
-        public static final double velocityConversionRatio = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71 * 60));
+            // ++ converts from RPM to meters per second, including gearboxes
+        public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
         public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
+        // ++ maximum speed of robot in m/s (max rpm times conversion ratio)
+        public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
         // ~~ Speed error threshold for crash detection
         public static final double speedErrorThreshold = 0.1;
     }
@@ -79,11 +83,11 @@ public final class Constants {
         // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------
         public static final double deadZoneSize = 0.15;
         // ++ lowPassFilterStrength should be between 0 & 1. The closer it is to 1, the smoother it is. 
-        public static final double driveLowPassFilterStrength = 0.88;
+        public static final double driveLowPassFilterStrength = 0.93;
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
         public static final double driveSpeedDamper = 0.5; 
-        public static final double rotationDamper = 0.5; 
+        public static final double rotationDamper = 2.0; 
 
 
         // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------

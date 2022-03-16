@@ -116,10 +116,10 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftEncoder = backLeftMotor.getEncoder();
     backRightEncoder = backRightMotor.getEncoder();
 
-    // frontLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
-    // frontRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
-    // backLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
-    // backRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    frontLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    frontRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    backLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
+    backRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
 
     // frontLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
     // frontRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
@@ -170,7 +170,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("BL target speed", blRef);
     SmartDashboard.putNumber("BR target speed", brRef);
 
-
+    //annette be cool
     SmartDashboard.putNumber("FL ACTUAL speed", frontLeftEncoder.getVelocity());
     SmartDashboard.putNumber("FR ACTUAL speed", frontRightEncoder.getVelocity());
     SmartDashboard.putNumber("BL ACTUAL speed", backLeftEncoder.getVelocity());
