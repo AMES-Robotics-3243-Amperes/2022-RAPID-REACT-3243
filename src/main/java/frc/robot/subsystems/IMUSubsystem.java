@@ -32,7 +32,7 @@ public class IMUSubsystem extends SubsystemBase {
     wPitch = imuTab.add("pitch", 0.0);
     wXVelocity = imuTab.add("x velocity", 0.0);
     wYVelocity = imuTab.add("y velocity", 0.0);
-    wXVelocity = imuTab.add("z velocity", 0.0);
+    wZVelocity = imuTab.add("z velocity", 0.0);
     wXPos = imuTab.add("x position", 0.0);
     wYPos = imuTab.add("y position", 0.0);
     wZPos = imuTab.add("z position", 0.0);
