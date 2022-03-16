@@ -9,24 +9,47 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+
+
+
 public class shuffleboardsubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
+
+  ShuffleboardTab movementtab;
+  static SimpleWidget firstpowershuffle;
+  static SimpleWidget secondpowershuffle;
+  static SimpleWidget aCoeffshuffle;
+  static SimpleWidget bCoeffShuffle;
+
   public shuffleboardsubsystem() {
-    
+    movementtab = Shuffleboard.getTab("Drivetrain");
   //I'm gonna cry
-    ShuffleboardTab movementtab = Shuffleboard.getTab("Drivetrain");
-    SimpleWidget firstpowershuffle;
-    SimpleWidget secondpowershuffle;
-    SimpleWidget aCoeffshuffle;
-    SimpleWidget bCoeffShuffle;
     firstpowershuffle = movementtab.add("firstpower", Constants.Joysticks.firstPower);
     secondpowershuffle = movementtab.add("secondpower", Constants.Joysticks.secondPower);
     aCoeffshuffle = movementtab.add("aCoeff", Constants.Joysticks.aCoeff);
     bCoeffShuffle = movementtab.add("bCoeff", Constants.Joysticks.bCoeff);
     
-    
-    
 
+  }
+
+  public static int getfirstpower() {
+    return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
+    
+  }
+
+  public static int getsecondpower() {
+    return (int)(secondpowershuffle.getEntry().getDouble(Constants.Joysticks.secondPower));
+    
+  }
+  public static int getaCoeff() {
+    return (int)(aCoeffshuffle.getEntry().getDouble(Constants.Joysticks.aCoeff));
+    
+  }
+
+  public static int getbCoeff() {
+    return (int)(bCoeffShuffle.getEntry().getDouble(Constants.Joysticks.bCoeff));
+    
   }
 
   @Override

@@ -1,7 +1,7 @@
 package frc.robot;
 
-import frc.robot.Constants; 
-
+import frc.robot.Constants;
+import frc.robot.subsystems.shuffleboardsubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -102,10 +102,10 @@ public final class JoyUtil extends XboxController {
     public static double joyCurve(double pos) {
         // ++ this method will take the linear joystick input and puts it into a polynomial curve
 
-        double a = Constants.Joysticks.aCoeff; 
-        double b = Constants.Joysticks.bCoeff;
-        int firstPower = Constants.Joysticks.firstPower; 
-        int secondPower = Constants.Joysticks.secondPower; 
+        double a = shuffleboardsubsystem.getaCoeff(); 
+        double b = shuffleboardsubsystem.getbCoeff();
+        int firstPower = shuffleboardsubsystem.getfirstpower(); 
+        int secondPower = shuffleboardsubsystem.getsecondpower(); 
 
         return ( (a * (Math.pow(pos,firstPower))) + (b * (Math.pow(pos,secondPower))) ); 
     }
