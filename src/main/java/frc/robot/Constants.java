@@ -83,10 +83,10 @@ public final class Constants {
         // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------
         public static final double deadZoneSize = 0.15;
         // ++ lowPassFilterStrength should be between 0 & 1. The closer it is to 1, the smoother it is. 
-        public static final double driveLowPassFilterStrength = 0.93;
+        public static final double driveLowPassFilterStrength = 0.91;
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later
-        public static final double driveSpeedDamper = 0.5; 
+        public static final double driveSpeedDamper = 0.4; 
         public static final double rotationDamper = 2.0; 
 
 
