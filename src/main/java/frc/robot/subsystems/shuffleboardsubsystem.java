@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.kauailabs.navx.frc.AHRS;
@@ -24,6 +25,10 @@ public class shuffleboardsubsystem extends SubsystemBase {
   static SimpleWidget bCoeffShuffle;
   private static final AHRS imu = new AHRS();
   private static SimpleWidget roughxpos, roughypos, roughzpos;
+
+  private static SendableChooser<Integer> m_FirstPower;
+
+
   public shuffleboardsubsystem() {
     driverfeedbacktab = Shuffleboard.getTab("Driverfeedback");
     movementtab = Shuffleboard.getTab("Drivetrain");
@@ -36,10 +41,19 @@ public class shuffleboardsubsystem extends SubsystemBase {
     roughypos = driverfeedbacktab.add("roughy", imu.getDisplacementY());
     roughzpos = driverfeedbacktab.add("roughz", imu.getDisplacementZ());
 
+    m_FirstPower = new SendableChooser<>();
+    m_FirstPower.setDefaultOption("Good Power", 3);
+    m_FirstPower.addOption("Bad Power", 4);
+
+    movementtab.add(m_FirstPower);
+
+
+
   }
 
   public static int getfirstpower() {
-    return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
+    //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
+    return m_FirstPower.getSelected();
     
   }
 
