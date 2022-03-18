@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
+import com.kauailabs.navx.frc.AHRS;
 
 
 
@@ -22,16 +22,19 @@ public class shuffleboardsubsystem extends SubsystemBase {
   static SimpleWidget secondpowershuffle;
   static SimpleWidget aCoeffshuffle;
   static SimpleWidget bCoeffShuffle;
-
+  private static final AHRS imu = new AHRS();
+  private static SimpleWidget roughxpos, roughypos, roughzpos;
   public shuffleboardsubsystem() {
     driverfeedbacktab = Shuffleboard.getTab("Driverfeedback");
     movementtab = Shuffleboard.getTab("Drivetrain");
-  //I'm gonna cry
+  // // I'm gonna cry
     firstpowershuffle = movementtab.add("firstpower", Constants.Joysticks.firstPower);
     secondpowershuffle = movementtab.add("secondpower", Constants.Joysticks.secondPower);
     aCoeffshuffle = movementtab.add("aCoeff", Constants.Joysticks.aCoeff);
     bCoeffShuffle = movementtab.add("bCoeff", Constants.Joysticks.bCoeff);
-    
+    roughxpos = driverfeedbacktab.add("roughx", imu.getDisplacementX());
+    roughypos = driverfeedbacktab.add("roughy", imu.getDisplacementY());
+    roughzpos = driverfeedbacktab.add("roughz", imu.getDisplacementZ());
 
   }
 

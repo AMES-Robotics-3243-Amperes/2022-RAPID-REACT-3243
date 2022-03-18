@@ -93,6 +93,7 @@ public class IMUSubsystem extends SubsystemBase {
     tRoll.setDouble(imu.getRoll());
     tXVelocity.setDouble(imu.getVelocityX());
     tYVelocity.setDouble(imu.getVelocityY());
+    
     tZVelocity.setDouble(imu.getVelocityZ());
     tXPos.setDouble(imu.getDisplacementX());
     tYPos.setDouble(imu.getDisplacementY());
