@@ -1,6 +1,6 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
 
@@ -15,15 +15,17 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class IMUSubsystem extends SubsystemBase {
 
+  // ~~ IMU object - gyro and accelerometer
+  private static final AHRS imu = new AHRS();
 
-// ~~ IMU object - gyro and accelerometer
-private static final AHRS imu = new AHRS();
+  private final ShuffleboardTab imuTab;
+  private SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
+  private NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
 
   
-/** Creates a new IMUSubsystem. */
+  /** Creates a new IMUSubsystem. */
   public IMUSubsystem() {
     
-
     imuTab = Shuffleboard.getTab("IMU");
     wYaw = imuTab.add("yaw", 0.0);
     wRoll = imuTab.add("roll", 0.0);
@@ -46,7 +48,6 @@ private static final AHRS imu = new AHRS();
     tZPos = wZPos.getEntry();
     
   }
-
 
   public static double getYaw() {
     return imu.getYaw();
@@ -97,7 +98,4 @@ private static final AHRS imu = new AHRS();
     tYPos.setDouble(imu.getDisplacementY());
     tZPos.setDouble(imu.getDisplacementZ());
   }
-  
-  
 }
-

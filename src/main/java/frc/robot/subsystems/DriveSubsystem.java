@@ -55,10 +55,10 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMaxPIDController backRightPIDController;
 
   // ~~ Field Object for visulaization in shuffleboard or simulation
-  // Field2d field = new Field2d();
+  Field2d field = new Field2d();
 
   // ~~ Pose object for keeping track of robot position
-  // Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
+  Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
 
   // ~~ mecanum drive kinematics object for calculating wheel speeds and positions from chassis speeds and positions
   MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
@@ -69,7 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
   );
 
   // ~~ mecanum drive odometry object for calculating position of robot based on wheel speeds
-  // MecanumDriveOdometry odometry;
+  MecanumDriveOdometry odometry;
 
   // ~~ Shuffleboard
   private final ShuffleboardTab pidTab = Shuffleboard.getTab("PID Tuning");
@@ -114,10 +114,10 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
     backRightEncoder.setVelocityConversionFactor(Constants.DriveTrain.velocityConversionRatio);
 
-    // frontLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
-    // frontRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
-    // backLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
-    // backRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+    frontLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+    frontRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+    backLeftEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
+    backRightEncoder.setPositionConversionFactor(Constants.DriveTrain.positionConversionRation);
 
     frontLeftPIDController = frontLeftMotor.getPIDController();
     frontRightPIDController = frontRightMotor.getPIDController();
@@ -129,13 +129,11 @@ public class DriveSubsystem extends SubsystemBase {
     dGainWidget = pidTab.add("D gain", Constants.DriveTrain.teleopDGain);
     speedErrorThresholdWidget = pidTab.add("Speed Error Tolerance", 0.1);
 
-    
     resetGyroRotation();
-    
 
-    // resetPose();
+    resetPose();
 
-    // odometry = new MecanumDriveOdometry(kinematics, getGyroRotation(), pose);
+    odometry = new MecanumDriveOdometry(kinematics, getGyroRotation(), pose);
 
   }
 
@@ -207,33 +205,19 @@ public class DriveSubsystem extends SubsystemBase {
     dGain = dGainWidget.getEntry();
   }
 
-
-
-
-
-
-  // // ~~ returns a Rotation2d object with the robot's current angle, in radians
-  // public Rotation2d getGyroRotation() {
-  //   double angle = tGyroYaw.getDouble(0.0);
-  //   angle *= (Math.PI / 180);
-  //   angle -= gyroOffset;
-  //   Rotation2d rotation = new Rotation2d(angle);
-  //   return rotation;
-  // }
-
-  // public void resetGyroRotation() {
-  //   gyroOffset = getGyroRotation().getRadians();
-  // }
+  public void resetGyroRotation() {
+    gyroOffset = getGyroRotation().getRadians();
+  }
 
   // ~~ resets the Pose2d and encoder positions of all the motors
-  // public void resetPose() {
-  //   pose = new Pose2d(6.0, 4.0, new Rotation2d());
-  //   ChassisSpeeds chassisPos = new ChassisSpeeds(pose.getX(), pose.getY(), pose.getRotation().getRadians());
-  //   MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
-  //   frontLeftEncoder.setPosition(wheelPos.frontLeftMetersPerSecond);
-  //   frontRightEncoder.setPosition(wheelPos.frontRightMetersPerSecond);
-  //   backLeftEncoder.setPosition(wheelPos.rearLeftMetersPerSecond);
-  //   backRightEncoder.setPosition(wheelPos.rearRightMetersPerSecond);
+  public void resetPose() {
+    pose = new Pose2d(6.0, 4.0, new Rotation2d());
+    ChassisSpeeds chassisPos = new ChassisSpeeds(pose.getX(), pose.getY(), pose.getRotation().getRadians());
+    MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
+    frontLeftEncoder.setPosition(wheelPos.frontLeftMetersPerSecond);
+    frontRightEncoder.setPosition(wheelPos.frontRightMetersPerSecond);
+    backLeftEncoder.setPosition(wheelPos.rearLeftMetersPerSecond);
+    backRightEncoder.setPosition(wheelPos.rearRightMetersPerSecond);
 
     // IMPORTANT - we may need to set motor positional PID loop to the encoder position after resetting to prevent runaway robots.
     // Implementation would be:
@@ -242,45 +226,39 @@ public class DriveSubsystem extends SubsystemBase {
     // backLeftPIDController.setReference(backLeftEncoder.getPosition(), ControlType.kPosition);
     // backRightPIDController.setReference(backRightEncoder.getPosition(), ControlType.kPosition);
 
-  // }
+  }
 
-  // // ~~ changes the robots position based off of current position
-  // public void changeRobotPosition(Pose2d transform) {
-  //   ChassisSpeeds chassisTransform = new ChassisSpeeds(transform.getX(), transform.getY(), transform.getRotation().getRadians());
-  //   MecanumDriveWheelSpeeds wheelTransform = kinematics.toWheelSpeeds(chassisTransform);
+  // ~~ changes the robots position based off of current position
+  public void changeRobotPosition(Pose2d transform) {
+    ChassisSpeeds chassisTransform = new ChassisSpeeds(transform.getX(), transform.getY(), transform.getRotation().getRadians());
+    MecanumDriveWheelSpeeds wheelTransform = kinematics.toWheelSpeeds(chassisTransform);
 
-  //   double frontLeftPos = frontLeftEncoder.getPosition() + wheelTransform.frontLeftMetersPerSecond;
-  //   double frontRightPos = frontRightEncoder.getPosition() + wheelTransform.frontRightMetersPerSecond;
-  //   double backLeftPos = backLeftEncoder.getPosition() + wheelTransform.rearLeftMetersPerSecond;
-  //   double backRightPos = backRightEncoder.getPosition() + wheelTransform.rearRightMetersPerSecond;
+    double frontLeftPos = frontLeftEncoder.getPosition() + wheelTransform.frontLeftMetersPerSecond;
+    double frontRightPos = frontRightEncoder.getPosition() + wheelTransform.frontRightMetersPerSecond;
+    double backLeftPos = backLeftEncoder.getPosition() + wheelTransform.rearLeftMetersPerSecond;
+    double backRightPos = backRightEncoder.getPosition() + wheelTransform.rearRightMetersPerSecond;
 
-  //   frontLeftPIDController.setReference(frontLeftPos, ControlType.kPosition);
-  //   frontRightPIDController.setReference(frontRightPos, ControlType.kPosition);
-  //   backLeftPIDController.setReference(backLeftPos, ControlType.kPosition);
-  //   backRightPIDController.setReference(backRightPos, ControlType.kPosition);
-  // }
+    frontLeftPIDController.setReference(frontLeftPos, ControlType.kPosition);
+    frontRightPIDController.setReference(frontRightPos, ControlType.kPosition);
+    backLeftPIDController.setReference(backLeftPos, ControlType.kPosition);
+    backRightPIDController.setReference(backRightPos, ControlType.kPosition);
+  }
 
   // // ~~ sets the absolute robot position
-  // public void setRobotPosition(Pose2d position) {
-  //   ChassisSpeeds chassisPos = new ChassisSpeeds(position.getX(), position.getY(), position.getRotation().getRadians());
-  //   MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
+  public void setRobotPosition(Pose2d position) {
+    ChassisSpeeds chassisPos = new ChassisSpeeds(position.getX(), position.getY(), position.getRotation().getRadians());
+    MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
 
-  //   double frontLeftPos = wheelPos.frontLeftMetersPerSecond;
-  //   double frontRightPos = wheelPos.frontRightMetersPerSecond;
-  //   double backLeftPos = wheelPos.rearLeftMetersPerSecond;
-  //   double backRightPos = wheelPos.rearRightMetersPerSecond;
+    double frontLeftPos = wheelPos.frontLeftMetersPerSecond;
+    double frontRightPos = wheelPos.frontRightMetersPerSecond;
+    double backLeftPos = wheelPos.rearLeftMetersPerSecond;
+    double backRightPos = wheelPos.rearRightMetersPerSecond;
 
-  //   frontLeftPIDController.setReference(frontLeftPos, ControlType.kPosition);
-  //   frontRightPIDController.setReference(frontRightPos, ControlType.kPosition);
-  //   backLeftPIDController.setReference(backLeftPos, ControlType.kPosition);
-  //   backRightPIDController.setReference(backRightPos, ControlType.kPosition);
-  // }
-
-  // ~~ Updates the PID tuning widgets on shuffleboard
-
-
-
-
+    frontLeftPIDController.setReference(frontLeftPos, ControlType.kPosition);
+    frontRightPIDController.setReference(frontRightPos, ControlType.kPosition);
+    backLeftPIDController.setReference(backLeftPos, ControlType.kPosition);
+    backRightPIDController.setReference(backRightPos, ControlType.kPosition);
+  }
 
   // public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
   //   //++ I think this method is now redundant with PID stuff?
@@ -308,41 +286,41 @@ public class DriveSubsystem extends SubsystemBase {
     Double xError = expectedSpeed.vxMetersPerSecond - actualSpeed.vxMetersPerSecond;
     Double yError = expectedSpeed.vyMetersPerSecond - actualSpeed.vyMetersPerSecond;
     
-    // Double speedError = Math.sqrt(Math.pow(xError, 2) + Math.pow(yError, 2));
+    Double speedError = Math.sqrt(Math.pow(xError, 2) + Math.pow(yError, 2));
 
-    // SmartDashboard.putNumber("Speed Error", speedError);
+    SmartDashboard.putNumber("Speed Error", speedError);
 
     // ~~ Checks if the robot's wheels are slipping to determine if odometry or the imu would be more accurate
-    // if (speedError < speedErrorThreshold.getDouble(0.1)) {
-    //   // ~~ Calculates position based on odometry
-    //   pose = odometry.update(getGyroRotation(), wheelspeeds);
+    if (speedError < speedErrorThreshold.getDouble(0.1)) {
+      // ~~ Calculates position based on odometry
+      pose = odometry.update(getGyroRotation(), wheelspeeds);
 
-    //   SmartDashboard.putBoolean("Slipping?", false);
-    // } 
-    // else {
-    //   // ~~ Calculates position based on imu
-    //   Double newX = pose.getX() + xChange;
-    //   Double newY = pose.getY() + yChange;
-    //   Rotation2d newR = pose.getRotation();
+      SmartDashboard.putBoolean("Slipping?", false);
+    } 
+    else {
+      // ~~ Calculates position based on imu
+      Double newX = pose.getX() + xChange;
+      Double newY = pose.getY() + yChange;
+      Rotation2d newR = pose.getRotation();
 
-    //   pose = new Pose2d(newX, newY, newR);
+      pose = new Pose2d(newX, newY, newR);
 
-    //   // ~~ Updates odometry object with data from imu
-    //   odometry.update(getGyroRotation(), wheelspeeds);
-    //   odometry.resetPosition(pose, getGyroRotation());
+      // ~~ Updates odometry object with data from imu
+      odometry.update(getGyroRotation(), wheelspeeds);
+      odometry.resetPosition(pose, getGyroRotation());
 
-    //   SmartDashboard.putBoolean("Slipping?", true);
+      SmartDashboard.putBoolean("Slipping?", true);
 
-    // }
+    }
 
-  //   SmartDashboard.putNumber("Robot x", pose.getX());
-  //   SmartDashboard.putNumber("Robot y", pose.getY());
-  //   SmartDashboard.putNumber("Robot rotation", pose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Robot x", pose.getX());
+    SmartDashboard.putNumber("Robot y", pose.getY());
+    SmartDashboard.putNumber("Robot rotation", pose.getRotation().getDegrees());
 
-  //   SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
-  //   SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
-  //   // ~~ Update field object for shuffleboard
-  //   field.setRobotPose(pose);
+    SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
+    // ~~ Update field object for shuffleboard
+    field.setRobotPose(pose);
   }
 
   @Override

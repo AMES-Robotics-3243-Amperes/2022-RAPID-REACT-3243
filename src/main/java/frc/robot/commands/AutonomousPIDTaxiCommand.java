@@ -20,12 +20,12 @@ public class AutonomousPIDTaxiCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // m_subsystem.getShuffleboardPID();
-    // m_subsystem.setPIDValues(m_subsystem.pGain.getDouble(1.0),m_subsystem.iGain.getDouble(0.0),m_subsystem.dGain.getDouble(0.0));
-    // m_subsystem.resetPose();
-    // m_subsystem.resetGyroRotation();
-    // Pose2d transform = new Pose2d(0, -2.4, new Rotation2d());
-    // m_subsystem.changeRobotPosition(transform);
+    m_subsystem.getShuffleboardPID();
+    m_subsystem.setPIDValues(m_subsystem.pGain.getDouble(1.0),m_subsystem.iGain.getDouble(0.0),m_subsystem.dGain.getDouble(0.0));
+    m_subsystem.resetPose();
+    m_subsystem.resetGyroRotation();
+    Pose2d transform = new Pose2d(0, -2.4, new Rotation2d());
+    m_subsystem.changeRobotPosition(transform);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

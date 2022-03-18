@@ -17,12 +17,14 @@ public class shuffleboardsubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
 
   ShuffleboardTab movementtab;
+  ShuffleboardTab driverfeedbacktab;
   static SimpleWidget firstpowershuffle;
   static SimpleWidget secondpowershuffle;
   static SimpleWidget aCoeffshuffle;
   static SimpleWidget bCoeffShuffle;
 
   public shuffleboardsubsystem() {
+    driverfeedbacktab = Shuffleboard.getTab("Driverfeedback");
     movementtab = Shuffleboard.getTab("Drivetrain");
   //I'm gonna cry
     firstpowershuffle = movementtab.add("firstpower", Constants.Joysticks.firstPower);
