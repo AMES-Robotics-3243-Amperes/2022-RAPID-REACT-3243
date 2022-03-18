@@ -40,6 +40,7 @@ public class TeleopPIDDriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    controller.zeroPreviousFiltered();
     m_DriveSubsystem.getShuffleboardPID();
     m_DriveSubsystem.setPIDValues(m_DriveSubsystem.pGain.getDouble(1.0),m_DriveSubsystem.iGain.getDouble(0.0),m_DriveSubsystem.dGain.getDouble(0.0));
   }

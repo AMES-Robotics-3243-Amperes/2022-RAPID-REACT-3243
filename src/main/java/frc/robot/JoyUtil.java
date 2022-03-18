@@ -47,6 +47,7 @@ public final class JoyUtil extends XboxController {
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength); 
+        SmartDashboard.putNumber("x val", adjustedPos);
         prevFilteredX = lowPassFilter(rawJoyPos, prevFilteredX, filterStrength);
         return adjustedPos;
     }
@@ -55,6 +56,7 @@ public final class JoyUtil extends XboxController {
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredY, filterStrength, damperStrength); 
+
         prevFilteredY = lowPassFilter(rawJoyPos, prevFilteredY, filterStrength);
         return adjustedPos;
     }
@@ -130,8 +132,11 @@ public final class JoyUtil extends XboxController {
         */ 
 
         double withDead = posWithDeadzone(rawJoyPos);
+        SmartDashboard.putNumber("with dead", withDead);
         double withFilter = lowPassFilter(withDead, prevFilterJoy, filterStrength);
+        SmartDashboard.putNumber("with filter",withFilter);
         double withCurve = joyCurve(withFilter); 
+        SmartDashboard.putNumber("with curve", withCurve);
         /* ss finalMultiplier is the damperStrength scaled by the ((Right Trigger scaled by the fastModeMaxMultiplier) + 1)
         * for instance, if the damperStrength is 0.5 and the fastModeMaxMultiplier is 3, 
         * when the Right Trigger is 0, Fast Mode is off and the fastModeMaxMultiplier is nullified,
@@ -145,8 +150,9 @@ public final class JoyUtil extends XboxController {
         * disabling non fast mode
         */
         double finalMultiplier = damperStrength * ((getRightTriggerAxis() * Constants.Joysticks.fastModeMaxMultiplier) + 1);
+        SmartDashboard.putNumber("final multiplier", finalMultiplier);
         double withMultiplier = withCurve * finalMultiplier;
-
+        SmartDashboard.putNumber("drive output", withMultiplier);
 
         // ++ I decided to make seperate variables for everything to make it a little more readable
 
