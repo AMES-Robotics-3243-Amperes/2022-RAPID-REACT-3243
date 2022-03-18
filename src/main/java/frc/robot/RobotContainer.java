@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
-// import frc.robot.subsystems.IMUSubsystem;
+import frc.robot.subsystems.IMUSubsystem;
+import frc.robot.subsystems.shuffleboardsubsystem;
 import frc.robot.commands.AutonomousPIDTaxiCommand;
 import frc.robot.commands.TeleopPIDDriveCommand;
 import frc.robot.Constants; 
@@ -37,7 +38,8 @@ public class RobotContainer {
   // ++ SUBSYSTEMS AND COMMANDS ========================================
   // subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
-  // private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
+  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
+  private final shuffleboardsubsystem m_Shuffleboardsubsystem = new shuffleboardsubsystem();
   // commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
   // private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
