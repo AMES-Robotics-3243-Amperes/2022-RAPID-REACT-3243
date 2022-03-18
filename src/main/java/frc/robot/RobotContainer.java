@@ -9,7 +9,12 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.IMUSubsystem;
+import frc.robot.subsystems.shuffleboardsubsystem;
+import frc.robot.commands.AutonomousPIDTaxiCommand;
+import frc.robot.commands.TeleopPIDDriveCommand;
+import frc.robot.Constants; 
+
 
 // ++ comment so I can rebase
 
@@ -33,17 +38,20 @@ public class RobotContainer {
   // ++ SUBSYSTEMS AND COMMANDS ========================================
   // subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
+  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
+  private final shuffleboardsubsystem m_Shuffleboardsubsystem = new shuffleboardsubsystem();
   // commands
-  private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
-  // ++ =================================================
+  private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
+  // private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
 
- 
+  // ++ ================================================================
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     // ++ command stuff
-    m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
+    m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
 
 
     // Configure the button bindings
@@ -65,6 +73,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null; 
+    return new AutonomousPIDTaxiCommand(m_DriveSubsystem);
   }
 }
