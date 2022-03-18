@@ -24,12 +24,12 @@ public final class Constants {
 
         // ss Frank
         public static final int frontLeftID = 4;
-        // ss Fil
-        public static final int frontRightID = 1;
         // ss Freddie
-        public static final int backLeftID = 3;
+        public static final int frontRightID = 3;
         // ss Flo
-        public static final int backRightID = 2;
+        public static final int backLeftID = 2;
+        // ss Fil
+        public static final int backRightID = 1;
         // ss Pew Pew
         public static final int shooterHoodID = 5;
         // ss Isa
