@@ -3,16 +3,21 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.RobotContainer;
-import frc.robot.Constants; 
+import frc.robot.Constants;
+import frc.robot.JoyUtil;
 
 // ++ SparkMax & encoder imports
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType; 
 import com.revrobotics.RelativeEncoder;
 
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 
 
 
@@ -28,15 +33,27 @@ public class ShooterSubsystem extends SubsystemBase {
   private CANSparkMax flywheelMotor = new CANSparkMax( Constants.Shooter.flywheelMotorID, MotorType.kBrushless ); 
   private CANSparkMax hoodMotor = new CANSparkMax( Constants.Shooter.hoodMotorID, MotorType.kBrushless ); 
   public RelativeEncoder hoodEncoder; 
-
   // ++ make encoder objects (this might not be the right kind of encoder or even work)
-
-
+  private SparkMaxPIDController PIDAngle = hoodMotor.getPIDController();
+  private SparkMaxPIDController PIDSpeed = flywheelMotor.getPIDController();
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    hoodEncoder = hoodMotor.getEncoder(); 
+    //££ Sets up the PIDAngle and hoodEncoder
+    PIDAngle.setP(0.8);
+    hoodEncoder = hoodMotor.getEncoder();
+  }
+  //££ Sets the defualt angle value and passes it into the PID's
+  double hoodAngle = 0;
+  public void setHoodAngle(double angle) {
+    hoodAngle = angle*((768/7)/360);
+    PIDAngle.setReference(hoodAngle, ControlType.kPosition);
   }
 
+  double flywheelSpeed = 0;
+  public void setflywheelSpeed(double speed) {
+    flywheelSpeed = speed;
+    PIDSpeed.setReference(flywheelSpeed, ControlType.kVelocity);
+  }
 
 
   @Override

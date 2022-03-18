@@ -11,8 +11,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.LimelightSubsystem;
-
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -42,8 +43,10 @@ public class RobotContainer {
   // subsystems
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   // commands
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
+  private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
   // ++ =================================================
 
  
@@ -53,7 +56,7 @@ public class RobotContainer {
 
     // ++ command stuff
     m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
-
+    m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
 
     // Configure the button bindings
     configureButtonBindings();
