@@ -42,7 +42,7 @@ public class RobotContainer {
   private final shuffleboardsubsystem m_Shuffleboardsubsystem = new shuffleboardsubsystem();
   // commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
-  private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
+  // private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
 
   // ++ ================================================================
 

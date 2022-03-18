@@ -123,6 +123,7 @@ public final class JoyUtil extends XboxController {
         * - deadzone
         * - low pass filtering
         * - joy curve
+        * - convert joystick range [-1, 1] to range of robot speed [-max speed, max speed]
         * - dampen the output w/ a multiplier
         * and the order might have to be changed as we add more functions, 
         * but deadzone should probably stay first, and dampening should probably stay last
@@ -131,12 +132,13 @@ public final class JoyUtil extends XboxController {
         double withDead = posWithDeadzone(rawJoyPos);
         double withFilter = lowPassFilter(withDead, prevFilterJoy, filterStrength);
         double withCurve = joyCurve(withFilter); 
-        double withDampened = withCurve * damperStrength; 
+        double withSpeedRange = withCurve * Constants.DriveTrain.maxWheelSpeed;
+        double withDampened = withSpeedRange * damperStrength; 
 
         // ++ I decided to make seperate variables for everything to make it a little more readable
 
         return withDampened;
-        // ++ we return "withCurve" because the curve is the last method so far, and
+        // ++ we return [whatever it says was returned above] because that's the last method so far, and
         // it'll need to be changed if/when more functions are added
     }
 
