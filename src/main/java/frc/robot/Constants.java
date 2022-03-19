@@ -91,12 +91,12 @@ public final class Constants {
         public static final double driveLowPassFilterStrength = 0.91;
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later 
-        public static final double driveSpeedDamper = 0.65; 
+        public static final double driveSpeedDamper = 0.4; 
         public static final double rotationDamper = 2.0; 
 
         // ss This is the multiplier for Fast Mode
         // explained in JoyUtil.java
-        public static final double fastModeMaxMultiplier = 0.5;
+        public static final double fastModeMaxMultiplier = 0.3;
 
 
 

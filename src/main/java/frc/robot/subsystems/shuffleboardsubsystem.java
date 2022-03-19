@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.kauailabs.navx.frc.AHRS;
@@ -26,13 +27,18 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static SimpleWidget fastModeMultiplierShuffle;
   static SimpleWidget totalSpeedDamperShuffle;
 
+  private static SendableChooser<Integer> m_FirstPower;
+
+
   private static final AHRS imu = new AHRS();
   private static SimpleWidget roughxpos, roughypos, roughzpos;
-
   
   public ShuffleboardSubsystem() {
     driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
     movementTab = Shuffleboard.getTab("Drivetrain");
+
+
+
   // // I'm gonna cry
 
 
@@ -50,10 +56,20 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     roughypos = driverFeedbackTab.add("roughy", imu.getDisplacementY());
     roughzpos = driverFeedbackTab.add("roughz", imu.getDisplacementZ());
 
+    m_FirstPower = new SendableChooser<>();
+    m_FirstPower.setDefaultOption("Good Power", 3);
+    m_FirstPower.addOption("Bad Power", 4);
+
+    movementTab.add(m_FirstPower);
+
+
+
   }
 
-  public static double getFirstPower() {
-    return (double)(firstPowerShuffle.getEntry().getNumber(Constants.Joysticks.firstPower));
+
+  public static int getfirstpower() {
+    //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
+    return m_FirstPower.getSelected();
     
   }
 
@@ -89,5 +105,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    firstPowerShuffle.getEntry().setDouble(m_FirstPower.getSelected());
+    bCoeffShuffle.getEntry().setDouble(1.0 - aCoeffShuffle.getEntry().getDouble(Constants.Joysticks.aCoeff));
   }
 }
