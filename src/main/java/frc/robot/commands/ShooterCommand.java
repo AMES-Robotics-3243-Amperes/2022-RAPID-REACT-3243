@@ -30,30 +30,35 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void execute() {
     if (joystick.getAButton()) {
-      controllerInput = 0.1;
+      controllerInput += 0.1;
+      m_ShooterSubsystem.setHoodAngle(controllerInput);
     }
     else if (joystick.getBButton()) {
-      controllerInput = -0.1;
+      controllerInput -= 0.1;
+      m_ShooterSubsystem.setHoodAngle(controllerInput);
     }
     else if (joystick.getRightStickButtonPressed())  {
       m_ShooterSubsystem.setHoodAngle(2);
+      controllerInput = 0;
     }
     else if (joystick.getLeftStickButtonPressed()) {
       m_ShooterSubsystem.setHoodAngle(4);
+      controllerInput = 0;
     }
     else if (joystick.getLeftBumperPressed()) {
       m_ShooterSubsystem.setHoodAngle(6);
-    }
-    else {
       controllerInput = 0;
     }
-    m_ShooterSubsystem.setHoodAngle(controllerInput);
+    else {
+      m_ShooterSubsystem.setHoodAngle(controllerInput);
+    }
+    
 
     if (joystick.getYButton()) {
-      m_ShooterSubsystem.setflywheelSpeed(0.5);
+      m_ShooterSubsystem.setFlywheelSpeed(3000);
     }
     else {
-      m_ShooterSubsystem.setflywheelSpeed(0);
+      m_ShooterSubsystem.stopFlywheel();
     }
     
     

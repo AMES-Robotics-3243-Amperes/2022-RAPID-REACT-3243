@@ -55,7 +55,6 @@ public class RobotContainer {
   public RobotContainer() {
 
     // ++ command stuff
-    m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
     m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
 
     // Configure the button bindings

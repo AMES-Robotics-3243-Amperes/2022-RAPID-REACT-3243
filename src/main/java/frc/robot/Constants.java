@@ -74,8 +74,8 @@ public final class Constants {
     public static final class Shooter {
         // ++ shooter constants
         // CAN
-        public static final int flywheelMotorID = 5;
-        public static final int hoodMotorID = 6;
+        public static final int flywheelMotorID = 9;
+        public static final int hoodMotorID = 5;
     }
 
 }
