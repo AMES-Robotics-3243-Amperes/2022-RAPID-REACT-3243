@@ -35,6 +35,44 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
 
+  
+
+  //  ++ ---------------- target position methods -----------
+
+  public double getTargetX(double defaultReturn) {
+    // ++ this method gets the X position of the limelight's target
+    // ++ if no target is seen, the method returns the defaultReturn input paramter
+    return tx.getDouble(defaultReturn);
+  }
+
+  public double getTargetY(double defaultReturn) {
+    // ++ this method gets the Y position of the limelight's target
+    // ++ if no target is seen, the method returns the defaultReturn input paramter
+    return ty.getDouble(defaultReturn);
+  }
+
+  public double getTargetArea(double defaultReturn) {
+    // ++ this method gets the area of the limelight's target
+    // ++ if no target is seen, the method returns the defaultReturn input paramter
+    return ta.getDouble(defaultReturn);
+  }
+
+  public Boolean isTargetValid() {
+    // ++ this method will return true if the robot sees any valid targets, otherwise it returns false
+    // ++ NOTE: "ta" returns "1.0" if it sees ANY number of valid targets
+      // ++ for example, it would still return "1.0" if it sees 3 valid targets
+    double tvOutput = tv.getDouble(0.0);
+    if (tvOutput == 1.0){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // ++ --------------------------------------------------------------------------------
+
+
+
 
   @Override
   public void periodic() {
