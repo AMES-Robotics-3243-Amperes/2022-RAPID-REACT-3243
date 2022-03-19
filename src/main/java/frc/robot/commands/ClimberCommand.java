@@ -40,7 +40,8 @@ public class ClimberCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    //m_ClimberSubsystem.resetMotorPosReadings();
+    m_ClimberSubsystem.calibrateGrabbers();
   }
 
 
@@ -55,15 +56,15 @@ public class ClimberCommand extends CommandBase {
     m_ClimberSubsystem.spinClimber(half_1+half_2);
 
     if (joystick.getXButton() && !joystick.getYButton()) {
-      m_ClimberSubsystem.spinGrabbers(0, 0.2);
+      m_ClimberSubsystem.spinGrabbers(0, 0.5);
     } else if (joystick.getYButton()) {
-      m_ClimberSubsystem.spinGrabbers(0, -0.2);
+      m_ClimberSubsystem.spinGrabbers(0, -0.5);
     }
 
     if (joystick.getAButton() && !joystick.getBButton()) {
-      m_ClimberSubsystem.spinGrabbers(1, 0.2);
+      m_ClimberSubsystem.spinGrabbers(1, 0.5);
     } else if (joystick.getBButton()) {
-      m_ClimberSubsystem.spinGrabbers(1, -0.2);
+      m_ClimberSubsystem.spinGrabbers(1, -0.5);
     }
     if (m_ClimberSubsystem.isTooHot){
       joystick.setRumble(RumbleType.kLeftRumble, 1);
