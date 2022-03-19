@@ -33,44 +33,60 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ make motor objects  
   private CANSparkMax flywheelMotor = new CANSparkMax( Constants.Shooter.flywheelMotorID, MotorType.kBrushless ); 
   private CANSparkMax hoodMotor = new CANSparkMax( Constants.Shooter.hoodMotorID, MotorType.kBrushless ); 
-  public RelativeEncoder hoodEncoder; 
 
-  // ++ make encoder objects (this might not be the right kind of encoder or even work)
-  private SparkMaxPIDController PIDAngle = hoodMotor.getPIDController();
-  private SparkMaxPIDController PIDSpeed = flywheelMotor.getPIDController();
+  // ++ declare encoder objects
+  public RelativeEncoder hoodEncoder; 
+  public RelativeEncoder flywheelEncoder;
+
+  // ++ declare PID objects
+  private SparkMaxPIDController hoodPID;
+  private SparkMaxPIDController flywheelPID;
+
+
+
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
+
     SmartDashboard.putNumber("shootP", 0);
     SmartDashboard.putNumber("shootI", 0);
-    //££ Sets up the PIDAngle and hoodEncoder
-    PIDAngle.setP(0.4);
     
+    // ++ define encoder objects
+    flywheelEncoder = flywheelMotor.getEncoder();
     hoodEncoder = hoodMotor.getEncoder();
+
+    // ++ define PID objects
+    flywheelPID = flywheelMotor.getPIDController();
+    hoodPID = hoodMotor.getPIDController();
+
   }
+
+
+
+
   //££ Sets the defualt angle value and passes it into the PID's
   double hoodAngle = 0;
   public void setHoodAngle(double angle) {
     hoodAngle = angle;//(angle*360)*(768/7);
-    PIDAngle.setReference(hoodAngle, ControlType.kPosition);
+    // PIDAngle.setReference(hoodAngle, ControlType.kPosition);
   }
 
   double flywheelSpeed = 0;
   public void setFlywheelSpeed(double speed) {
     flywheelSpeed = speed;
-    PIDSpeed.setReference(flywheelSpeed, ControlType.kVelocity);
+    // PIDSpeed.setReference(flywheelSpeed, ControlType.kVelocity);
   }
 
   public void stopFlywheel(){
-    PIDSpeed.setReference(0, ControlType.kDutyCycle);
+    // PIDSpeed.setReference(0, ControlType.kDutyCycle);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("shooter velocity", flywheelMotor.getEncoder().getVelocity());
-    PIDSpeed.setP(SmartDashboard.getNumber("shootP", 0)); //0.00015);
-    PIDSpeed.setI(SmartDashboard.getNumber("shootI", 0)); //0.000025);
+    // PIDSpeed.setP(SmartDashboard.getNumber("shootP", 0)); //0.00015);
+    // PIDSpeed.setI(SmartDashboard.getNumber("shootI", 0)); //0.000025);
   }
 
 }
