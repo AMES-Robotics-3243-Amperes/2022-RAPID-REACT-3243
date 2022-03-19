@@ -20,15 +20,18 @@ import com.kauailabs.navx.frc.AHRS;
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
 
+  // ++ declare tabs
   ShuffleboardTab movementTab;
   ShuffleboardTab driverFeedbackTab;
 
+  // ++ declare widgets
   static SimpleWidget firstPowerShuffle;
   static SimpleWidget secondPowerShuffle;
   static SimpleWidget aCoeffShuffle;
   static SimpleWidget bCoeffShuffle;
   static SimpleWidget fastModeMultiplierShuffle;
   static SimpleWidget totalSpeedDamperShuffle;
+
 
   private static SendableChooser<Integer> m_FirstPower;
 
@@ -43,6 +46,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
 
   // // I'm gonna cry
+  // ++ me too I'm freezing rn cottonwood's area is coldddddd
 
 
     firstPowerShuffle = movementTab.add("firstpower", Constants.Joysticks.firstPower);
@@ -69,7 +73,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   }
 
-
+  // ++ =========================================== DRIVETRAIN STUFF ===============================================
   public static int getFirstPower() {
     //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
     return m_FirstPower.getSelected();
@@ -98,6 +102,10 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   public static double getDriveSpeedDamper(){
     return (double)(totalSpeedDamperShuffle.getEntry().getDouble((double)Constants.Joysticks.driveSpeedDamper));
   }
+  // ++ ============================= END DRIVETRAIN STUFF ==================================================
+
+
+
 
 
   // thisIsCamelCase
