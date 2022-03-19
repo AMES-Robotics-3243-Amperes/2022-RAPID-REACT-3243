@@ -1,7 +1,7 @@
 package frc.robot;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.shuffleboardsubsystem;
+import frc.robot.subsystems.ShuffleboardSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -47,7 +47,7 @@ public final class JoyUtil extends XboxController {
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength); 
-        SmartDashboard.putNumber("x val", adjustedPos);
+        SmartDashboard.putNumber("joyx adj out", adjustedPos);
         prevFilteredX = lowPassFilter(rawJoyPos, prevFilteredX, filterStrength);
         return adjustedPos;
     }
@@ -71,6 +71,7 @@ public final class JoyUtil extends XboxController {
         double adjustedPos = ( lowPassFilter( posWithDeadzone(rawJoyPos), prevFilteredR, filterStrength) * damperStrength );
         return adjustedPos;
     }
+    //meah for mayor
 
 
 
@@ -94,7 +95,7 @@ public final class JoyUtil extends XboxController {
 
   
     public static double lowPassFilter(double pos, double prevFilterJoy, double filterStrength) {
-        // ++ this method smoothes out the joystick input so 
+        // ++ this method smoothes out the joystick input so
         // ++ "prevFilterJoy" is the previous output of this function
         double filteredSpeed = ((filterStrength * prevFilterJoy) + ((1- filterStrength) * pos));
         return filteredSpeed;
@@ -104,12 +105,39 @@ public final class JoyUtil extends XboxController {
     public static double joyCurve(double pos) {
         // ++ this method will take the linear joystick input and puts it into a polynomial curve
 
-        double a = shuffleboardsubsystem.getaCoeff(); 
-        double b = shuffleboardsubsystem.getbCoeff();
-        int firstPower = shuffleboardsubsystem.getfirstpower(); 
-        int secondPower = shuffleboardsubsystem.getsecondpower(); 
+        // double a = ShuffleboardSubsystem.getaCoeff(); 
+        double a = Constants.Joysticks.aCoeff;
+        // double b = ShuffleboardSubsystem.getbCoeff();
+        double b = Constants.Joysticks.bCoeff;
+        // int firstPower = (int)ShuffleboardSubsystem.getFirstPower(); 
+        double firstPower = Constants.Joysticks.firstPower;
+        // int secondPower = (int)ShuffleboardSubsystem.getSecondPower(); 
+        double secondPower = Constants.Joysticks.secondPower;
 
         return ( (a * (Math.pow(pos,firstPower))) + (b * (Math.pow(pos,secondPower))) ); 
+    }
+
+    public static double fastMode(double pos, double fastmodeInput) {
+        // ++ this method should return an adjusted joystick position with the fastmode
+        // ++ fastmodeInput is the position of the trigger
+
+        double fastmodeConstant = ShuffleboardSubsystem.getFastmodeMultiplier();
+        double fastmodeMultiplier= (fastmodeInput * fastmodeConstant) + 1.0;
+        double adjustedPos = pos * fastmodeMultiplier;
+        return adjustedPos;
+
+        /* ss finalMultiplier is the damperStrength scaled by the ((Right Trigger scaled by the fastModeMaxMultiplier) + 1)
+        * for instance, if the damperStrength is 0.5 and the fastModeMaxMultiplier is 3, 
+        * when the Right Trigger is 0, Fast Mode is off and the fastModeMaxMultiplier is nullified,
+        * and the finalMultiplier is just damperStrength
+        * when the Right Trigger is 0.5, fastModeMaxMultiplier is halved (1.5), and adds 1 for 2.5
+        * so damperStrength, the default multiplier, is scaled up by half of the Maximum Multiplier
+        * and when the Right Trigger is 1, it's scaled up by the Maximum.
+        * hope that makes sense
+        * I did this because it's a multiplier and it would sure be a shame 
+        * if nullifying the fastmodemultiplier caused the finalmultiplier to be 0,
+        * disabling non fast mode
+        */
     }
 
 
@@ -125,6 +153,7 @@ public final class JoyUtil extends XboxController {
         * - deadzone
         * - low pass filtering
         * - joy curve
+        * - do fastmode stuff
         * - convert joystick range [-1, 1] to range of robot speed [-max speed, max speed]
         * - dampen the output w/ a multiplier
         * and the order might have to be changed as we add more functions, 
@@ -132,31 +161,24 @@ public final class JoyUtil extends XboxController {
         */ 
 
         double withDead = posWithDeadzone(rawJoyPos);
-        SmartDashboard.putNumber("with dead", withDead);
         double withFilter = lowPassFilter(withDead, prevFilterJoy, filterStrength);
-        SmartDashboard.putNumber("with filter",withFilter);
         double withCurve = joyCurve(withFilter); 
+        double withSpeedMode = fastMode(withCurve, getRightTriggerAxis());
+        double inMetersPerSec = withSpeedMode * Constants.DriveTrain.maxNEORPM * Constants.DriveTrain.velocityConversionRatio;
+        double withDamper = inMetersPerSec * ShuffleboardSubsystem.getDriveSpeedDamper();
+
+        double adjustedJoyPos = withDamper;
+
+        SmartDashboard.putNumber("with dead", withDead);
+        SmartDashboard.putNumber("with filter",withFilter);
         SmartDashboard.putNumber("with curve", withCurve);
-        /* ss finalMultiplier is the damperStrength scaled by the ((Right Trigger scaled by the fastModeMaxMultiplier) + 1)
-        * for instance, if the damperStrength is 0.5 and the fastModeMaxMultiplier is 3, 
-        * when the Right Trigger is 0, Fast Mode is off and the fastModeMaxMultiplier is nullified,
-        * and the finalMultiplier is just damperStrength
-        * when the Right Trigger is 0.5, fastModeMaxMultiplier is halved (1.5), and adds 1 for 2.5
-        * so damperStrength, the default multiplier, is scaled up by half of the Maximum Multiplier
-        * and when the Right Trigger is 1, it's scaled up by the Maximum.
-        * hope that makes sense
-        * I did this because it's a multiplier and it would sure be a shame 
-        * if nullifying the fastmodemultiplier caused the finalmultiplier to be 0,
-        * disabling non fast mode
-        */
-        double finalMultiplier = damperStrength * ((getRightTriggerAxis() * Constants.Joysticks.fastModeMaxMultiplier) + 1);
-        SmartDashboard.putNumber("final multiplier", finalMultiplier);
-        double withMultiplier = withCurve * finalMultiplier;
-        SmartDashboard.putNumber("drive output", withMultiplier);
+        SmartDashboard.putNumber("with speedmode", withSpeedMode);
+        SmartDashboard.putNumber("in m/s", inMetersPerSec);
+        SmartDashboard.putNumber("drive output", withDamper);
 
         // ++ I decided to make seperate variables for everything to make it a little more readable
 
-        return withMultiplier;
+        return adjustedJoyPos;
         // ++ we return [above variable] becasue that was the last thing done to the input
 
         // it'll need to be changed if/when more functions are added

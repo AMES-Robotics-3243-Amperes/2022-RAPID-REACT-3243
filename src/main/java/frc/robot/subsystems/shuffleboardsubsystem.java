@@ -13,49 +13,78 @@ import com.kauailabs.navx.frc.AHRS;
 
 
 
-public class shuffleboardsubsystem extends SubsystemBase {
+public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
 
-  ShuffleboardTab movementtab;
-  ShuffleboardTab driverfeedbacktab;
-  static SimpleWidget firstpowershuffle;
-  static SimpleWidget secondpowershuffle;
-  static SimpleWidget aCoeffshuffle;
+  ShuffleboardTab movementTab;
+  ShuffleboardTab driverFeedbackTab;
+
+  static SimpleWidget firstPowerShuffle;
+  static SimpleWidget secondPowerShuffle;
+  static SimpleWidget aCoeffShuffle;
   static SimpleWidget bCoeffShuffle;
+  static SimpleWidget fastModeMultiplierShuffle;
+  static SimpleWidget totalSpeedDamperShuffle;
+
   private static final AHRS imu = new AHRS();
   private static SimpleWidget roughxpos, roughypos, roughzpos;
-  public shuffleboardsubsystem() {
-    driverfeedbacktab = Shuffleboard.getTab("Driverfeedback");
-    movementtab = Shuffleboard.getTab("Drivetrain");
+
+  
+  public ShuffleboardSubsystem() {
+    driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
+    movementTab = Shuffleboard.getTab("Drivetrain");
   // // I'm gonna cry
-    firstpowershuffle = movementtab.add("firstpower", Constants.Joysticks.firstPower);
-    secondpowershuffle = movementtab.add("secondpower", Constants.Joysticks.secondPower);
-    aCoeffshuffle = movementtab.add("aCoeff", Constants.Joysticks.aCoeff);
-    bCoeffShuffle = movementtab.add("bCoeff", Constants.Joysticks.bCoeff);
-    roughxpos = driverfeedbacktab.add("roughx", imu.getDisplacementX());
-    roughypos = driverfeedbacktab.add("roughy", imu.getDisplacementY());
-    roughzpos = driverfeedbacktab.add("roughz", imu.getDisplacementZ());
+
+
+    firstPowerShuffle = movementTab.add("firstpower", Constants.Joysticks.firstPower);
+    secondPowerShuffle = movementTab.add("secondpower", Constants.Joysticks.secondPower);
+    aCoeffShuffle = movementTab.add("aCoeff", Constants.Joysticks.aCoeff);
+    // ++ NOTE: we don't actually need to read anything for the b coefficient, because the b coefficient is just (1 - a coeff)
+    bCoeffShuffle = movementTab.add("bCoeff", Constants.Joysticks.bCoeff);
+    fastModeMultiplierShuffle = movementTab.add("fast mode mult", Constants.Joysticks.fastModeMaxMultiplier);
+    totalSpeedDamperShuffle = movementTab.add("speed damper", Constants.Joysticks.driveSpeedDamper);
+
+
+
+    roughxpos = driverFeedbackTab.add("roughx", imu.getDisplacementX()); 
+    roughypos = driverFeedbackTab.add("roughy", imu.getDisplacementY());
+    roughzpos = driverFeedbackTab.add("roughz", imu.getDisplacementZ());
 
   }
 
-  public static int getfirstpower() {
-    return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
+  public static double getFirstPower() {
+    return (double)(firstPowerShuffle.getEntry().getNumber(Constants.Joysticks.firstPower));
     
   }
 
-  public static int getsecondpower() {
-    return (int)(secondpowershuffle.getEntry().getDouble(Constants.Joysticks.secondPower));
+  public static double getSecondPower() {
+    return (double)(secondPowerShuffle.getEntry().getNumber((double)Constants.Joysticks.secondPower));
     
   }
-  public static int getaCoeff() {
-    return (int)(aCoeffshuffle.getEntry().getDouble(Constants.Joysticks.aCoeff));
+  public static double getaCoeff() {
+    return (double)(aCoeffShuffle.getEntry().getDouble((double)Constants.Joysticks.aCoeff));
     
   }
 
-  public static int getbCoeff() {
-    return (int)(bCoeffShuffle.getEntry().getDouble(Constants.Joysticks.bCoeff));
-    
+  public static double getbCoeff(){
+    // ++ this returns the b coefficient
+    // ++ it's (1- a coeff) becasue that's what the
+    return (double)(1.0 - getaCoeff());
   }
+
+  public static double getFastmodeMultiplier(){
+    return (double)(fastModeMultiplierShuffle.getEntry().getNumber((double)Constants.Joysticks.fastModeMaxMultiplier));
+  }
+
+  public static double getDriveSpeedDamper(){
+    return (double)(totalSpeedDamperShuffle.getEntry().getDouble((double)Constants.Joysticks.driveSpeedDamper));
+  }
+
+
+  // thisIsCamelCase
+  // ThisIsPascalCase
+  // this_is_python_case_whatever_it's_really_called
+  // thisiswhatjessedidwhenoriginallywritingthisclasscase
 
   @Override
   public void periodic() {

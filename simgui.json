@@ -17,9 +17,13 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/DriveSubsystem": "Subsystem",
+      "/LiveWindow/IMUSubsystem": "Subsystem",
       "/LiveWindow/LimelightSubsystem": "Subsystem",
+      "/LiveWindow/ShuffleboardSubsystem": "Subsystem",
       "/LiveWindow/Ungrouped/MecanumDrive[1]": "MecanumDrive",
-      "/LiveWindow/Ungrouped/Scheduler": "Scheduler"
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/LiveWindow/shuffleboardsubsystem": "Subsystem"
     }
   },
   "NetworkTables": {
@@ -27,6 +31,9 @@
       "open": true
     },
     "Shuffleboard": {
+      "Drivetrain": {
+        "open": true
+      },
       "PID Tuning": {
         "open": true
       },
