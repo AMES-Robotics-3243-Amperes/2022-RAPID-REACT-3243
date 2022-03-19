@@ -67,7 +67,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   }
 
 
-  public static int getfirstpower() {
+  public static int getFirstPower() {
     //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
     return m_FirstPower.getSelected();
     

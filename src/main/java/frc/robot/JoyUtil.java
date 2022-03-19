@@ -105,14 +105,14 @@ public final class JoyUtil extends XboxController {
     public static double joyCurve(double pos) {
         // ++ this method will take the linear joystick input and puts it into a polynomial curve
 
-        // double a = ShuffleboardSubsystem.getaCoeff(); 
-        double a = Constants.Joysticks.aCoeff;
-        // double b = ShuffleboardSubsystem.getbCoeff();
-        double b = Constants.Joysticks.bCoeff;
-        // int firstPower = (int)ShuffleboardSubsystem.getFirstPower(); 
-        double firstPower = Constants.Joysticks.firstPower;
-        // int secondPower = (int)ShuffleboardSubsystem.getSecondPower(); 
-        double secondPower = Constants.Joysticks.secondPower;
+        double a = ShuffleboardSubsystem.getaCoeff(); 
+        // double a = Constants.Joysticks.aCoeff;
+        double b = ShuffleboardSubsystem.getbCoeff();
+        // double b = Constants.Joysticks.bCoeff;
+        int firstPower = (int)ShuffleboardSubsystem.getFirstPower(); 
+        // double firstPower = Constants.Joysticks.firstPower;
+        int secondPower = (int)ShuffleboardSubsystem.getSecondPower(); 
+        // double secondPower = Constants.Joysticks.secondPower;
 
         return ( (a * (Math.pow(pos,firstPower))) + (b * (Math.pow(pos,secondPower))) ); 
     }
@@ -163,7 +163,7 @@ public final class JoyUtil extends XboxController {
         double withDead = posWithDeadzone(rawJoyPos);
         double withFilter = lowPassFilter(withDead, prevFilterJoy, filterStrength);
         double withCurve = joyCurve(withFilter); 
-        double withSpeedMode = fastMode(withCurve, getRightTriggerAxis());
+        double withSpeedMode = fastMode(withCurve, (getRightTriggerAxis() - getLeftTriggerAxis()));
         double inMetersPerSec = withSpeedMode * Constants.DriveTrain.maxNEORPM * Constants.DriveTrain.velocityConversionRatio;
         double withDamper = inMetersPerSec * ShuffleboardSubsystem.getDriveSpeedDamper();
 
