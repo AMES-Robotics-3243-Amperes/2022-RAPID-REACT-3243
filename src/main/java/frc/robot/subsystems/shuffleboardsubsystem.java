@@ -7,9 +7,12 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.subsystems.IMUSubsystem;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,6 +22,9 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
+
+  // ++ creates IMUSubsystem object 
+  IMUSubsystem IMUSubsystem = new IMUSubsystem();
 
   // ++ declare tabs
   ShuffleboardTab movementTab;
@@ -36,7 +42,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   private static SendableChooser<Integer> m_FirstPower;
 
 
-  private static final AHRS imu = new AHRS();
   private static SimpleWidget roughxpos, roughypos, roughzpos;
   
   public ShuffleboardSubsystem() {
@@ -49,6 +54,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   // ++ me too I'm freezing rn cottonwood's area is coldddddd
 
 
+
+    // ++ drivetrain stuff
     firstPowerShuffle = movementTab.add("firstpower", Constants.Joysticks.firstPower);
     secondPowerShuffle = movementTab.add("secondpower", Constants.Joysticks.secondPower);
     aCoeffShuffle = movementTab.add("aCoeff", Constants.Joysticks.aCoeff);
@@ -56,12 +63,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     bCoeffShuffle = movementTab.add("bCoeff", Constants.Joysticks.bCoeff);
     fastModeMultiplierShuffle = movementTab.add("fast mode mult", Constants.Joysticks.fastModeMaxMultiplier);
     totalSpeedDamperShuffle = movementTab.add("speed damper", Constants.Joysticks.driveSpeedDamper);
-
-
-
-    roughxpos = driverFeedbackTab.add("roughx", imu.getDisplacementX()); 
-    roughypos = driverFeedbackTab.add("roughy", imu.getDisplacementY());
-    roughzpos = driverFeedbackTab.add("roughz", imu.getDisplacementZ());
 
     m_FirstPower = new SendableChooser<>();
     m_FirstPower.setDefaultOption("Good Power", 3);
@@ -104,6 +105,14 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   }
   // ++ ============================= END DRIVETRAIN STUFF ==================================================
 
+
+  // ++ ================= IMU stuff ===============================
+
+  // roughxpos = driverFeedbackTab.add("roughx", IMUSubsystem.getXPosition()); 
+  // roughypos = driverFeedbackTab.add("roughy", IMUSubsystem.getYPosition());
+  // roughzpos = driverFeedbackTab.add("roughz", IMUSubsystem.getZPosition());
+
+  // ++ ================= end IMU stuff ===========================
 
 
 
