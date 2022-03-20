@@ -53,7 +53,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public double climberAngle = 0;
   public double grabberAngles[] = {0,0};
 
-  private final double calibrationCurrent = 12;
+  private double calibrationCurrent = 7;
 
   private final int grabberSoftCurrentLimit = 15;
   public final int grabberHardCurrentLimit = 20;
@@ -88,10 +88,10 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberR1.setSecondaryCurrentLimit(grabberHardCurrentLimit);
 
     // :) setting the P in the motor PIDs
-    grabberL0PID.setP(0.8);
-    grabberL1PID.setP(0.8);
-    grabberR0PID.setP(0.8);
-    grabberR1PID.setP(0.8);
+    grabberL0PID.setP(0.03);
+    grabberL1PID.setP(0.03);
+    grabberR0PID.setP(0.03);
+    grabberR1PID.setP(0.03);
     climberMotorLPID.setP(0.8);
     climberMotorRPID.setP(0.8);
 
@@ -108,8 +108,10 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberL1.setInverted(true);
     grabberR0.setInverted(true);
     grabberR1.setInverted(true);
+    climberMotorL.setInverted(false);
+    climberMotorR.setInverted(true);
 
-
+    
     // :) set motors to follow
     
     // :) this was making the follower motor not follow with the full strength of the motor so I removed it temporarily
@@ -124,6 +126,8 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberR1.setIdleMode(IdleMode.kBrake);
     grabberL0.setIdleMode(IdleMode.kBrake);
     grabberR0.setIdleMode(IdleMode.kBrake);
+    SmartDashboard.putNumber("calibration speed", -0.17);
+    SmartDashboard.putNumber("calibration current", 20);
 
   }
 
@@ -154,10 +158,10 @@ public class ClimberSubsystem extends SubsystemBase {
       isGrabberCalibrated[i] = false;
     }
     
-    grabberL0.set(-0.2); // negative? yes
-    grabberR0.set(-0.2);
-    grabberL1.set(-0.2);
-    grabberR1.set(-0.2);
+    grabberL0.set(SmartDashboard.getNumber("calibration speed", -0.17)); // negative? yes
+    grabberR0.set(SmartDashboard.getNumber("calibration speed", -0.17));
+    grabberL1.set(SmartDashboard.getNumber("calibration speed", -0.17));
+    grabberR1.set(SmartDashboard.getNumber("calibration speed", -0.17)); //-0.1
 
     isCalibrating = true;
   }
@@ -170,7 +174,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void spinGrabbers(int side, double speed){
     // :) spin grabber motors at a speed, given which side of the climber you want to actuate (0 or 1). Try to spin around a speed of 0.2
-    if (grabberAngles[side]+speed > gripperClosedMinimum && grabberAngles[side]+speed < gripperOpenMaximum) {
+    if (grabberAngles[side]+speed >= gripperClosedMinimum && grabberAngles[side]+speed <= gripperOpenMaximum) {
       grabberAngles[side] += speed;
     }
   }
@@ -188,6 +192,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    calibrationCurrent=SmartDashboard.getNumber("calibration current", 20);
     // This method will be called once per scheduler run
 
     
@@ -202,22 +207,22 @@ public class ClimberSubsystem extends SubsystemBase {
     if (isCalibrated){
       if ((grabberL0Encoder.getPosition()<gripperOpenMaximum+2 && grabberL0Encoder.getPosition()<grabberAngles[0]) ||
           (grabberL0Encoder.getPosition()>gripperClosedMinimum && grabberL0Encoder.getPosition()>grabberAngles[0]) ) {
-      //   grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
+        //grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
       }
       if ((grabberR0Encoder.getPosition()<gripperOpenMaximum+2 && grabberR0Encoder.getPosition()<grabberAngles[0]) ||
           (grabberR0Encoder.getPosition()>gripperClosedMinimum && grabberR0Encoder.getPosition()>grabberAngles[0])) {
-      //   grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
-            SmartDashboard.putBoolean("moving R0", true);
+        grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
+        SmartDashboard.putBoolean("moving R0", true);
       } else {
         SmartDashboard.putBoolean("moving R0", false);
       }
       if ((grabberL1Encoder.getPosition()<gripperOpenMaximum+2 && grabberL1Encoder.getPosition()<grabberAngles[1]) ||
           (grabberL1Encoder.getPosition()>gripperClosedMinimum && grabberL1Encoder.getPosition()>grabberAngles[1])) {
-      //   grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
+        grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
       }
       if ((grabberR1Encoder.getPosition()<gripperOpenMaximum+2 && grabberR1Encoder.getPosition()<grabberAngles[1]) ||
           (grabberR1Encoder.getPosition()>gripperClosedMinimum && grabberR1Encoder.getPosition()>grabberAngles[1])) {
-      //   grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
+        grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
       }
     } else if (isCalibrating){
       if (grabberR0.getOutputCurrent() > calibrationCurrent) {
@@ -236,13 +241,13 @@ public class ClimberSubsystem extends SubsystemBase {
       }
       if (grabberR1.getOutputCurrent() > calibrationCurrent) {
         grabberR1.set(0);
-        grabberR0Encoder.setPosition(0);
+        grabberR1Encoder.setPosition(0);
         grabberAngles[1]=0;
         isGrabberCalibrated[2] = true;
       }
       if (grabberL1.getOutputCurrent() > calibrationCurrent){
         grabberL1.set(0);
-        grabberL0Encoder.setPosition(0);
+        grabberL1Encoder.setPosition(0);
         grabberAngles[1]=0;
         isGrabberCalibrated[3] = true;
       }
@@ -261,9 +266,11 @@ public class ClimberSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Avg. Temp of climber motors (Celcius)", (climberMotorL.getMotorTemperature()+climberMotorR.getMotorTemperature())/2);
     SmartDashboard.putNumber("Grabber side 0", grabberAngles[0]);
     SmartDashboard.putNumber("Grabber side 1", grabberAngles[1]);
-    SmartDashboard.putNumber("Grabber side 0 encoder", grabberR0Encoder.getPosition());
+    SmartDashboard.putNumber("Grabber side 1 encoder", grabberR1Encoder.getPosition());
+    SmartDashboard.putNumber("grabber r1 current", grabberR1.getOutputCurrent());
     SmartDashboard.putBooleanArray("isCalibratedArray", isGrabberCalibrated);
     SmartDashboard.putBoolean("isCalibrated", isCalibrated);
+    SmartDashboard.putNumberArray("set grabber values", grabberAngles);
     
     // SmartDashboard.putNumber("Current of climber L", climberMotorL.getOutputCurrent());
     // SmartDashboard.putNumber("Current of climber R", climberMotorR.getOutputCurrent());
