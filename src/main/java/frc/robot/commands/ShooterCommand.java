@@ -55,8 +55,8 @@ public class ShooterCommand extends CommandBase {
     }
     
 
-    /*joystick.getYButton()*/ 
-    if (true) { 
+     
+    if (joystick.getYButton()) { 
       m_ShooterSubsystem.setFlywheelSpeed(3000);
       SmartDashboard.putNumber("flywheel speed", m_ShooterSubsystem.getFlywheelSpeed());
     }
