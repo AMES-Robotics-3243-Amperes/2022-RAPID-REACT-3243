@@ -56,6 +56,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ Field Object for visulaization in shuffleboard or simulation
   Field2d field = new Field2d();
+  // // ++ IMU subsystem object
+  // IMUSubsystem IMUSubsystem = new IMUSubsystem();
 
   // ~~ Pose object for keeping track of robot position
   Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
@@ -192,7 +194,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ returns a Rotation2d object with the robot's current angle, in radians
   public Rotation2d getGyroRotation() {
-    double angle = IMUSubsystem.getYaw();
+    double angle = IMUSubsystem.getIMUYaw();
     angle *= (Math.PI / 180);
     angle -= gyroOffset;
     Rotation2d rotation = new Rotation2d(angle);

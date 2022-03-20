@@ -184,6 +184,8 @@ public final class JoyUtil extends XboxController {
         // it'll need to be changed if/when more functions are added
     }
 
+}
+
 
 
 
@@ -194,6 +196,3 @@ public final class JoyUtil extends XboxController {
 // good job doing important things
 //go u
 // bbbbbbbbbbbbbb
-
-
-}

@@ -18,8 +18,9 @@ public class IMUSubsystem extends SubsystemBase {
   // ~~ IMU object - gyro and accelerometer
   private static final AHRS imu = new AHRS();
 
-  private final ShuffleboardTab imuTab;
-  private SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
+  // ++ LEAVE THESE AS PUBLIC; there was some 
+  public final ShuffleboardTab imuTab;
+  public SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
   private NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
 
   
@@ -49,8 +50,9 @@ public class IMUSubsystem extends SubsystemBase {
     
   }
 
-  public static double getYaw() {
+  public static double getIMUYaw() {
     return imu.getYaw();
+    // return 0.0;
   }
 
   public static double getPitch() {
@@ -88,7 +90,7 @@ public class IMUSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    tYaw.setDouble(imu.getYaw());
+    // tYaw.setDouble(imu.getYaw());
     tPitch.setDouble(imu.getPitch());
     tRoll.setDouble(imu.getRoll());
     tXVelocity.setDouble(imu.getVelocityX());

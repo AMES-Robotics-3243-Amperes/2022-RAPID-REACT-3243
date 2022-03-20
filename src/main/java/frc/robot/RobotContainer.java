@@ -2,21 +2,39 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+//  ++ FRC stuff
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IMUSubsystem;
-import frc.robot.subsystems.ShuffleboardSubsystem;
-import frc.robot.commands.AutonomousPIDTaxiCommand;
-import frc.robot.commands.TeleopPIDDriveCommand;
+// ++ project stuff
 import frc.robot.Constants; 
+import edu.wpi.first.wpilibj2.command.Command;
+
+// ++ misc
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.IMUSubsystem;
+
+// ++ network tables / shuffleboard stuff
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
+// ++ SUBSYSTEMS
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShuffleboardSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 
-// ++ comment so I can rebase
+// ++ COMMANDS
+  // ++ teleop
+import frc.robot.commands.TeleopPIDDriveCommand;
+import frc.robot.commands.ShooterCommand;
+
+  // ++ auto
+import frc.robot.commands.AutonomousPIDTaxiCommand;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,15 +54,22 @@ public class RobotContainer {
 
 
   // ++ SUBSYSTEMS AND COMMANDS ========================================
-  // subsystems
+  // SUBSYSTEMS -------------------
+    // ++ robot subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
-  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
+  private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+    // ++ "utility subsystems"
+  // private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
   private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
-  // commands
+
+  // COMMANDS--------------------
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
+  private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
   // private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
 
   // ++ ================================================================
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -52,11 +77,12 @@ public class RobotContainer {
 
     // ++ command stuff
     m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
-
+    m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
 
     // Configure the button bindings
     configureButtonBindings();
   }
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -74,5 +100,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return new AutonomousPIDTaxiCommand(m_DriveSubsystem);
+    // return null;
   }
 }
