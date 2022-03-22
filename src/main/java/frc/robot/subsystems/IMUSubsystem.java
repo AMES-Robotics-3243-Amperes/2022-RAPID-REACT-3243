@@ -18,10 +18,10 @@ public class IMUSubsystem extends SubsystemBase {
   // ~~ IMU object - gyro and accelerometer
   private static final AHRS imu = new AHRS();
 
-  // ++ LEAVE THESE AS PUBLIC; there was some 
+  // ++ LEAVE THESE AS PUBLIC; there was some weird error with a Null Pointer Exception
   public final ShuffleboardTab imuTab;
   public SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
-  private NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
+  public NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
 
   
   /** Creates a new IMUSubsystem. */

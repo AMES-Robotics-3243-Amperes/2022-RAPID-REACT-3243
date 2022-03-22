@@ -113,8 +113,24 @@ public final class Constants {
     public static final class Shooter {
         // ++ shooter constants
         // CAN
+        // ++ motor stuff ----------------------------------
         public static final int flywheelMotorID = 9;
         public static final int hoodMotorID = 5;
+        // ++ PID stuff ----
+        // ++ flywheel
+        public static final double flywheelPGain = 0.00015;
+        public static final double flywheelIGain = 0.000025;
+        public static final double flywheelDGain = 0.0;
+        // ++ hood 
+        public static final double hoodPGain = 0.0;
+        public static final double hoodIGain = 0.0;
+        public static final double hoodDGain = 0.0;
+
+    }
+
+    public static final class Limelight {
+        // ++ constants for limelight stuff, anything involved with calculations or keys etc
+
     }
 
 }

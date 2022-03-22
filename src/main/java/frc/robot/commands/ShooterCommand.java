@@ -23,7 +23,9 @@ public class ShooterCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_ShooterSubsystem.setFlyhweelPIDValues();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
 
@@ -55,12 +57,11 @@ public class ShooterCommand extends CommandBase {
     }
     
 
-     
+    // ++ this sets the speed of the flywheel
     if (joystick.getYButton()) { 
-      m_ShooterSubsystem.setFlywheelSpeed(3000);
-      SmartDashboard.putNumber("flywheel speed", m_ShooterSubsystem.getFlywheelSpeed());
-    }
-    else {
+      double speed = 100.0;
+      m_ShooterSubsystem.setFlywheelSpeed(speed);
+    } else {
       m_ShooterSubsystem.stopFlywheel();
     }
     

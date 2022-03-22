@@ -43,16 +43,12 @@ public class ShooterSubsystem extends SubsystemBase {
   private SparkMaxPIDController flywheelPID;
 
 
-
-  double hoodAngle = 0.0;
-  double flywheelSpeed = 0.0;
-
   
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
 
-    SmartDashboard.putNumber("shootP", 0);
-    SmartDashboard.putNumber("shootI", 0);
+    // SmartDashboard.putNumber("shootP", 0);
+    // SmartDashboard.putNumber("shootI", 0);
     
     // ++ define encoder objects
     flywheelEncoder = flywheelMotor.getEncoder();
@@ -68,28 +64,37 @@ public class ShooterSubsystem extends SubsystemBase {
 
   //££ Sets the defualt angle value and passes it into the PID's
   public void setHoodAngle(double angle) {
-    hoodAngle = angle;//(angle*360)*(768/7);
+    // hoodAngle = angle;//(angle*360)*(768/7);
     // PIDAngle.setReference(hoodAngle, ControlType.kPosition);
   }
 
   // ++ ============== END HOOD STUFF ===============================
-
+// maya #2 is cooler than u
 
 
   // ++ ============ FLYWHEEL STUFF ==============================
 
   public void setFlywheelSpeed(double speed) {
-    flywheelSpeed = speed;
-    flywheelPID.setReference(flywheelSpeed, ControlType.kVelocity);
+    flywheelPID.setReference(speed, ControlType.kVelocity);
+    // flywheelMotor.set(speed);
   }
 
   public void stopFlywheel(){
-    // PIDSpeed.setReference(0, ControlType.kDutyCycle);
+    flywheelMotor.set(0.0);
   }
 
   public double getFlywheelSpeed() {
     // ++ returns the velocity of the flywheelEncoder
     return flywheelEncoder.getVelocity();
+  }
+
+  public void setFlyhweelPIDValues() {
+    double pGain = Constants.Shooter.flywheelPGain; //SmartDashboard.getNumber("shootP", Constants.Shooter.flywheelPGain);
+    double iGain = Constants.Shooter.flywheelIGain; //SmartDashboard.getNumber("shootI", Constants.Shooter.flywheelIGain);
+    double dGain = Constants.Shooter.flywheelDGain; //SmartDashboard.getNumber("shootP", Constants.Shooter.flywheelDGain);
+    flywheelPID.setP(pGain); 
+    flywheelPID.setI(iGain);
+    flywheelPID.setD(dGain);
   }
   // ++ ============ END FLYWHEEL STUFF ==========================
 
@@ -97,9 +102,8 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("shooter velocity", flywheelMotor.getEncoder().getVelocity());
-    // PIDSpeed.setP(SmartDashboard.getNumber("shootP", 0)); //0.00015);
-    // PIDSpeed.setI(SmartDashboard.getNumber("shootI", 0)); //0.000025);
+    SmartDashboard.putNumber("shooter velocity", getFlywheelSpeed());
+
   }
 
 }
