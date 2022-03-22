@@ -207,8 +207,10 @@ public class DriveSubsystem extends SubsystemBase {
     dGain = dGainWidget.getEntry();
   }
 
+
   public void resetGyroRotation() {
     gyroOffset = getGyroRotation().getRadians();
+
   }
 
   // ~~ resets the Pose2d and encoder positions of all the motors
