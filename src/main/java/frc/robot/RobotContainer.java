@@ -13,7 +13,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.climber_commands.GeneralClimbCommand;
 
 // ++ comment so I can rebase
 
@@ -43,7 +43,7 @@ public class RobotContainer {
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
   // commands
   private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
-  private final ClimberCommand m_ClimberCommand = new ClimberCommand(m_ClimberSubsystem, secondaryController);
+  private final GeneralClimbCommand m_ClimberCommand = new GeneralClimbCommand(m_ClimberSubsystem, secondaryController);
   // ++ =================================================
 
  

@@ -52,6 +52,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public double climberAngle = 0;
   public double grabberAngles[] = {0,0};
+  public double encoderGrabberAngles[]; //[0] is side 0, [1] is side 1
+  public double encoderClimberAngle;
 
   private double calibrationCurrent = 7;
 
@@ -64,8 +66,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final double maxTemp = 40;
   public boolean isTooHot = false;
 
-  private final double gripperOpenMaximum = 67;
-  private final double gripperClosedMinimum = 0.4;
+  public final double gripperOpenMaximum = 67;
+  public final double gripperClosedMinimum = 0.4;
 
   public ClimberSubsystem () {
     // :) reset things
@@ -161,16 +163,16 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberL0.set(SmartDashboard.getNumber("calibration speed", -0.17)); // negative? yes
     grabberR0.set(SmartDashboard.getNumber("calibration speed", -0.17));
     grabberL1.set(SmartDashboard.getNumber("calibration speed", -0.17));
-    grabberR1.set(SmartDashboard.getNumber("calibration speed", -0.17)); //-0.1
+    grabberR1.set(SmartDashboard.getNumber("calibration speed", -0.17)); //-0.1? no
 
     isCalibrating = true;
   }
 
 
   public void actuateGrabber(int side, double revolutions){
-    // :) actuate grabber motors, to a specified number of revolutions from starting angle
-    grabberAngles[side] = revolutions;
-  }
+    // :) actuate grabber motors, to a specified number of revolutions from closed angle (as long as it calibrates and is within motor range after calibration)
+    grabberAngles[side] = Math.max(gripperClosedMinimum, Math.min(revolutions, gripperOpenMaximum));
+  }            // above basically says: {gripperClosedMinimum<revolutions<gripperOpenMaximum} which limits it between the two numbers.
 
   public void spinGrabbers(int side, double speed){
     // :) spin grabber motors at a speed, given which side of the climber you want to actuate (0 or 1). Try to spin around a speed of 0.2
@@ -185,7 +187,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void spinClimber(double speed){
-    // :) spin climber both motors at a speed
+    // :) spin climber both motors at a speed, probably a bad idea to use this... here it is in case
     climberAngle += speed;
     //climberMotorR.set(speed);
   }
@@ -193,12 +195,17 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     calibrationCurrent=SmartDashboard.getNumber("calibration current", 20);
+
+    encoderGrabberAngles[0] = (grabberL0Encoder.getPosition()+grabberR0Encoder.getPosition())/2; //is average
+    encoderGrabberAngles[1] = (grabberL1Encoder.getPosition()+grabberR1Encoder.getPosition())/2;
+    encoderClimberAngle = (climberMotorLEncoder.getPosition()+climberMotorREncoder.getPosition())/2; //also is average
+    
     // This method will be called once per scheduler run
 
     
     // :) update and spin the motors to their angles
 
-    // :) super long if-statements are to prevent the motors from overrunning too far. (hopefully they work...)
+    // :) super long if-statement is to prevent the motors from overrunning too far. (hopefully it works...)
     //if ( (climberAngle-climberMotorREncoder.getPosition()>1 && climberAngle<climberMotorREncoder.getPosition()) || (climberAngle-climberMotorREncoder.getPosition()<-0.1 && climberAngle>climberMotorREncoder.getPosition()) ) {
       climberMotorRPID.setReference(climberAngle, ControlType.kPosition);
       climberMotorLPID.setReference(climberAngle, ControlType.kPosition);
@@ -207,7 +214,7 @@ public class ClimberSubsystem extends SubsystemBase {
     if (isCalibrated){
       if ((grabberL0Encoder.getPosition()<gripperOpenMaximum+2 && grabberL0Encoder.getPosition()<grabberAngles[0]) ||
           (grabberL0Encoder.getPosition()>gripperClosedMinimum && grabberL0Encoder.getPosition()>grabberAngles[0]) ) {
-        //grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
+        grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
       }
       if ((grabberR0Encoder.getPosition()<gripperOpenMaximum+2 && grabberR0Encoder.getPosition()<grabberAngles[0]) ||
           (grabberR0Encoder.getPosition()>gripperClosedMinimum && grabberR0Encoder.getPosition()>grabberAngles[0])) {
@@ -231,8 +238,6 @@ public class ClimberSubsystem extends SubsystemBase {
         grabberAngles[0]=0;
         isGrabberCalibrated[0] = true;
       }
-      // :) remove when not testing!!!!!!!!!!!!!
-      isGrabberCalibrated[1] = true;
       if (grabberL0.getOutputCurrent() > calibrationCurrent){
         grabberL0.set(0);
         grabberL0Encoder.setPosition(0);

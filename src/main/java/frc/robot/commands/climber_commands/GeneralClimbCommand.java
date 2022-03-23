@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.climber_commands;
 import frc.robot.JoyUtil;
 import frc.robot.Constants; 
 
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** An example command that uses an example subsystem. */
-public class ClimberCommand extends CommandBase {
+public class GeneralClimbCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSubsystem m_ClimberSubsystem;
   private final JoyUtil joystick;
@@ -30,7 +30,7 @@ public class ClimberCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ClimberCommand(ClimberSubsystem subsystem, JoyUtil secondaryController) {
+  public GeneralClimbCommand(ClimberSubsystem subsystem, JoyUtil secondaryController) {
     m_ClimberSubsystem = subsystem;
     joystick = secondaryController; 
     // Use addRequirements() here to declare subsystem dependencies.
