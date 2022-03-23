@@ -25,7 +25,7 @@ public class CloseGripperCommand extends CommandBase {
     if (actuatingSide != -1){
       m_ClimberSubsystem.actuateGrabber(actuatingSide, m_ClimberSubsystem.gripperClosedMinimum);
     } else {
-      System.out.println("Uh... something went wrong in the gripper close command. You're not setting the actuation side!");
+      System.out.println("Uh... something went wrong in the gripper close command. You're probably not setting the actuation side!");
     }
   }
 

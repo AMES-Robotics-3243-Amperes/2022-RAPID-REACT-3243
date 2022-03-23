@@ -11,7 +11,7 @@ public class OpenGripperCommand extends CommandBase {
   private static ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
   public int actuatingSide = -1;
 
-  
+
   /** Creates a new CloseGripperCommand. */
   public OpenGripperCommand(ClimberSubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,7 +25,7 @@ public class OpenGripperCommand extends CommandBase {
     if (actuatingSide != -1){
       m_ClimberSubsystem.actuateGrabber(actuatingSide, m_ClimberSubsystem.gripperOpenMaximum);
     } else {
-      System.out.println("Uh... something went wrong in the gripper open command. You're not setting the actuation side!");
+      System.out.println("Uh... something went wrong in the gripper open command. You're probably not setting the actuation side!");
     }
   }
 
