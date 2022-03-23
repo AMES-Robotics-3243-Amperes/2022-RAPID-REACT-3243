@@ -8,15 +8,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeIndexerSubsystem;
 
+import frc.robot.JoyUtil;
+
 public class SpinIntakeCommand extends CommandBase {
 
   private final IntakeIndexerSubsystem m_subsystem;
-  private final XboxController m_controller;
+  private final JoyUtil secondaryController;
 
   /** Creates a new SpinIntakeCommand. */
-  public SpinIntakeCommand(IntakeIndexerSubsystem subsystem, XboxController controller) {
+  public SpinIntakeCommand(IntakeIndexerSubsystem subsystem, JoyUtil controller) {
     m_subsystem = subsystem;
-    m_controller = controller;
+    secondaryController = controller;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_subsystem);
   }
@@ -28,10 +30,8 @@ public class SpinIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_controller.getLeftTriggerAxis();
-    m_subsystem.setIntakeSpeed(speed);
-    double speed2 = m_controller.getRightTriggerAxis();
-    m_subsystem.setFlywheelSpeed(speed2);
+    boolean speed = secondaryController.getLeftBumper();
+    m_subsystem.setIntakeSpeed(0.01);
   }
 
   // Called once the command ends or is interrupted.

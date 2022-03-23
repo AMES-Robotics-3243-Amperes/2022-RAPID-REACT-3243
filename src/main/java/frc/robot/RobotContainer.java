@@ -33,7 +33,6 @@ import frc.robot.subsystems.IntakeIndexerSubsystem;
   // ++ teleop
 import frc.robot.commands.TeleopPIDDriveCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.DriveCommand;
 import frc.robot.commands.RebuffCommand;
 import frc.robot.commands.AcceptCommand;
 import frc.robot.commands.SpinIntakeCommand;
@@ -71,7 +70,6 @@ public class RobotContainer {
   private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
   // COMMANDS--------------------
     // ++ teleop commands
-  private final DriveCommand m_DriveCommand = new DriveCommand(m_DriveSubsystem, primaryController);
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
   private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.acceptRotations);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.rebuffRotations, Constants.IntakeIndexer.rebuffSpeed, Constants.IntakeIndexer.rebuffDuration);
@@ -91,7 +89,7 @@ public class RobotContainer {
 
 
 
-
+  }
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -99,8 +97,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    pb_leftBumper.whenPressed(m_RebuffCommand);
-    pb_rightBumper.whenPressed(m_AcceptCommand);
   }
 
   /**

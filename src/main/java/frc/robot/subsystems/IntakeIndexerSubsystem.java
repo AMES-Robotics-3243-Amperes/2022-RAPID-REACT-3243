@@ -21,42 +21,35 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   // private final CANSparkMax dropMotor;
   private final CANSparkMax intakeMotor;
   private final CANSparkMax indexMotor;
-  private final CANSparkMax flyWheel;
 
   // private final RelativeEncoder dropEncoder;
   private final RelativeEncoder intakeEncoder;
   private final RelativeEncoder indexEncoder;
-  private final RelativeEncoder flywheelEncoder;
 
   // private final SparkMaxPIDController dropPID;
   private final SparkMaxPIDController intakePID;
   private final SparkMaxPIDController indexPID;
-  private final SparkMaxPIDController flywheelPID;
 
   /** Creates a new IntakeIndexerSubsystem. */
   public IntakeIndexerSubsystem() {
     // dropMotor = new CANSparkMax(Constants.IntakeIndexer.dropMotorID, MotorType.kBrushless);
     intakeMotor = new CANSparkMax(Constants.IntakeIndexer.intakeMotorID, MotorType.kBrushless);
     indexMotor = new CANSparkMax(Constants.IntakeIndexer.indexMotorID, MotorType.kBrushless);
-    flyWheel = new CANSparkMax(Constants.IntakeIndexer.flyWheelID, MotorType.kBrushless);
 
     // dropEncoder = dropMotor.getEncoder();
     intakeEncoder = intakeMotor.getEncoder();
     indexEncoder = indexMotor.getEncoder();
-    flywheelEncoder = flyWheel.getEncoder();
+
 
     // dropPID = dropMotor.getPIDController();
     intakePID = intakeMotor.getPIDController();
     indexPID = indexMotor.getPIDController();
-    flywheelPID = flyWheel.getPIDController();
 
     // ~~ Conversion ratios to account for gearbox ratios
-    // dropEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.dropVelocityConversionRatio);
-    // dropEncoder.setPositionConversionFactor(Constants.IntakeIndexer.dropPositionConversionRatio);
-    intakeEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.intakeVelocityConversionRatio);
-    intakeEncoder.setPositionConversionFactor(Constants.IntakeIndexer.intakePositionConversionRatio);
-    indexEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.indexVelocityConversionRatio);
-    indexEncoder.setPositionConversionFactor(Constants.IntakeIndexer.indexPositionConversionRatio);
+    // intakeEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.intakeVelocityConversionRatio);
+    // intakeEncoder.setPositionConversionFactor(Constants.IntakeIndexer.intakePositionConversionRatio);
+    // indexEncoder.setVelocityConversionFactor(Constants.IntakeIndexer.indexVelocityConversionRatio);
+    // indexEncoder.setPositionConversionFactor(Constants.IntakeIndexer.indexPositionConversionRatio);
 
     // dropEncoder.setPosition(0);
     intakeEncoder.setPosition(0);
@@ -69,8 +62,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     indexMotor.setSecondaryCurrentLimit(30);
 
     indexPID.setP(0.3);
-    flywheelPID.setP(0.05);
-    flywheelPID.setI(0);
+
   }
 
   /* public void setDropSpeed(double speed) {
@@ -93,10 +85,6 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     System.out.println(speed);
   }
 
-  public void setFlywheelSpeed(double speed) {
-    flyWheel.set(speed);
-  }
-
   public void setIndexerSpeed(double speed) {
     // ~~ This method spins the indexer wheels.
     indexMotor.set(speed);
@@ -111,7 +99,6 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Flywheel Speed", flywheelEncoder.getVelocity());
   }
 }
 

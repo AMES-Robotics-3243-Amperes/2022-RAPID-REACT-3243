@@ -18,6 +18,7 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/DriveSubsystem": "Subsystem",
       "/LiveWindow/IMUSubsystem": "Subsystem",
+      "/LiveWindow/IntakeIndexerSubsystem": "Subsystem",
       "/LiveWindow/LimelightSubsystem": "Subsystem",
       "/LiveWindow/ShooterSubsystem": "Subsystem",
       "/LiveWindow/ShuffleboardSubsystem": "Subsystem",
