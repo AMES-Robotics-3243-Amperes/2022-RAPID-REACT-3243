@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class SpinClimberCommand extends CommandBase {
-  private static ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
+  private static ClimberSubsystem m_ClimberSubsystem;
   public double goalRevolution;
   
   
@@ -22,7 +22,8 @@ public class SpinClimberCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    m_ClimberSubsystem.isRunningClimbCommand = true;
+    m_ClimberSubsystem.actuateClimber(goalRevolution);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,6 +38,7 @@ public class SpinClimberCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     if (Math.abs(goalRevolution-m_ClimberSubsystem.encoderClimberAngle)<0.05) { // error room for end command
+      m_ClimberSubsystem.isRunningClimbCommand = false;
       return true;
     } else {
       return false;

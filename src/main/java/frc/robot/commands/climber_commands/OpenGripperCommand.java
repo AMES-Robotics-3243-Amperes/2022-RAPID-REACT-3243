@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class OpenGripperCommand extends CommandBase {
-  private static ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
+  private static ClimberSubsystem m_ClimberSubsystem;
   public int actuatingSide = -1;
 
 
@@ -22,6 +22,7 @@ public class OpenGripperCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_ClimberSubsystem.isRunningClimbCommand = true;
     if (actuatingSide != -1){
       m_ClimberSubsystem.actuateGrabber(actuatingSide, m_ClimberSubsystem.gripperOpenMaximum);
     } else {
@@ -43,6 +44,7 @@ public class OpenGripperCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] > m_ClimberSubsystem.gripperOpenMaximum-0.05) { //0.05 is the error room to stop the function.
+      m_ClimberSubsystem.isRunningClimbCommand = false;
       return true;
     } else {
       return false;

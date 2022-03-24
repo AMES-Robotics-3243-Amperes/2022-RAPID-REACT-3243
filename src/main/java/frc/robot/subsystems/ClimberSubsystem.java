@@ -47,6 +47,7 @@ public class ClimberSubsystem extends SubsystemBase {
   // :) variables
 
   public int currentClimberStep = 0;
+  public boolean isRunningClimbCommand = false;
 
 
   public boolean isCalibrated = false;
@@ -97,8 +98,8 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberL1PID.setP(0.03);
     grabberR0PID.setP(0.03);
     grabberR1PID.setP(0.03);
-    climberMotorLPID.setP(0.8);
-    climberMotorRPID.setP(0.8);
+    climberMotorLPID.setP(0.03);
+    climberMotorRPID.setP(0.03);
 
     // :) setting the I in the motor PIDs
     //climberMotorLPID.setI(0.001);
