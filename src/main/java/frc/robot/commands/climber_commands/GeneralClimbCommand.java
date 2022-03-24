@@ -50,21 +50,10 @@ public class GeneralClimbCommand extends CommandBase {
   public void execute() {
     // :) gets left and right trigger axes to spin the shaktool climber
     // :) they cancel each other out as well
-    half_1 = joystick.getRightTriggerAxis()/2;
-    half_2 = joystick.getLeftTriggerAxis()/-2;
+    half_1 = joystick.getRightTriggerAxis()/5;
+    half_2 = joystick.getLeftTriggerAxis()/-5;
     m_ClimberSubsystem.spinClimber(half_1+half_2);
 
-    if (joystick.getXButton() && !joystick.getYButton()) {
-      m_ClimberSubsystem.spinGrabbers(0, 0.5);
-    } else if (joystick.getYButton()) {
-      m_ClimberSubsystem.spinGrabbers(0, -0.5);
-    }
-
-    if (joystick.getAButton() && !joystick.getBButton()) {
-      m_ClimberSubsystem.spinGrabbers(1, 0.5);
-    } else if (joystick.getBButton()) {
-      m_ClimberSubsystem.spinGrabbers(1, -0.5);
-    }
     if (m_ClimberSubsystem.isTooHot){
       joystick.setRumble(RumbleType.kLeftRumble, 1);
       joystick.setRumble(RumbleType.kRightRumble, 1);
@@ -72,6 +61,9 @@ public class GeneralClimbCommand extends CommandBase {
       joystick.setRumble(RumbleType.kLeftRumble, 0);
       joystick.setRumble(RumbleType.kRightRumble, 0);
     }
+
+
+    
   }
 
   // Called once the command ends or is interrupted.

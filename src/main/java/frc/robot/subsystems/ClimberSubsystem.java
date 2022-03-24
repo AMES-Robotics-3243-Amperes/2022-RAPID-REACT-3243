@@ -46,6 +46,9 @@ public class ClimberSubsystem extends SubsystemBase {
 
   // :) variables
 
+  public int currentClimberStep = 0;
+
+
   public boolean isCalibrated = false;
   public boolean isCalibrating = false;
   public boolean isGrabberCalibrated[] = {false,false,false,false};
