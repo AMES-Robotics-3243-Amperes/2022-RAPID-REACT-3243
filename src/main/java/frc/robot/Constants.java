@@ -19,29 +19,10 @@ public final class Constants {
     public static final class DriveTrain {
         // ++ MOTOR CONTORLLER IDS ---------------------------------------------------------
         // CAN
-
-        // ss Electrical gave them names so I put them here.
-
-        // ss Frank
         public static final int frontLeftID = 4;
-        // ss Freddie
         public static final int frontRightID = 3;
-        // ss Flo
         public static final int backLeftID = 2;
-        // ss Fil
         public static final int backRightID = 1;
-        // ss Pew Pew
-        public static final int shooterHoodID = 5;
-        // ss Isa
-        public static final int indexerID = 7;
-        // ss Thing 2
-        public static final int climberLeftID = 10;
-        // ss Thing 1
-        public static final int climberRightID = 11;
-        // ss Ace
-        public static final int flywheelID = 9;
-        // ss Lisha
-        public static final int intakeID = 8;
         // ++ ---------------------------------------------------------------
         // ~~ There are the positions of the mecanum wheels in meters
         public static final Translation2d frontLeftMeters = new Translation2d(0.257175,0.254);
@@ -59,19 +40,44 @@ public final class Constants {
         public static final double teleopPGain = 0.2;
         public static final double teleopIGain = 0;
         public static final double teleopDGain = 0;
-        // ++ maximum RPM of the drivetrain NEOs \/
-        public static final double maxNEORPM = 5500.0;
-        // ~~ Conversion ratios for drivetrain encoders
-            // ++ converts from RPM to meters per second, including gearboxes
-        public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
-        public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
-        // ++ maximum speed of robot in m/s (max rpm times conversion ratio)
-        public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
         // ~~ Speed error threshold for crash detection
         public static final double speedErrorThreshold = 0.1;
+
+        // ++ Motor conversion ratio stuff ------------------------------
+        // ++ maximum RPM of the drivetrain NEOs \/ (also the conversion factor from joystick input to RPM)
+        public static final double maxNEORPM = 5500.0;
+        // ~~ Conversion ratios for drivetrain encoders
+            // ++ (velocity conversion) converts from RPM to meters per second, including gearboxes
+        public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
+            // ++ (position conversion) is the same as velocity conversion but has a cursed coefficient for some reason
+        public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
+        // ++ maximum speed of robot in m/s (max rpm times conversion ratio), this also (I think) converts from RPM to m/s
+        public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
     }
 
-    
+    public static final class IntakeIndexer {
+        // ~~ these are the values for the intake/indexer motors
+        // ~~ CAN IDs
+        public static final int flyWheelID = 9;
+        public static final int intakeMotorID = 8;
+        public static final int indexMotorID = 7;
+        // ~~ Dropped position
+        public static final double intakeDropPos = 0.1;
+        // ~~ Encoder conversion ratios to account for gearbox ratios
+        public static final double flywheelVelocityConversionRatio = 1;
+        public static final double intakeVelocityConversionRatio = (1/12);
+        public static final double indexVelocityConversionRatio = (1/120);
+        public static final double flywheelPositionConversionRatio = 1;
+        public static final double intakePositionConversionRatio = (1/12);
+        public static final double indexPositionConversionRatio = (1/120);
+        // ~~ Accept and Rebuff Constants
+        public static final double acceptRotations = 30;
+        public static final double rebuffRotations = -30;
+        public static final double rebuffDuration = 1;
+        public static final double rebuffSpeed = 1;
+    }
+
+
     public static final class Joysticks {
         // ++ CONTROLLER IDS --------------------------------------------------------------------
         public static final int primaryControllerID = 0;
@@ -110,8 +116,7 @@ public final class Constants {
 
         // ss This is the multiplier for Fast Mode
         // explained in JoyUtil.java
-        public static final double fastModeMaxMultiplier = 1.0;
-
+        public static final double fastModeMaxMultiplier = 0.3;
 
 
         // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------
@@ -120,6 +125,30 @@ public final class Constants {
 
         public static final int secondPower = 1; 
         public static final double bCoeff = (1.0 - aCoeff); 
+
+    }
+
+
+    public static final class Shooter {
+        // ++ shooter constants
+        // CAN
+        // ++ motor stuff ----------------------------------
+        public static final int flywheelMotorID = 9;
+        public static final int hoodMotorID = 5;
+        // ++ PID stuff ----
+        // ++ flywheel
+        public static final double flywheelPGain = 0.00015;
+        public static final double flywheelIGain = 0.000025;
+        public static final double flywheelDGain = 0.0;
+        // ++ hood 
+        public static final double hoodPGain = 0.0;
+        public static final double hoodIGain = 0.0;
+        public static final double hoodDGain = 0.0;
+
+    }
+
+    public static final class Limelight {
+        // ++ constants for limelight stuff, anything involved with calculations or keys etc
 
     }
 
