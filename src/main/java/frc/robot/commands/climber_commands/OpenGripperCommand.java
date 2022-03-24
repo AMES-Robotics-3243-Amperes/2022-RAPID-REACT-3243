@@ -13,10 +13,11 @@ public class OpenGripperCommand extends CommandBase {
 
 
   /** Creates a new CloseGripperCommand. */
-  public OpenGripperCommand(ClimberSubsystem subsystem) {
+  public OpenGripperCommand(ClimberSubsystem subsystem, int side) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_ClimberSubsystem = subsystem;
     addRequirements(m_ClimberSubsystem);
+    actuatingSide = side;
   }
 
   // Called when the command is initially scheduled.
@@ -26,7 +27,7 @@ public class OpenGripperCommand extends CommandBase {
     if (actuatingSide != -1){
       m_ClimberSubsystem.actuateGrabber(actuatingSide, m_ClimberSubsystem.gripperOpenMaximum);
     } else {
-      System.out.println("Uh... something went wrong in the gripper open command. You're probably not setting the actuation side!");
+      System.err.println("Uh... something went wrong in the gripper open command. You're somehow not setting the actuation side!");
     }
   }
 
@@ -43,7 +44,7 @@ public class OpenGripperCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] > m_ClimberSubsystem.gripperOpenMaximum-0.05) { //0.05 is the error room to stop the function.
+    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] > m_ClimberSubsystem.gripperOpenMaximum-1) { //1 is the error room to stop the function.
       m_ClimberSubsystem.isRunningClimbCommand = false;
       return true;
     } else {

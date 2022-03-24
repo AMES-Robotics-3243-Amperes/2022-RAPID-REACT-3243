@@ -13,10 +13,11 @@ public class CloseGripperCommand extends CommandBase {
   
   
   /** Creates a new CloseGripperCommand. */
-  public CloseGripperCommand(ClimberSubsystem subsystem) {
+  public CloseGripperCommand(ClimberSubsystem subsystem, int side) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_ClimberSubsystem = subsystem;
     addRequirements(m_ClimberSubsystem);
+    actuatingSide = side;
   }
 
   // Called when the command is initially scheduled.
@@ -26,7 +27,7 @@ public class CloseGripperCommand extends CommandBase {
     if (actuatingSide != -1){
       m_ClimberSubsystem.actuateGrabber(actuatingSide, m_ClimberSubsystem.gripperClosedMinimum);
     } else {
-      System.out.println("Uh... something went wrong in the gripper close command. You're probably not setting the actuation side!");
+      System.err.println("Uh... something went wrong in the gripper close command. You're somehow not setting the actuation side!");
     }
     
   }

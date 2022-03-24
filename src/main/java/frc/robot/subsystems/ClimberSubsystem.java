@@ -47,6 +47,7 @@ public class ClimberSubsystem extends SubsystemBase {
   // :) variables
 
   public int currentClimberStep = 0;
+  public int previousClimberStep = 0;
   public boolean isRunningClimbCommand = false;
 
 
@@ -185,6 +186,10 @@ public class ClimberSubsystem extends SubsystemBase {
     }
   }
 
+
+  // :) climber spinner is on a 64:1 gearbox which connects to a 15-tooth sprocket that is connected by chain to a 54-tooth sprocket
+  // :) so unless my math is wrong (pretty likely haha) the ratio from the motor angle to the climber angle should be 64*(54/15):1 (which equals 230.4:1 and Milo got the same number)
+  // :) then divide above number by 360 to set motor in terms of degrees
   public void actuateClimber(double revolutions){
     // :) actuate both climber motors, to a specified number of revolutions from starting angle
     climberAngle = revolutions;
@@ -234,6 +239,18 @@ public class ClimberSubsystem extends SubsystemBase {
       if ((grabberR1Encoder.getPosition()<gripperOpenMaximum+2 && grabberR1Encoder.getPosition()<grabberAngles[1]) ||
           (grabberR1Encoder.getPosition()>gripperClosedMinimum && grabberR1Encoder.getPosition()>grabberAngles[1])) {
         grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
+      }
+      if (grabberL0Encoder.getPosition()>gripperOpenMaximum+3 || grabberL0Encoder.getPosition()<gripperClosedMinimum-2){
+        grabberL0.set(0);
+      }
+      if (grabberR0Encoder.getPosition()>gripperOpenMaximum+3 || grabberR0Encoder.getPosition()<gripperClosedMinimum-2){
+        grabberR0.set(0);
+      }
+      if (grabberL1Encoder.getPosition()>gripperOpenMaximum+3 || grabberL1Encoder.getPosition()<gripperClosedMinimum-2){
+        grabberL1.set(0);
+      }
+      if (grabberR1Encoder.getPosition()>gripperOpenMaximum+3 || grabberR1Encoder.getPosition()<gripperClosedMinimum-2){
+        grabberR1.set(0);
       }
     } else if (isCalibrating){
       if (grabberR0.getOutputCurrent() > calibrationCurrent) {

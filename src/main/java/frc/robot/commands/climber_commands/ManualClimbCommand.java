@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** An example command that uses an example subsystem. */
-public class GeneralClimbCommand extends CommandBase {
+public class ManualClimbCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSubsystem m_ClimberSubsystem;
   private final JoyUtil joystick;
@@ -29,7 +29,7 @@ public class GeneralClimbCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GeneralClimbCommand(ClimberSubsystem subsystem, JoyUtil secondaryController) {
+  public ManualClimbCommand(ClimberSubsystem subsystem, JoyUtil secondaryController) {
     m_ClimberSubsystem = subsystem;
     joystick = secondaryController; 
     // Use addRequirements() here to declare subsystem dependencies.

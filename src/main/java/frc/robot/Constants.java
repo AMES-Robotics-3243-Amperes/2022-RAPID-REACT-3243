@@ -30,6 +30,8 @@ public final class Constants {
         public static final int grabberR1 = 14;
         public static final int grabberL0 = 13;
         public static final int grabberL1 = 15;
+        public static final int grabberSide0 = 0;
+        public static final int grabberSide1 = 1;
     }
     
     public static final class Joysticks {
