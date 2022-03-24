@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +30,9 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   // private final SparkMaxPIDController dropPID;
   private final SparkMaxPIDController intakePID;
   private final SparkMaxPIDController indexPID;
+
+  // ££ ==================== BEAN SENSOR STUFF ==========================
+  private final DigitalInput ballSensor;
 
   /** Creates a new IntakeIndexerSubsystem. */
   public IntakeIndexerSubsystem() {
@@ -63,6 +67,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
 
     indexPID.setP(0.3);
 
+    ballSensor = new DigitalInput(0);
   }
 
   /* public void setDropSpeed(double speed) {
@@ -94,6 +99,12 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     // ~~ Moves the indexer wheels a set amount
     indexEncoder.setPosition(0);
     indexPID.setReference(rotations, ControlType.kPosition);
+  }
+  
+  // Literally useless code get used to it + L + Ratio + Did I ask + Who asked + Maidenless + You fell off + Cry about it + Blocked + Reported + Don't Care + Cope
+  public boolean ballSensed() {
+    boolean ballsSensed = ballSensor.get();
+    return ballsSensed;
   }
 
   @Override
