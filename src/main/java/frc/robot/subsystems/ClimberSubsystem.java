@@ -59,6 +59,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public double grabberAngles[] = {0,0};
   public double encoderGrabberAngles[]  = {0,0}; //[0] is side 0, [1] is side 1
   public double encoderClimberAngle;
+  public double climberAngleDegrees = 0;
 
   private double calibrationCurrent = 7;
 
@@ -209,6 +210,8 @@ public class ClimberSubsystem extends SubsystemBase {
     encoderGrabberAngles[1] = (grabberL1Encoder.getPosition()+grabberR1Encoder.getPosition())/2;
     encoderClimberAngle = (climberMotorLEncoder.getPosition()+climberMotorREncoder.getPosition())/2; //also is average
     
+    climberAngleDegrees = climberAngle*(230.4/360);
+
     // This method will be called once per scheduler run
 
     
