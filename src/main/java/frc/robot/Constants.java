@@ -44,14 +44,15 @@ public final class Constants {
         public static final double speedErrorThreshold = 0.1;
 
         // ++ Motor conversion ratio stuff ------------------------------
-        // ++ maximum RPM of the drivetrain NEOs \/ (also the conversion factor from joystick input to RPM)
+        /**  ++ maximum RPM of the drivetrain NEOs (also the conversion factor from joystick input to RPM) */
         public static final double maxNEORPM = 5500.0;
         // ~~ Conversion ratios for drivetrain encoders
-            // ++ (velocity conversion) converts from RPM to meters per second, including gearboxes
+            /** ++ (velocity conversion) converts from RPM to meters per second, including gearboxes*/
         public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
-            // ++ (position conversion) is the same as velocity conversion but has a cursed coefficient for some reason
+            /** (position conversion) is the same as velocity conversion but has a cursed coefficient for some reason,,,
+             * figure out what's going on with that constant */
         public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
-        // ++ maximum speed of robot in m/s (max rpm times conversion ratio), this also (I think) converts from RPM to m/s
+        /**  maximum speed of robot in m/s (max rpm times conversion ratio), this also (I think) converts from RPM to m/s */
         public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
     }
 
@@ -112,7 +113,7 @@ public final class Constants {
 
         // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------
         public static final double deadZoneSize = 0.15;
-        // ++ lowPassFilterStrength should be between 0 & 1. The closer it is to 1, the smoother it is. 
+        /**  ++ lowPassFilterStrength should be between 0 & 1. The closer it is to 1, the smoother acceleration will be. */
         public static final double driveLowPassFilterStrength = 0.91;
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later 
@@ -140,6 +141,7 @@ public final class Constants {
         // ++ motor stuff ----------------------------------
         public static final int flywheelMotorID = 9;
         public static final int hoodMotorID = 5;
+
         // ++ PID stuff ----
         // ++ flywheel
         public static final double flywheelPGain = 0.0000015;
@@ -149,11 +151,19 @@ public final class Constants {
         public static final double hoodPGain = 0.0;
         public static final double hoodIGain = 0.0;
         public static final double hoodDGain = 0.0;
+        
+        // ++ ENCODER STUFF -------
+        /**
+         * ++ this is (maybe) the conversion ratio between the angle of the hood motor and the actual angle of the hood
+         * [this ratio needs to be verified]
+         */
+        public static final double motorToHoodAngle = 768/7;
 
     }
 
+    /**  ++ constants for limelight stuff, anything involved with calculations or keys etc */
     public static final class Limelight {
-        // ++ constants for limelight stuff, anything involved with calculations or keys etc
+        // public
 
     }
 

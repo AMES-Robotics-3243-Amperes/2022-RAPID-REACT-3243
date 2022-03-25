@@ -21,10 +21,6 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
-
-import com.kauailabs.navx.frc.AHRS;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -131,11 +127,11 @@ public class DriveSubsystem extends SubsystemBase {
     dGainWidget = pidTab.add("D gain", Constants.DriveTrain.teleopDGain);
     speedErrorThresholdWidget = pidTab.add("Speed Error Tolerance", 0.1);
 
-    resetGyroRotation();
+    IMUSubsystem.resetYaw();
 
     resetPose();
 
-    odometry = new MecanumDriveOdometry(kinematics, getGyroRotation(), pose);
+    odometry = new MecanumDriveOdometry(kinematics, IMUSubsystem.getGyroRotation(), pose);
 
   }
 
@@ -168,6 +164,15 @@ public class DriveSubsystem extends SubsystemBase {
     // speeds.feed();
   }
 
+  public void setVelocityReference(MecanumDriveWheelSpeeds wheelSpeeds) {
+    setVelocityReference(
+      wheelSpeeds.frontLeftMetersPerSecond,
+      wheelSpeeds.frontRightMetersPerSecond,
+      wheelSpeeds.rearLeftMetersPerSecond,
+      wheelSpeeds.rearRightMetersPerSecond
+    );
+  }
+
   // ~~ Sets the P, I, and D gains of the 4 PID loops
   public void setPIDValues(double kP, double kI, double kD) {
     frontLeftPIDController.setP(kP);
@@ -192,15 +197,7 @@ public class DriveSubsystem extends SubsystemBase {
     backRightPIDController.setIAccum(0);
   }
 
-  // ~~ returns a Rotation2d object with the robot's current angle, in radians
-  public Rotation2d getGyroRotation() {
-    double angle = IMUSubsystem.getYaw();
-    angle *= (Math.PI / 180);
-    angle -= gyroOffset;
-    Rotation2d rotation = new Rotation2d(angle);
-    return rotation;
-  }
-
+  // ++ maybe move this to ShuffleboardSubsystem?
   public void getShuffleboardPID() {
     pGain = pGainWidget.getEntry();
     iGain = iGainWidget.getEntry();
@@ -208,10 +205,45 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
-  public void resetGyroRotation() {
-    gyroOffset = getGyroRotation().getRadians();
+  // ++ THE THREE METHODS BELOW ARE USED TO GET THE SPEEDS OF EACH WHEEL FOR THE MECHANUM DRIVE
 
+  // ~~ gets the kinematics object for inverse kinematics in commands
+  public MecanumDriveWheelSpeeds toWheelSpeeds(ChassisSpeeds robotSpeed) {
+    return kinematics.toWheelSpeeds(robotSpeed);
   }
+  
+  public ChassisSpeeds getTeleopChassisSpeed(double x, double y, double r) {
+    // ++ outputs a vehicleSpeed object based on X, Y, and rotation values
+    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(y, x, r);
+      return vehicleSpeed;
+  }
+
+
+    /**
+   * ++ this takes x, y, and r values (maybe from controller) 
+   * and creates a wheelSpeeds object, which can then be used to set PIDs etc.
+   * 
+   * (this explination thing might also be broken; it's just a test to figure out how it works)
+   *
+   * @param x x velocity
+   * @param y y velocity
+   * @param r rotation
+   * @return a wheelSpeeds object
+   */
+  public MecanumDriveWheelSpeeds getWheelSpeeds(double x, double y, double r) {
+    ChassisSpeeds vehicleSpeed = getTeleopChassisSpeed(x, y, r);
+    MecanumDriveWheelSpeeds wheelSpeeds = toWheelSpeeds(vehicleSpeed);
+    wheelSpeeds.desaturate(Constants.DriveTrain.maxWheelSpeed);
+    return wheelSpeeds;
+  }
+
+
+
+
+
+
+
+
 
   // ~~ resets the Pose2d and encoder positions of all the motors
   public void resetPose() {
@@ -270,6 +302,7 @@ public class DriveSubsystem extends SubsystemBase {
   // }
 
 
+
   @Override
   public void periodic() {
 
@@ -297,7 +330,7 @@ public class DriveSubsystem extends SubsystemBase {
     // ~~ Checks if the robot's wheels are slipping to determine if odometry or the imu would be more accurate
     if (speedError < speedErrorThreshold.getDouble(0.1)) {
       // ~~ Calculates position based on odometry
-      pose = odometry.update(getGyroRotation(), wheelspeeds);
+      pose = odometry.update(IMUSubsystem.getGyroRotation(), wheelspeeds);
 
       SmartDashboard.putBoolean("Slipping?", false);
     } 
@@ -310,8 +343,8 @@ public class DriveSubsystem extends SubsystemBase {
       pose = new Pose2d(newX, newY, newR);
 
       // ~~ Updates odometry object with data from imu
-      odometry.update(getGyroRotation(), wheelspeeds);
-      odometry.resetPosition(pose, getGyroRotation());
+      odometry.update(IMUSubsystem.getGyroRotation(), wheelspeeds);
+      odometry.resetPosition(pose, IMUSubsystem.getGyroRotation());
 
       SmartDashboard.putBoolean("Slipping?", true);
 

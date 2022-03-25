@@ -6,13 +6,17 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 import java.util.Random;
 
+
+/** ++ This class is used to read values from the LimeLight and do calculations based on those numbers. 
+ *  Pretty much all of the math for calculating things (like flywheel speed, hood angle, etc) should be done HERE 
+ * instead of the corresponding subsystem. 
+ */
 public class LimelightSubsystem extends SubsystemBase {
 
   // ++ table object
@@ -39,26 +43,34 @@ public class LimelightSubsystem extends SubsystemBase {
 
   //  ++ ---------------- target position methods -----------
 
+  /** ++ This method gets the X position of the target the Limelight sees
+   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
+   * This should probably be 0, but I still put it as a param just incase it's necessary. 
+   * @return the X position of the target (as an angle) */
   public double getTargetX(double defaultReturn) {
-    // ++ this method gets the X position of the limelight's target
-    // ++ if no target is seen, the method returns the defaultReturn input paramter
     return tx.getDouble(defaultReturn);
   }
 
+    /** ++ This method gets the Y position of the target the Limelight sees
+   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
+   * This should probably be 0, but I still put it as a param just incase it's necessary. 
+   * @return the Y position of the target (as an angle) */
   public double getTargetY(double defaultReturn) {
-    // ++ this method gets the Y position of the limelight's target
-    // ++ if no target is seen, the method returns the defaultReturn input paramter
     return ty.getDouble(defaultReturn);
   }
 
+    /** ++ This method gets the area of the target the Limelight sees
+   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
+   * This should probably be 0, but I still put it as a param just incase it's necessary. 
+   * @return the area position of the target (as a fraction of total camera area) */
   public double getTargetArea(double defaultReturn) {
-    // ++ this method gets the area of the limelight's target
-    // ++ if no target is seen, the method returns the defaultReturn input paramter
     return ta.getDouble(defaultReturn);
   }
 
+  /** ++ this method determines if the Limelight sees any valid targets
+   * @return true if it sees one or more validtargets, false otherwise
+   */
   public Boolean isTargetValid() {
-    // ++ this method will return true if the robot sees any valid targets, otherwise it returns false
     // ++ NOTE: "ta" returns "1.0" if it sees ANY number of valid targets
       // ++ for example, it would still return "1.0" if it sees 3 valid targets
     double tvOutput = tv.getDouble(0.0);
@@ -77,23 +89,6 @@ public class LimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-      // ++ periodically reads limelight 
-      double targetXPos = tx.getDouble(0.0); 
-      double targetYPos = ty.getDouble(0.0); 
-      double targetArea = ta.getDouble(0.0);
-      double targetIsValid = tv.getDouble(9.0);   
-
-      // ++ puts the read values to shuffleboard
-      SmartDashboard.putNumber("x position", targetXPos);
-      SmartDashboard.putNumber("y position", targetYPos);
-      SmartDashboard.putNumber("target area", targetArea); 
-      SmartDashboard.putNumber("valid target?", targetIsValid); 
-
-      SmartDashboard.putNumber("test field", Waffles.nextInt(100));
-
-
-
 
   }
 }

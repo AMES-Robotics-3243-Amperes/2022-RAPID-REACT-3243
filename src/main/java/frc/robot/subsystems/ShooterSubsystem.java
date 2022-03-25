@@ -3,14 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
-import frc.robot.JoyUtil;
 
 // ++ SparkMax & encoder imports
 import com.revrobotics.CANSparkMax;
@@ -47,12 +43,10 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
 
-    // SmartDashboard.putNumber("shootP", 0);
-    // SmartDashboard.putNumber("shootI", 0);
-    
     // ++ define encoder objects
     flywheelEncoder = flywheelMotor.getEncoder();
     hoodEncoder = hoodMotor.getEncoder();
+    hoodEncoder.setPositionConversionFactor(Constants.Shooter.motorToHoodAngle);
 
     // ++ define PID objects
     flywheelPID = flywheelMotor.getPIDController();
@@ -62,14 +56,28 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // ++ ============== HOOD STUFF ===================================
 
-  //££ Sets the defualt angle value and passes it into the PID's
   public void setHoodAngle(double angle) {
-    // hoodAngle = angle;//(angle*360)*(768/7);
-    // PIDAngle.setReference(hoodAngle, ControlType.kPosition);
+    hoodPID.setReference(angle, ControlType.kPosition);
   }
+
+  public double getHoodAngle(){
+    return hoodEncoder.getPosition();
+  }
+
+  /** this sets the P, I, and D values for the hood */
+  public void setHoodPIDValues(){
+    double pGain = Constants.Shooter.hoodPGain;
+    double iGain = Constants.Shooter.hoodIGain;
+    double dGain = Constants.Shooter.hoodDGain;
+    hoodPID.setP(pGain);
+    hoodPID.setI(iGain);
+    hoodPID.setD(dGain);
+  }
+
 
   // ++ ============== END HOOD STUFF ===============================
 // maya #2 is cooler than u
+
 
 
   // ++ ============ FLYWHEEL STUFF ==============================
@@ -88,6 +96,7 @@ public class ShooterSubsystem extends SubsystemBase {
     return flywheelEncoder.getVelocity();
   }
 
+  /** this sets the P, I, and D values for the flywheel */
   public void setFlyhweelPIDValues() {
     double pGain = Constants.Shooter.flywheelPGain; //SmartDashboard.getNumber("shootP", Constants.Shooter.flywheelPGain);
     double iGain = Constants.Shooter.flywheelIGain; //SmartDashboard.getNumber("shootI", Constants.Shooter.flywheelIGain);

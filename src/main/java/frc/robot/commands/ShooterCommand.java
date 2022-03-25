@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ShooterCommand extends CommandBase {

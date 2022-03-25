@@ -4,11 +4,8 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
@@ -18,13 +15,18 @@ public class IMUSubsystem extends SubsystemBase {
   // ~~ IMU object - gyro and accelerometer
   private static final AHRS imu = new AHRS();
 
+  // ++ LEAVE THESE AS PUBLIC; there was some weird error with a Null Pointer Exception
+  public SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
+  public NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
+
   
   /** Creates a new IMUSubsystem. */
   public IMUSubsystem() {
     
+      }
 
-  }
 
+      
   public static double getYaw() {
     return imu.getYaw();
     // return 0.0;
@@ -60,6 +62,17 @@ public class IMUSubsystem extends SubsystemBase {
 
   public static double getZPosition() {
     return imu.getDisplacementZ();
+  }
+
+  public static Rotation2d getGyroRotation() {
+    double angle = getYaw();
+    angle *= (Math.PI / 180);
+    Rotation2d rotation = new Rotation2d(angle);
+    return rotation;
+  }
+
+  public static void resetYaw() {
+    imu.reset();
   }
 
   @Override

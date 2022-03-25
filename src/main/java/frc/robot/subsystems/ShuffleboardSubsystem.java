@@ -7,48 +7,30 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.IMUSubsystem;
-
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
-
-import java.util.Map;
-
-import com.kauailabs.navx.frc.AHRS;
-
-
+import frc.robot.JoyCurveOption;
 
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
 
-  // ++ creates IMUSubsystem object 
-  IMUSubsystem IMUSubsystem = new IMUSubsystem();
-
   // ++ declare tabs
-  ShuffleboardTab movementTab;
-  ShuffleboardTab driverFeedbackTab;
-  ShuffleboardTab IMUTab;
-  ShuffleboardTab shooterTab;
+  ShuffleboardTab movementTab, driverFeedbackTab, IMUTab, shooterTab;
 
   // ++ declare widgets
-    // ++ drive stuff
-  static SimpleWidget firstPowerShuffle;
-  static SimpleWidget secondPowerShuffle;
-  static SimpleWidget aCoeffShuffle;
-  static SimpleWidget bCoeffShuffle;
-  static SimpleWidget fastModeMultiplierShuffle;
-  static SimpleWidget totalSpeedDamperShuffle;
-    // ++ driver feedback
-
-
+    // ++ Drive Control Stuff
+  static SimpleWidget firstPowerShuffle, secondPowerShuffle, aCoeffShuffle, bCoeffShuffle, fastModeMultiplierShuffle, totalSpeedDamperShuffle;
+    // ~~ IMU Stuff
+  static SimpleWidget yawShuffle, pitchShuffle, rollShuffle, xVelocityShuffle, yVelocityShuffle, zVelocityShuffle, xPositionShuffle, yPositionShuffle, zPositionShuffle;
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
-  private static SendableChooser<Integer> m_FirstPower;
+  private static SendableChooser<JoyCurveOption> m_JoyCurve;
 
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
@@ -58,7 +40,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
     movementTab = Shuffleboard.getTab("Drivetrain");
     IMUTab = Shuffleboard.getTab("IMU");
-    shooterTab = Shuffleboard.getTab("shooter");
+    shooterTab = Shuffleboard.getTab("Shooter");
 
     
 
@@ -69,7 +51,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
 
 
-    // ++ ===================== DRIVETRAIN WIDGETS/STUFF ===============================================
+    // ++ ==================== DRIVETRAIN WIDGETS/STUFF ===============================================
     firstPowerShuffle = movementTab.add("firstpower", Constants.Joysticks.firstPower);
     secondPowerShuffle = movementTab.add("secondpower", Constants.Joysticks.secondPower);
     aCoeffShuffle = movementTab.add("aCoeff", Constants.Joysticks.aCoeff);
@@ -78,36 +60,51 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     fastModeMultiplierShuffle = movementTab.add("fast mode mult", Constants.Joysticks.fastModeMaxMultiplier);
     totalSpeedDamperShuffle = movementTab.add("speed damper", Constants.Joysticks.driveSpeedDamper);
 
-    m_FirstPower = new SendableChooser<>();
-    m_FirstPower.setDefaultOption("Good Power", 3);
-    m_FirstPower.addOption("Bad Power", 4);
+    m_JoyCurve = new SendableChooser<>();
+    m_JoyCurve.setDefaultOption("Good Option", new JoyCurveOption(3, 1, 0.7));
+    m_JoyCurve.addOption("Bad Option", new JoyCurveOption(4, 1, 1));
 
-    movementTab.add(m_FirstPower);
+    movementTab.add(m_JoyCurve);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
+
+    // ~~ ==================== IMU WIDGETS/STUFF =========================================================
+    yawShuffle = IMUTab.add("Yaw", 0);
+    pitchShuffle = IMUTab.add("Pitch", 0);
+    rollShuffle = IMUTab.add("Roll", 0);
+    xVelocityShuffle = IMUTab.add("X Velocity", 0);
+    yVelocityShuffle = IMUTab.add("Y Velocity", 0);
+    zVelocityShuffle = IMUTab.add("Z Velocity", 0);
+    xPositionShuffle = IMUTab.add("X Position", 0);
+    yPositionShuffle = IMUTab.add("Y Position", 0);
+    zPositionShuffle = IMUTab.add("Z Position", 0);
+    // ~~ ==================== END IMU WIDGETS/STUFF =====================================================
 
 
   }
 
-  // ++ =========================================== DRIVETRAIN METHODS ===============================================
+  // ++ =========================================== DRIVETRAIN METHODS ===================================
   public static int getFirstPower() {
     //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
-    return m_FirstPower.getSelected();
+    return m_JoyCurve.getSelected().getFirstPower();
     
   }
 
   public static double getSecondPower() {
-    return (double)(secondPowerShuffle.getEntry().getNumber((double)Constants.Joysticks.secondPower));
+    // return (double)(secondPowerShuffle.getEntry().getNumber((double)Constants.Joysticks.secondPower));
+    return m_JoyCurve.getSelected().getSecondPower();
     
   }
   public static double getaCoeff() {
-    return (double)(aCoeffShuffle.getEntry().getDouble((double)Constants.Joysticks.aCoeff));
+    // return (double)(aCoeffShuffle.getEntry().getDouble((double)Constants.Joysticks.aCoeff));
+    return m_JoyCurve.getSelected().getACoefficient();
     
   }
 
   public static double getbCoeff(){
     // ++ this returns the b coefficient
     // ++ it's (1- a coeff) becasue that's what the
-    return (double)(1.0 - getaCoeff());
+    //return (double)(1.0 - getaCoeff());
+    return m_JoyCurve.getSelected().getBCoefficient();
   }
 
   public static double getFastmodeMultiplier(){
@@ -117,7 +114,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   public static double getDriveSpeedDamper(){
     return (double)(totalSpeedDamperShuffle.getEntry().getDouble((double)Constants.Joysticks.driveSpeedDamper));
   }
-  // ++ ============================= END DRIVETRAIN METHODS ==================================================
+  // ++ ============================= END DRIVETRAIN METHODS =============================================
 
 
   // ++ ================= IMU stuff ===============================
@@ -140,7 +137,24 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    firstPowerShuffle.getEntry().setDouble(m_FirstPower.getSelected());
-    bCoeffShuffle.getEntry().setDouble(1.0 - aCoeffShuffle.getEntry().getDouble(Constants.Joysticks.aCoeff));
+
+    // ~~ ==================== JOYSTICK CURVE OUTPUTS ====================================================
+    firstPowerShuffle.getEntry().setDouble(getFirstPower());
+    secondPowerShuffle.getEntry().setDouble(getSecondPower());
+    aCoeffShuffle.getEntry().setDouble(getaCoeff());
+    bCoeffShuffle.getEntry().setDouble(getbCoeff());
+    // ~~ ==================== END JOYSTICK CURVE OUTPUTS ================================================
+
+    // ~~ ==================== IMU OUTPUTS ===============================================================
+    yawShuffle.getEntry().setDouble(IMUSubsystem.getYaw());
+    pitchShuffle.getEntry().setDouble(IMUSubsystem.getPitch());
+    rollShuffle.getEntry().setDouble(IMUSubsystem.getRoll());
+    xVelocityShuffle.getEntry().setDouble(IMUSubsystem.getXVelocity());
+    yVelocityShuffle.getEntry().setDouble(IMUSubsystem.getYVelocity());
+    zVelocityShuffle.getEntry().setDouble(IMUSubsystem.getZVelocity());
+    xPositionShuffle.getEntry().setDouble(IMUSubsystem.getXPosition());
+    yPositionShuffle.getEntry().setDouble(IMUSubsystem.getYPosition());
+    zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
+    // ~~ ==================== END IMU OUTPUTS ===========================================================
   }
 }
