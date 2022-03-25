@@ -2,33 +2,50 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.IntakeIndexer;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeIndexerSubsystem;
+import frc.robot.Constants;
 
-public class AcceptCommand extends CommandBase {
+import frc.robot.JoyUtil;
+
+public class SpinTakeCommand extends CommandBase {
 
   private final IntakeIndexerSubsystem m_subsystem;
-  private final double m_rotations;
+  private final JoyUtil secondaryController;
 
-  /** Creates a new AcceptCommand. */
-  public AcceptCommand(IntakeIndexerSubsystem subsystem, double rotations) {
+  /** Creates a new SpinIntakeCommand. */
+  public SpinTakeCommand(IntakeIndexerSubsystem subsystem, JoyUtil controller) {
     m_subsystem = subsystem;
-    m_rotations = rotations;
+    secondaryController = controller;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_subsystem.stepIndexer(m_rotations);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    boolean isIntakeOn = secondaryController.getLeftBumper();
+
+    if (isIntakeOn == true) {
+      m_subsystem.setIntakeSpeed(Constants.IntakeIndexer.intakeSpeed);
+      m_subsystem.setIndexerSpeed(Constants.IntakeIndexer.indexSpeed);
+    } else {
+      m_subsystem.setIntakeSpeed(0);
+      m_subsystem.setIndexerSpeed(0);
+    }
+
+
+
+    
+    // m_subsystem.setIntakeSpeed();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -37,6 +54,6 @@ public class AcceptCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

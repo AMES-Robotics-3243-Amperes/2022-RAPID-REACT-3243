@@ -10,7 +10,7 @@ package frc.robot;
 // ++ project stuff
 import frc.robot.Constants; 
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // ++ misc
 import frc.robot.subsystems.IMUSubsystem;
 
@@ -31,12 +31,11 @@ import frc.robot.subsystems.IntakeIndexerSubsystem;
 // ++ COMMANDS
   // ++ teleop
 import frc.robot.commands.TeleopPIDDriveCommand;
+import frc.robot.commands.IntakeIndexer.AcceptCommand;
+import frc.robot.commands.IntakeIndexer.RebuffCommand;
+import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.RebuffCommand;
-import frc.robot.commands.AcceptCommand;
-import frc.robot.commands.SpinIntakeCommand;
-
-  // ++ auto
+// ++ auto
 import frc.robot.commands.AutonomousPIDTaxiCommand;
 
 
@@ -54,6 +53,8 @@ public class RobotContainer {
   // ++ we make a JoyUtil object instead of an XboxController object; JoyUtil inherits XboxController
   public static JoyUtil primaryController = new JoyUtil( Constants.Joysticks.primaryControllerID );
   public static JoyUtil secondaryController = new JoyUtil( Constants.Joysticks.secondaryControllerID );
+    public static JoystickButton secondaryRightBumper = new JoystickButton(secondaryController, Constants.Joysticks.RightBumper);
+    public static JoystickButton secondaryXButton = new JoystickButton(secondaryController, Constants.Joysticks.X);
 
 
 
@@ -71,9 +72,9 @@ public class RobotContainer {
   // COMMANDS--------------------
     // ++ teleop commands
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
-  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.acceptRotations);
+  private final RebuffCommand m_AcceptCommand = new RebuffCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.acceptRotations, Constants.IntakeIndexer.acceptSpeed, Constants.IntakeIndexer.acceptDuration);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.rebuffRotations, Constants.IntakeIndexer.rebuffSpeed, Constants.IntakeIndexer.rebuffDuration);
-  private final SpinIntakeCommand m_SpinIntakeCommand = new SpinIntakeCommand(m_IntakeIndexerSubsystem, secondaryController);
+  private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
     // ++ auto commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, secondaryController);
   // private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
@@ -88,7 +89,7 @@ public class RobotContainer {
     m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
     m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
 
-
+    configureButtonBindings();
 
   }
   /**
@@ -98,6 +99,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    secondaryRightBumper.whenPressed(m_RebuffCommand);
+    secondaryXButton.whenPressed(m_AcceptCommand);
   }
 
   /**

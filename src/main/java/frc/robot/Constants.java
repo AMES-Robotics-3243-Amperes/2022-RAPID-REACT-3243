@@ -72,9 +72,14 @@ public final class Constants {
         public static final double indexPositionConversionRatio = (1/120);
         // ~~ Accept and Rebuff Constants
         public static final double acceptRotations = 30;
+        public static final double acceptSpeed = 1;
+        public static final double acceptDuration = 1;
         public static final double rebuffRotations = -30;
-        public static final double rebuffDuration = 1;
-        public static final double rebuffSpeed = 1;
+        public static final double rebuffDuration = 0.2;
+        public static final double rebuffSpeed = -1;
+        // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
+        public static final double intakeSpeed = 0.75;
+        public static final double indexSpeed = -0.75;
     }
 
 
@@ -150,12 +155,6 @@ public final class Constants {
     public static final class Limelight {
         // ++ constants for limelight stuff, anything involved with calculations or keys etc
 
-    }
-
-    public static final class intakeIndexer {
-        // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
-        public static final double intakeSpeed = 1.0;
-        public static final double indexSpeed = -1.0;
     }
 
 }
