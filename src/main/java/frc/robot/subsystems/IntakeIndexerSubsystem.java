@@ -31,7 +31,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   private final SparkMaxPIDController indexPID;
 
 
-  
+
   /** Creates a new IntakeIndexerSubsystem. */
   public IntakeIndexerSubsystem() {
 
