@@ -62,7 +62,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
     m_JoyCurve = new SendableChooser<>();
     m_JoyCurve.setDefaultOption("Good Option", new JoyCurveOption(3, 1, 0.7));
-    m_JoyCurve.addOption("Bad Power", new JoyCurveOption(4, 1, 1));
+    m_JoyCurve.addOption("Bad Option", new JoyCurveOption(4, 1, 1));
 
     movementTab.add(m_JoyCurve);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
