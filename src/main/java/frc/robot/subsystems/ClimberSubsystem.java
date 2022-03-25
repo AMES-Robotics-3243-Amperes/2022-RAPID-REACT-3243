@@ -57,7 +57,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public double climberAngle = 0;
   public double grabberAngles[] = {0,0};
-  public double encoderGrabberAngles[]; //[0] is side 0, [1] is side 1
+  public double encoderGrabberAngles[]  = {0,0}; //[0] is side 0, [1] is side 1
   public double encoderClimberAngle;
 
   private double calibrationCurrent = 7;
@@ -297,6 +297,8 @@ public class ClimberSubsystem extends SubsystemBase {
     SmartDashboard.putBooleanArray("isCalibratedArray", isGrabberCalibrated);
     SmartDashboard.putBoolean("isCalibrated", isCalibrated);
     SmartDashboard.putNumberArray("set grabber values", grabberAngles);
+    SmartDashboard.putNumber("climber step", currentClimberStep);
+    SmartDashboard.putBoolean("climb command", isRunningClimbCommand);
     
     // SmartDashboard.putNumber("Current of climber L", climberMotorL.getOutputCurrent());
     // SmartDashboard.putNumber("Current of climber R", climberMotorR.getOutputCurrent());

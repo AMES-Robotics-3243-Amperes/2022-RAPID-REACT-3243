@@ -45,7 +45,7 @@ public class CloseGripperCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] < m_ClimberSubsystem.gripperClosedMinimum+0.05) { //0.05 is the error room to stop the function.
+    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] < m_ClimberSubsystem.gripperClosedMinimum+1) { //0.5 is the error room to stop the function.
       m_ClimberSubsystem.isRunningClimbCommand = false;
       return true;
     } else {
