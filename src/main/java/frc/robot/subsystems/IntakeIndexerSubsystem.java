@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
- 
+
+import javax.sound.sampled.SourceDataLine;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -91,6 +93,7 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void setIndexerSpeed(double speed) {
     // ~~ This method spins the indexer wheels.
     indexMotor.set(speed);
+    System.out.println(speed);
   }
 
   public void stepIndexer(double rotations) {
@@ -105,4 +108,4 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   }
 }
 
-// ~~ Coment to make sure I didn't break everything.
+// ~~ Comment to make sure I didn't break everything.

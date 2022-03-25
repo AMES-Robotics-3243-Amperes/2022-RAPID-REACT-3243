@@ -152,4 +152,10 @@ public final class Constants {
 
     }
 
+    public static final class intakeIndexer {
+        // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
+        public static final double intakeSpeed = 1.0;
+        public static final double indexSpeed = -1.0;
+    }
+
 }
