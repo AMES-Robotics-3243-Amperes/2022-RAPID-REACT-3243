@@ -74,7 +74,7 @@ public final class Constants {
         // ~~ Accept and Rebuff Constants
         public static final double acceptRotations = 30;
         public static final double acceptSpeed = 1;
-        public static final double acceptDuration = 1;
+        public static final double acceptDuration = 0.2;
         public static final double rebuffRotations = -30;
         public static final double rebuffSpeed = -1;
         public static final double rebuffDuration = 0.2;

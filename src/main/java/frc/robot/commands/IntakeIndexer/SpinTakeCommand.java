@@ -4,11 +4,14 @@
 
 package frc.robot.commands.IntakeIndexer;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeIndexerSubsystem;
 import frc.robot.Constants;
 
 import frc.robot.JoyUtil;
+
+import frc.robot.RobotContainer;
 
 public class SpinTakeCommand extends CommandBase {
 
@@ -39,8 +42,6 @@ public class SpinTakeCommand extends CommandBase {
       m_subsystem.setIntakeSpeed(0);
       m_subsystem.setIndexerSpeed(0);
     }
-
-
 
     
     // m_subsystem.setIntakeSpeed();
