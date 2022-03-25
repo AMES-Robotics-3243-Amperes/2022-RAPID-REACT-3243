@@ -76,8 +76,8 @@ public final class Constants {
         public static final double acceptSpeed = 1;
         public static final double acceptDuration = 1;
         public static final double rebuffRotations = -30;
-        public static final double rebuffDuration = 0.2;
         public static final double rebuffSpeed = -1;
+        public static final double rebuffDuration = 0.2;
         // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
         public static final double intakeSpeed = 0.75;
         public static final double indexSpeed = -0.75;
