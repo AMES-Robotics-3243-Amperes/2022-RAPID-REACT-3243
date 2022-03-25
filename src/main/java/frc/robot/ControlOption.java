@@ -5,11 +5,11 @@ package frc.robot;
  * In combination with a SendableChooser, this allows us to create several presets for joystick curves
  * which drivers can switch between depending on their preference
  */
-public class JoyCurveOption {
+public class ControlOption {
     private final int firstPower, secondPower;
     private final double aCoeff;
 
-    public JoyCurveOption(int firstPower, int secondPower, double aCoeff) {
+    public ControlOption(int firstPower, int secondPower, double aCoeff) {
         this.firstPower = firstPower;
         this.secondPower = secondPower;
         this.aCoeff = aCoeff;

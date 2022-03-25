@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
-import frc.robot.JoyCurveOption;
+import frc.robot.ControlOption;
 
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
@@ -30,7 +30,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static SimpleWidget yawShuffle, pitchShuffle, rollShuffle, xVelocityShuffle, yVelocityShuffle, zVelocityShuffle, xPositionShuffle, yPositionShuffle, zPositionShuffle;
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
-  private static SendableChooser<JoyCurveOption> m_JoyCurve;
+  private static SendableChooser<ControlOption> m_JoyCurve;
 
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
@@ -61,8 +61,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     totalSpeedDamperShuffle = movementTab.add("speed damper", Constants.Joysticks.driveSpeedDamper);
 
     m_JoyCurve = new SendableChooser<>();
-    m_JoyCurve.setDefaultOption("Good Option", new JoyCurveOption(3, 1, 0.7));
-    m_JoyCurve.addOption("Bad Option", new JoyCurveOption(4, 1, 1));
+    m_JoyCurve.setDefaultOption("Good Option", new ControlOption(3, 1, 0.7));
+    m_JoyCurve.addOption("Bad Option", new ControlOption(4, 1, 1));
 
     movementTab.add(m_JoyCurve);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
@@ -89,7 +89,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     
   }
 
-  public static double getSecondPower() {
+  public static int getSecondPower() {
     // return (double)(secondPowerShuffle.getEntry().getNumber((double)Constants.Joysticks.secondPower));
     return m_JoyCurve.getSelected().getSecondPower();
     

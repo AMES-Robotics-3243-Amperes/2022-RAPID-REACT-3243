@@ -107,9 +107,9 @@ public final class JoyUtil extends XboxController {
         // double a = Constants.Joysticks.aCoeff;
         double b = ShuffleboardSubsystem.getbCoeff();
         // double b = Constants.Joysticks.bCoeff;
-        int firstPower = (int)ShuffleboardSubsystem.getFirstPower(); 
+        int firstPower = ShuffleboardSubsystem.getFirstPower(); 
         // double firstPower = Constants.Joysticks.firstPower;
-        int secondPower = (int)ShuffleboardSubsystem.getSecondPower(); 
+        int secondPower = ShuffleboardSubsystem.getSecondPower(); 
         // double secondPower = Constants.Joysticks.secondPower;
 
         return ( (a * (Math.pow(pos,firstPower))) + (b * (Math.pow(pos,secondPower))) ); 
