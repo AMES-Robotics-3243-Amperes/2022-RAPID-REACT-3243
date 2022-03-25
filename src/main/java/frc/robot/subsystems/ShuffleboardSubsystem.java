@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
+import frc.robot.Constants;
+import frc.robot.JoyCurveOption;
 
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
@@ -29,7 +30,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static SimpleWidget yawShuffle, pitchShuffle, rollShuffle, xVelocityShuffle, yVelocityShuffle, zVelocityShuffle, xPositionShuffle, yPositionShuffle, zPositionShuffle;
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
-  private static SendableChooser<Integer> m_FirstPower;
+  private static SendableChooser<JoyCurveOption> m_JoyCurve;
 
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
@@ -39,7 +40,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
     movementTab = Shuffleboard.getTab("Drivetrain");
     IMUTab = Shuffleboard.getTab("IMU");
-    shooterTab = Shuffleboard.getTab("shooter");
+    shooterTab = Shuffleboard.getTab("Shooter");
 
     
 
@@ -59,11 +60,11 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     fastModeMultiplierShuffle = movementTab.add("fast mode mult", Constants.Joysticks.fastModeMaxMultiplier);
     totalSpeedDamperShuffle = movementTab.add("speed damper", Constants.Joysticks.driveSpeedDamper);
 
-    m_FirstPower = new SendableChooser<>();
-    m_FirstPower.setDefaultOption("Good Power", 3);
-    m_FirstPower.addOption("Bad Power", 4);
+    m_JoyCurve = new SendableChooser<>();
+    m_JoyCurve.setDefaultOption("Good Option", new JoyCurveOption(3, 1, 0.7));
+    m_JoyCurve.addOption("Bad Power", new JoyCurveOption(4, 1, 1));
 
-    movementTab.add(m_FirstPower);
+    movementTab.add(m_JoyCurve);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
 
     // ~~ ==================== IMU WIDGETS/STUFF =========================================================
@@ -84,23 +85,26 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   // ++ =========================================== DRIVETRAIN METHODS ===================================
   public static int getFirstPower() {
     //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
-    return m_FirstPower.getSelected();
+    return m_JoyCurve.getSelected().getFirstPower();
     
   }
 
   public static double getSecondPower() {
-    return (double)(secondPowerShuffle.getEntry().getNumber((double)Constants.Joysticks.secondPower));
+    // return (double)(secondPowerShuffle.getEntry().getNumber((double)Constants.Joysticks.secondPower));
+    return m_JoyCurve.getSelected().getSecondPower();
     
   }
   public static double getaCoeff() {
-    return (double)(aCoeffShuffle.getEntry().getDouble((double)Constants.Joysticks.aCoeff));
+    // return (double)(aCoeffShuffle.getEntry().getDouble((double)Constants.Joysticks.aCoeff));
+    return m_JoyCurve.getSelected().getACoefficient();
     
   }
 
   public static double getbCoeff(){
     // ++ this returns the b coefficient
     // ++ it's (1- a coeff) becasue that's what the
-    return (double)(1.0 - getaCoeff());
+    //return (double)(1.0 - getaCoeff());
+    return m_JoyCurve.getSelected().getBCoefficient();
   }
 
   public static double getFastmodeMultiplier(){
@@ -133,8 +137,13 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    firstPowerShuffle.getEntry().setDouble(m_FirstPower.getSelected());
-    bCoeffShuffle.getEntry().setDouble(1.0 - aCoeffShuffle.getEntry().getDouble(Constants.Joysticks.aCoeff));
+
+    // ~~ ==================== JOYSTICK CURVE OUTPUTS ====================================================
+    firstPowerShuffle.getEntry().setDouble(getFirstPower());
+    secondPowerShuffle.getEntry().setDouble(getSecondPower());
+    aCoeffShuffle.getEntry().setDouble(getaCoeff());
+    bCoeffShuffle.getEntry().setDouble(getbCoeff());
+    // ~~ ==================== END JOYSTICK CURVE OUTPUTS ================================================
 
     // ~~ ==================== IMU OUTPUTS ===============================================================
     yawShuffle.getEntry().setDouble(IMUSubsystem.getYaw());
