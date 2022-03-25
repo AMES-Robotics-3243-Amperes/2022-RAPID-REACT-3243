@@ -30,7 +30,6 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   private final SparkMaxPIDController intakePID;
   private final SparkMaxPIDController indexPID;
 
-  // ££ ==================== BEAN SENSOR STUFF ==========================
 
   /** Creates a new IntakeIndexerSubsystem. */
   public IntakeIndexerSubsystem() {
