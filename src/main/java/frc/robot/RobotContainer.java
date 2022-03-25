@@ -40,6 +40,15 @@ import frc.robot.commands.SpinIntakeCommand;
 import frc.robot.commands.AutonomousPIDTaxiCommand;
 
 
+
+/* Luke's (CAD lead) helpful code:
+* public class object final void robotclassobjectfinal{
+*      controller.main.public.alpha.beta.epsilon.epislon.axes.axises.axis1.speed.speedValue =loudTyping.lound.loud.thing.class.private.public.static.dynamic.void.int.double.float.variableType.one.two.three.finalXYZ;
+*
+*}
+*/
+
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -48,8 +57,6 @@ import frc.robot.commands.AutonomousPIDTaxiCommand;
  */
 
 public class RobotContainer {
-
-
   // ++ JOYSTICK STUFF ========================================
   // ++ we make a JoyUtil object instead of an XboxController object; JoyUtil inherits XboxController
   public static JoyUtil primaryController = new JoyUtil( Constants.Joysticks.primaryControllerID );

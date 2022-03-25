@@ -203,9 +203,7 @@ public class DriveSubsystem extends SubsystemBase {
     backRightPIDController.setIAccum(0);
   }
 
-  // ~~ returns a Rotation2d object with the robot's current angle, in radians
-
-
+  // ++ maybe move this to ShuffleboardSubsystem?
   public void getShuffleboardPID() {
     pGain = pGainWidget.getEntry();
     iGain = iGainWidget.getEntry();
@@ -213,22 +211,45 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
+  // ++ THE THREE METHODS BELOW ARE USED TO GET THE SPEEDS OF EACH WHEEL FOR THE MECHANUM DRIVE
+
   // ~~ gets the kinematics object for inverse kinematics in commands
   public MecanumDriveWheelSpeeds toWheelSpeeds(ChassisSpeeds robotSpeed) {
     return kinematics.toWheelSpeeds(robotSpeed);
   }
   
   public ChassisSpeeds getTeleopChassisSpeed(double x, double y, double r) {
+    // ++ outputs a vehicleSpeed object based on X, Y, and rotation values
     ChassisSpeeds vehicleSpeed = new ChassisSpeeds(y, x, r);
       return vehicleSpeed;
   }
 
+
+    /**
+   * ++ this takes x, y, and r values (maybe from controller) 
+   * and creates a wheelSpeeds object, which can then be used to set PIDs etc.
+   * 
+   * (this explination thing might also be broken; it's just a test to figure out how it works)
+   *
+   * @param x x velocity
+   * @param y y velocity
+   * @param r rotation
+   * @return a wheelSpeeds object
+   */
   public MecanumDriveWheelSpeeds getWheelSpeeds(double x, double y, double r) {
     ChassisSpeeds vehicleSpeed = getTeleopChassisSpeed(x, y, r);
     MecanumDriveWheelSpeeds wheelSpeeds = toWheelSpeeds(vehicleSpeed);
     wheelSpeeds.desaturate(Constants.DriveTrain.maxWheelSpeed);
     return wheelSpeeds;
   }
+
+
+
+
+
+
+
+
 
   // ~~ resets the Pose2d and encoder positions of all the motors
   public void resetPose() {
