@@ -8,17 +8,10 @@ package frc.robot;
 
 
 // ++ project stuff
-import frc.robot.Constants; 
 import edu.wpi.first.wpilibj2.command.Command;
 
 // ++ misc
 import frc.robot.subsystems.IMUSubsystem;
-
-// ++ network tables / shuffleboard stuff
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
 // ++ SUBSYSTEMS
 import frc.robot.subsystems.DriveSubsystem;

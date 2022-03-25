@@ -1,10 +1,8 @@
 package frc.robot;
 
-import frc.robot.Constants;
 import frc.robot.subsystems.ShuffleboardSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController; 
 
 public final class JoyUtil extends XboxController {

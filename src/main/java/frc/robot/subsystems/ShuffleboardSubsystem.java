@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.IMUSubsystem;
-
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -16,11 +14,6 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
-import java.util.Map;
-
-import com.kauailabs.navx.frc.AHRS;
-
 
 
 public class ShuffleboardSubsystem extends SubsystemBase {
