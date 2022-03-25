@@ -17,7 +17,7 @@ public class SpinClimberCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     m_ClimberSubsystem = subsystem;
     addRequirements(m_ClimberSubsystem);
-    goalRevolution = degrees*(230.4/360.0)/5;
+    goalRevolution = degrees*(230.4/360.0);
   }
 
   // Called when the command is initially scheduled.

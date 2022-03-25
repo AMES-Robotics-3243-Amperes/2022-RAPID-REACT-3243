@@ -34,6 +34,9 @@ public class ClimbManagerCommand extends CommandBase {
   public void initialize() {
     m_ManualClimbCommand.schedule();
     m_ClimberSubsystem.isRunningClimbCommand = false;
+    m_ClimberSubsystem.climberAngle=0;
+    m_ClimberSubsystem.climberMotorLEncoder.setPosition(0);
+    m_ClimberSubsystem.climberMotorREncoder.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -78,11 +81,11 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 3:
           // rotate arm(~90)
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees+90).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees-90).schedule();
           break;
         case -3:
           // rotate arm(~-90)
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees-90).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees+90).schedule();
           break;
         case 4:
           // close gripper(B)
