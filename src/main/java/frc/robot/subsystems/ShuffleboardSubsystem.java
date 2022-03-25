@@ -26,9 +26,6 @@ import com.kauailabs.navx.frc.AHRS;
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
 
-  // ++ creates IMUSubsystem object 
-  IMUSubsystem IMUSubsystem = new IMUSubsystem();
-
   // ++ declare tabs
   ShuffleboardTab movementTab, driverFeedbackTab, IMUTab, shooterTab;
 
