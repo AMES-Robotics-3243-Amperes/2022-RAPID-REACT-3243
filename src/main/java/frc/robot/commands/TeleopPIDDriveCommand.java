@@ -22,8 +22,6 @@ public class TeleopPIDDriveCommand extends CommandBase {
 
   private final DriveSubsystem m_DriveSubsystem;
   private final JoyUtil controller;
-  private final MecanumDriveKinematics kinematics;
-
 
   /** Creates a new TeleopPIDCommand. */
   public TeleopPIDDriveCommand(DriveSubsystem subsystem, JoyUtil controller) {
@@ -31,10 +29,6 @@ public class TeleopPIDDriveCommand extends CommandBase {
     m_DriveSubsystem = subsystem;
     addRequirements(m_DriveSubsystem);
     this.controller = controller;
-
-    // Creates a mecanum kinematics class to find the correct wheel speeds when driving, using the measurements from the center of the robot to the centers of the wheels
-    kinematics = new MecanumDriveKinematics(Constants.DriveTrain.frontLeftMeters, Constants.DriveTrain.frontRightMeters, Constants.DriveTrain.backLeftMeters, Constants.DriveTrain.backRightMeters);
-
 
   }
 
@@ -49,22 +43,14 @@ public class TeleopPIDDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ChassisSpeeds vehicleSpeed = new ChassisSpeeds(
-      controller.getDriveYWithAdjustments(), 
-      controller.getDriveXWithAdjustments(), 
+
+    MecanumDriveWheelSpeeds wheelSpeeds = m_DriveSubsystem.getWheelSpeeds(
+      controller.getDriveXWithAdjustments(),
+      controller.getDriveYWithAdjustments(),
       controller.getRotationWithAdjustments()
       );
-
-    MecanumDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(vehicleSpeed);
-    wheelSpeeds.desaturate(Constants.DriveTrain.maxWheelSpeed);
-    SmartDashboard.putNumber("fl Wheel Speeds", wheelSpeeds.frontLeftMetersPerSecond);
     
-    m_DriveSubsystem.setVelocityReference(
-      wheelSpeeds.frontLeftMetersPerSecond, 
-      wheelSpeeds.frontRightMetersPerSecond, 
-      wheelSpeeds.rearLeftMetersPerSecond, 
-      wheelSpeeds.rearRightMetersPerSecond
-    );
+    m_DriveSubsystem.setVelocityReference(wheelSpeeds);
     
   }
 

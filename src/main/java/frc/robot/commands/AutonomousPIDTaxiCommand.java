@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IMUSubsystem;
 //Taxi means moving out of the tarmac with the autonomous PIDs. Thanks Gabe
 public class AutonomousPIDTaxiCommand extends CommandBase {
   private DriveSubsystem m_subsystem;
@@ -23,7 +24,7 @@ public class AutonomousPIDTaxiCommand extends CommandBase {
     m_subsystem.getShuffleboardPID();
     m_subsystem.setPIDValues(m_subsystem.pGain.getDouble(1.0),m_subsystem.iGain.getDouble(0.0),m_subsystem.dGain.getDouble(0.0));
     m_subsystem.resetPose();
-    m_subsystem.resetGyroRotation();
+    IMUSubsystem.resetYaw();
     Pose2d transform = new Pose2d(0, -2.4, new Rotation2d());
     m_subsystem.changeRobotPosition(transform);
   }
