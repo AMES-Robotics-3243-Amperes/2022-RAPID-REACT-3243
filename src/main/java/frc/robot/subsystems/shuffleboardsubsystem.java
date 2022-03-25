@@ -29,24 +29,35 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   // ++ declare tabs
   ShuffleboardTab movementTab;
   ShuffleboardTab driverFeedbackTab;
+  ShuffleboardTab IMUTab;
+  ShuffleboardTab shooterTab;
 
   // ++ declare widgets
+    // ++ drive stuff
   static SimpleWidget firstPowerShuffle;
   static SimpleWidget secondPowerShuffle;
   static SimpleWidget aCoeffShuffle;
   static SimpleWidget bCoeffShuffle;
   static SimpleWidget fastModeMultiplierShuffle;
   static SimpleWidget totalSpeedDamperShuffle;
+    // ++ driver feedback
 
 
+
+  // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<Integer> m_FirstPower;
 
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
   
   public ShuffleboardSubsystem() {
+    // ++ define all the tabs
     driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
     movementTab = Shuffleboard.getTab("Drivetrain");
+    IMUTab = Shuffleboard.getTab("IMU");
+    shooterTab = Shuffleboard.getTab("shooter");
+
+    
 
 
 
@@ -55,7 +66,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
 
 
-    // ++ drivetrain stuff
+    // ++ ===================== DRIVETRAIN WIDGETS/STUFF ===============================================
     firstPowerShuffle = movementTab.add("firstpower", Constants.Joysticks.firstPower);
     secondPowerShuffle = movementTab.add("secondpower", Constants.Joysticks.secondPower);
     aCoeffShuffle = movementTab.add("aCoeff", Constants.Joysticks.aCoeff);
@@ -69,12 +80,12 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     m_FirstPower.addOption("Bad Power", 4);
 
     movementTab.add(m_FirstPower);
-
+    // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
 
 
   }
 
-  // ++ =========================================== DRIVETRAIN STUFF ===============================================
+  // ++ =========================================== DRIVETRAIN METHODS ===============================================
   public static int getFirstPower() {
     //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
     return m_FirstPower.getSelected();
@@ -103,7 +114,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   public static double getDriveSpeedDamper(){
     return (double)(totalSpeedDamperShuffle.getEntry().getDouble((double)Constants.Joysticks.driveSpeedDamper));
   }
-  // ++ ============================= END DRIVETRAIN STUFF ==================================================
+  // ++ ============================= END DRIVETRAIN METHODS ==================================================
 
 
   // ++ ================= IMU stuff ===============================
@@ -116,11 +127,12 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
 
 
-
-  // thisIsCamelCase
-  // ThisIsPascalCase
-  // this_is_python_case_whatever_it's_really_called
-  // thisiswhatjessedidwhenoriginallywritingthisclasscase
+  /* ++
+    thisIsCamelCase
+    ThisIsPascalCase
+   this_is_python_case_whatever_it's_really_called
+   thisiswhatjessedidwhenoriginallywritingthisclasscase
+  */
 
   @Override
   public void periodic() {

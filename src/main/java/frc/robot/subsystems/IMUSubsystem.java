@@ -18,41 +18,14 @@ public class IMUSubsystem extends SubsystemBase {
   // ~~ IMU object - gyro and accelerometer
   private static final AHRS imu = new AHRS();
 
-  // ++ LEAVE THESE AS PUBLIC; there was some weird error with a Null Pointer Exception
-  public SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
-  public NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
-
   
   /** Creates a new IMUSubsystem. */
   public IMUSubsystem() {
     
-    // ++ all of these are commented out because of some weird "this field already exists" exceptions
-    // ++ we'll put the values on shuffleboard through the ShuffleboardSubsystem instead, by
-    // ++ just calling the methods below in the ShuffleboardSubsystem
 
-    // // wYaw = imuTab.add("yaw", 0.0);
-    // wRoll = imuTab.add("roll", 0.0);
-    // wPitch = imuTab.add("pitch", 0.0);
-    // wXVelocity = imuTab.add("x velocity", 0.0);
-    // wYVelocity = imuTab.add("y velocity", 0.0);
-    // wZVelocity = imuTab.add("z velocity", 0.0);
-    // wXPos = imuTab.add("x position", 0.0);
-    // wYPos = imuTab.add("y position", 0.0);
-    // wZPos = imuTab.add("z position", 0.0);
-
-    // tYaw = wYaw.getEntry();
-    // tRoll = wRoll.getEntry();
-    // tPitch = wPitch.getEntry();
-    // tXVelocity = wXVelocity.getEntry();
-    // tYVelocity = wYVelocity.getEntry();
-    // tZVelocity = wZVelocity.getEntry();
-    // tXPos = wXPos.getEntry();
-    // tYPos = wYPos.getEntry();
-    // tZPos = wZPos.getEntry();
-    
   }
 
-  public static double getIMUYaw() {
+  public static double getYaw() {
     return imu.getYaw();
     // return 0.0;
   }

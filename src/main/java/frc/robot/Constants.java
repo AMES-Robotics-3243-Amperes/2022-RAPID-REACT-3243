@@ -111,7 +111,7 @@ public final class Constants {
         public static final double driveLowPassFilterStrength = 0.91;
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later 
-        public static final double driveSpeedDamper = 0.4; 
+        public static final double driveSpeedDamper = 0.65; 
         public static final double rotationDamper = 2.0; 
 
         // ss This is the multiplier for Fast Mode
@@ -137,8 +137,8 @@ public final class Constants {
         public static final int hoodMotorID = 5;
         // ++ PID stuff ----
         // ++ flywheel
-        public static final double flywheelPGain = 0.00015;
-        public static final double flywheelIGain = 0.000025;
+        public static final double flywheelPGain = 0.0000015;
+        public static final double flywheelIGain = 0.0025;
         public static final double flywheelDGain = 0.0;
         // ++ hood 
         public static final double hoodPGain = 0.0;

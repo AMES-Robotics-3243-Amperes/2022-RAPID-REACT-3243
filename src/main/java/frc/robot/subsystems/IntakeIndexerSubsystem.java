@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
+ 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -30,8 +30,11 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   private final SparkMaxPIDController intakePID;
   private final SparkMaxPIDController indexPID;
 
+
+  
   /** Creates a new IntakeIndexerSubsystem. */
   public IntakeIndexerSubsystem() {
+
     // dropMotor = new CANSparkMax(Constants.IntakeIndexer.dropMotorID, MotorType.kBrushless);
     intakeMotor = new CANSparkMax(Constants.IntakeIndexer.intakeMotorID, MotorType.kBrushless);
     indexMotor = new CANSparkMax(Constants.IntakeIndexer.indexMotorID, MotorType.kBrushless);

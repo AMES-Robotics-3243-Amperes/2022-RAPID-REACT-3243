@@ -194,7 +194,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ returns a Rotation2d object with the robot's current angle, in radians
   public Rotation2d getGyroRotation() {
-    double angle = IMUSubsystem.getIMUYaw();
+    double angle = IMUSubsystem.getYaw();
     angle *= (Math.PI / 180);
     angle -= gyroOffset;
     Rotation2d rotation = new Rotation2d(angle);

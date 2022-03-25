@@ -30,8 +30,9 @@ public class SpinIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean speed = secondaryController.getLeftBumper();
-    m_subsystem.setIntakeSpeed(0.01);
+    boolean isIntakeOn = secondaryController.getLeftBumper();
+    
+    // m_subsystem.setIntakeSpeed();
   }
 
   // Called once the command ends or is interrupted.

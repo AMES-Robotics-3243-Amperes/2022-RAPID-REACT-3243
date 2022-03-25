@@ -12,7 +12,6 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // ++ misc
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.IMUSubsystem;
 
 // ++ network tables / shuffleboard stuff
@@ -68,6 +67,7 @@ public class RobotContainer {
     // ++ "utility subsystems"
   private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
   private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
+  
   // COMMANDS--------------------
     // ++ teleop commands
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
@@ -86,6 +86,7 @@ public class RobotContainer {
     // ++ command stuff
     m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
     m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
+    m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
 
 
 
