@@ -276,7 +276,10 @@ public class ClimberSubsystem extends SubsystemBase {
     SmartDashboard.putBooleanArray("isCalibratedArray", isGrabberCalibrated);
     SmartDashboard.putBoolean("isCalibrated", isCalibrated);
     SmartDashboard.putNumberArray("set grabber values", grabberAngles);
-    
+
+    SmartDashboard.putNumber("climber motor spinner revolutions", climberMotorREncoder.getPosition());
+    SmartDashboard.putNumber("climber spinner angle", climberMotorREncoder.getPosition()*(230.4/360));
+
     // SmartDashboard.putNumber("Current of climber L", climberMotorL.getOutputCurrent());
     // SmartDashboard.putNumber("Current of climber R", climberMotorR.getOutputCurrent());
     // SmartDashboard.putNumber("Shaktool angle", climberMotorLEncoder.getPosition());
