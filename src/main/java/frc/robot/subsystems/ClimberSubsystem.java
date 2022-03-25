@@ -52,8 +52,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public double climberAngle = 0;
   public double grabberAngles[] = {0,0};
-  public double encoderGrabberAngles[]; //[0] is side 0, [1] is side 1
-  public double encoderClimberAngle;
+  public double encoderGrabberAngles[] = {0,0}; //[0] is side 0, [1] is side 1
+  public double encoderClimberAngle = 0;
 
   private double calibrationCurrent = 7;
 
