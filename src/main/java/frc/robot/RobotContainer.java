@@ -24,6 +24,7 @@ import frc.robot.subsystems.IntakeIndexerSubsystem;
 // ++ COMMANDS
   // ++ teleop
 import frc.robot.commands.TeleopPIDDriveCommand;
+import frc.robot.commands.IntakeIndexer.AcceptCommand;
 import frc.robot.commands.IntakeIndexer.RebuffCommand;
 import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
 import frc.robot.commands.ShooterCommand;
@@ -70,14 +71,15 @@ public class RobotContainer {
   
   // COMMANDS--------------------
     // ++ teleop commands
+  private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
-  private final RebuffCommand m_AcceptCommand = new RebuffCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.acceptRotations, Constants.IntakeIndexer.acceptSpeed, Constants.IntakeIndexer.acceptDuration);
+  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem, Constants.IntakeIndexer.rebuffRotations, Constants.IntakeIndexer.rebuffSpeed, Constants.IntakeIndexer.rebuffDuration);
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
-    // ++ auto commands
-  private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, secondaryController);
-  // private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
 
+    // ++ auto commands
+  private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
+  // ++ END SUBSYSTEMS/COMMANDS ===============================================
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

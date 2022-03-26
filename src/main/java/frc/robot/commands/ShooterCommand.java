@@ -28,41 +28,33 @@ public class ShooterCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
 
-  double controllerInput = 0;
+
   @Override
   public void execute() {
+    double hoodAngle = 0;
     if (joystick.getAButton()) {
-      controllerInput += 0.1;
-      m_ShooterSubsystem.setHoodAngle(controllerInput);
+      hoodAngle += 0.1;
     }
     else if (joystick.getBButton()) {
-      controllerInput -= 0.1;
-      m_ShooterSubsystem.setHoodAngle(controllerInput);
+      hoodAngle -= 0.1;
     }
     else if (joystick.getRightStickButtonPressed())  {
-      m_ShooterSubsystem.setHoodAngle(2);
-      controllerInput = 0;
-    }
-    else if (joystick.getLeftStickButtonPressed()) {
-      m_ShooterSubsystem.setHoodAngle(4);
-      controllerInput = 0;
-    }
-    else if (joystick.getLeftBumperPressed()) {
-      m_ShooterSubsystem.setHoodAngle(6);
-      controllerInput = 0;
+      hoodAngle = 0;
     }
     else {
-      m_ShooterSubsystem.setHoodAngle(controllerInput);
+      m_ShooterSubsystem.setHoodAngle(hoodAngle);
     }
     
 
     // ++ this sets the speed of the flywheel
     if (joystick.getYButton()) { 
-      double speed = 100.0;
+      double speed = 1.0;
       m_ShooterSubsystem.setFlywheelSpeed(speed);
     } else {
       m_ShooterSubsystem.stopFlywheel();
     }
+
+    m_ShooterSubsystem.setFlywheelSpeed(2 * joystick.getRightTriggerAxis());
     
     
   }
