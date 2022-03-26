@@ -96,12 +96,20 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberR1.setSecondaryCurrentLimit(grabberHardCurrentLimit);
 
     // :) setting the P in the motor PIDs
-    grabberL0PID.setP(0.03);
-    grabberL1PID.setP(0.03);
-    grabberR0PID.setP(0.03);
-    grabberR1PID.setP(0.03);
-    climberMotorLPID.setP(0.03);
-    climberMotorRPID.setP(0.03);
+    grabberL0PID.setP(0.025);  //all of these work okay at 0.03 but lets try a different thing for now
+    grabberL1PID.setP(0.025);
+    grabberR0PID.setP(0.025);
+    grabberR1PID.setP(0.025);
+    climberMotorLPID.setP(0.025);
+    climberMotorRPID.setP(0.025);
+
+
+    grabberL0PID.setOutputRange(-0.5, 0.5); // :) delete maybe? maybe not we'll see
+    grabberL1PID.setOutputRange(-0.5, 0.5);
+    grabberR0PID.setOutputRange(-0.5, 0.5);
+    grabberR1PID.setOutputRange(-0.5, 0.5);
+    climberMotorLPID.setOutputRange(-0.5, 0.5);
+    climberMotorRPID.setOutputRange(-0.5, 0.5);
 
     // :) setting the I in the motor PIDs
     //climberMotorLPID.setI(0.001);
@@ -140,7 +148,10 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void initialize(){
-    
+    climberAngle=0;
+    climberMotorLEncoder.setPosition(0);
+    climberMotorREncoder.setPosition(0);
+    currentClimberStep = 0;
     
   }
 
@@ -302,6 +313,7 @@ public class ClimberSubsystem extends SubsystemBase {
     SmartDashboard.putNumberArray("set grabber values", grabberAngles);
     SmartDashboard.putNumber("climber step", currentClimberStep);
     SmartDashboard.putBoolean("climb command", isRunningClimbCommand);
+    SmartDashboard.putNumber("L spinner encoder", climberMotorLEncoder.getPosition());
     
     // SmartDashboard.putNumber("Current of climber L", climberMotorL.getOutputCurrent());
     // SmartDashboard.putNumber("Current of climber R", climberMotorR.getOutputCurrent());

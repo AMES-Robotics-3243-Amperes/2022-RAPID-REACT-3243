@@ -13,11 +13,11 @@ public class SpinClimberCommand extends CommandBase {
   
   
   /** Creates a new SpinClimberCommand. */
-  public SpinClimberCommand(ClimberSubsystem subsystem, double degrees) {
+  public SpinClimberCommand(ClimberSubsystem subsystem, double revolutions) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_ClimberSubsystem = subsystem;
     addRequirements(m_ClimberSubsystem);
-    goalRevolution = degrees*(230.4/360.0);
+    goalRevolution = revolutions; //*(230.4/360.0)
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +38,7 @@ public class SpinClimberCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(goalRevolution-m_ClimberSubsystem.encoderClimberAngle)<2) { // error room for end command
+    if (Math.abs(goalRevolution-m_ClimberSubsystem.encoderClimberAngle)<2.5) { // error room for end command
       m_ClimberSubsystem.isRunningClimbCommand = false;
       return true;
     } else {

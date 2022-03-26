@@ -34,16 +34,13 @@ public class ClimbManagerCommand extends CommandBase {
   public void initialize() {
     m_ManualClimbCommand.schedule();
     m_ClimberSubsystem.isRunningClimbCommand = false;
-    m_ClimberSubsystem.climberAngle=0;
-    m_ClimberSubsystem.climberMotorLEncoder.setPosition(0);
-    m_ClimberSubsystem.climberMotorREncoder.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // :) command process for climbing, starts with robot lined up inside 2nd bar (of 4), intake facing away from driver stations, and nearest grabber clamped on 2nd bar
-    if (joystick.getBButton() && joystick.getXButton() == false && m_ClimberSubsystem.isRunningClimbCommand == false) {
+    if (joystick.getBButton() && joystick.getXButton() == false && m_ClimberSubsystem.isRunningClimbCommand == false && m_ClimberSubsystem.isCalibrated) {
       if (m_ClimberSubsystem.currentClimberStep >= 0 && m_ClimberSubsystem.currentClimberStep < 10) {
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep < 0) {
@@ -51,7 +48,7 @@ public class ClimbManagerCommand extends CommandBase {
       }
     }
 
-    if (joystick.getXButton() && joystick.getBButton() == false && m_ClimberSubsystem.isRunningClimbCommand == false) {
+    if (joystick.getXButton() && joystick.getBButton() == false && m_ClimberSubsystem.isRunningClimbCommand == false && m_ClimberSubsystem.isCalibrated) {
       if (m_ClimberSubsystem.currentClimberStep < 0) {
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep > 0) {
@@ -65,12 +62,14 @@ public class ClimbManagerCommand extends CommandBase {
       switch (m_ClimberSubsystem.currentClimberStep) {
         
         case 1:
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees+45).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, 30.85).schedule();
           new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case -1:
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees-45).schedule();
-          new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, 0).schedule();
+          //new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          //new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case 2:
           new CloseGripperCommand(m_ClimberSubsystem,Constants.Climber.grabberSide0).schedule(); // :) I dunno what side we should actually actuate first so we'll have to figure it out
@@ -81,11 +80,11 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 3:
           // rotate arm(~90)
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees-90).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-77.01).schedule();
           break;
         case -3:
           // rotate arm(~-90)
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees+90).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+77.01).schedule();
           break;
         case 4:
           // close gripper(B)
@@ -97,11 +96,11 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 5:
           // rotate arm(~-90) probably closer to -75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees-75).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+28.47).schedule();
           break;
         case -5:
           // rotate arm(~90) probably closer to 75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees+75).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-28.47).schedule();
           break;
         case 6:
           // open gripper(A)
@@ -113,11 +112,11 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 7:
           // rotate arm(~180) probably closer to 240 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees+240).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-143.01).schedule();
           break;
         case -7:
           // rotate arm(~-180) probably closer to -240 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees-240).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+143.01).schedule();
           break;
         case 8:
           // close gripper(A)
@@ -129,11 +128,11 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 9:
           // rotate arm(~-90) -optional, probably closer to -75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees-75).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+30.14).schedule();
           break;
         case -9:
           // rotate arm(~90) -optional, probably closer to 75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngleDegrees+75).schedule();
+          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-30.14).schedule();
           break;
         case 10:
           // open gripper(B)
