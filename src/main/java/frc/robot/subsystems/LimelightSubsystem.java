@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -43,28 +43,23 @@ public class LimelightSubsystem extends SubsystemBase {
 
   //  ++ ---------------- target position methods -----------
 
-  /** ++ This method gets the X position of the target the Limelight sees
-   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
-   * This should probably be 0, but I still put it as a param just incase it's necessary. 
+  /** ++ This method gets the X position of the target the Limelight sees 
    * @return the X position of the target (as an angle) */
-  public double getTargetX(double defaultReturn) {
-    return tx.getDouble(defaultReturn);
+  public double getTargetX() {
+    return tx.getDouble(0.0);
   }
 
-    /** ++ This method gets the Y position of the target the Limelight sees
-   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
-   * This should probably be 0, but I still put it as a param just incase it's necessary. 
+    /** ++ This method gets the Y position of the target the Limelight sees (including limelight angle offset) 
    * @return the Y position of the target (as an angle) */
-  public double getTargetY(double defaultReturn) {
-    return ty.getDouble(defaultReturn);
+  public double getTargetY() {
+    return (ty.getDouble(-Constants.Limelight.limelightAngleOffset) + Constants.Limelight.limelightAngleOffset);
+    // ++ I did a weird default value to make the method return 0 if no value is found
   }
 
     /** ++ This method gets the area of the target the Limelight sees
-   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
-   * This should probably be 0, but I still put it as a param just incase it's necessary. 
    * @return the area position of the target (as a fraction of total camera area) */
-  public double getTargetArea(double defaultReturn) {
-    return ta.getDouble(defaultReturn);
+  public double getTargetArea() {
+    return ta.getDouble(0.0);
   }
 
   /** ++ this method determines if the Limelight sees any valid targets
@@ -84,6 +79,59 @@ public class LimelightSubsystem extends SubsystemBase {
   // ++ --------------------------------------------------------------------------------
 
 
+  // ++ ======= CALCULATION METHODS ===================================================
+  // ++ these methods are used to calculate the necessary values for the ball's trajectory
+
+
+  // ++ --------------- distance from hub stuff ----------------------------
+
+  /** this finds the distance from the hub based on limelight values (y angle offset) */
+  public double findDistanceFromHub() {
+    return (Constants.Limelight.shooterToHubHeight / Math.tan( getTargetY() ));
+  }
+
+  // ++ --------------- end distance from hub stuff ------------------------
+
+
+
+
+
+  // ++ --------------- trajectory stuff -------------------------------------
+
+  /* ++   >>>>>>>>>>>> ***COOL DESMOS GRAPH*** https://www.desmos.com/calculator/jyxaoog9fd <<<<<<<<<<<<<<<<<<<<<<<<<<
+  *
+  * the graph should help give context for the calculations here.
+  * I'm hoping the comments in the graph should be descriptive enough explain what's going on
+  */
+
+
+
+  /** ++ this finds the B coefficient of the trajectory parabola. look at the desmos graph for context
+   * (desmos graph is in a comment above the definition of this function).
+   * This method should really only be used to find the angle of the hood (below)
+   * @param distanceFromHub this the distance between the robot and the center of the hub
+   * @return the B coefficient
+   */
+  public double findBCoeff(double distanceFromHub) {
+    double hubHeight = Constants.Limelight.shooterToHubHeight;
+    double arbPointX = distanceFromHub + Constants.Limelight.arbPointXOffset;
+    double arbPointY = hubHeight + Constants.Limelight.arbPointYOffset;
+
+    double bCoeff = ( ( (-(Math.pow(distanceFromHub, 2) * arbPointY)) + (Math.pow(arbPointX, 2) * hubHeight) ) 
+    / ( (Math.pow(arbPointX, 2) * distanceFromHub) - (Math.pow(distanceFromHub, 2) * arbPointX) ) 
+    ); // ++ this is what happens when you do a linear algebra in code
+
+    return bCoeff;
+  }
+  
+  /** ++ this method returns angle the hood should be to make the ball in the hub*/
+  public double findHoodAngle() {
+    return Math.atan( findBCoeff( findDistanceFromHub() ) );
+  }
+  // ++ ----------- end trajectory stuff ---------------------------------------
+
+
+  // ++ ======== END CALCULATION METHODS ==============================================
 
 
   @Override

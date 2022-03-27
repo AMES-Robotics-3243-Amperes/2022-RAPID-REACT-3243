@@ -163,7 +163,25 @@ public final class Constants {
 
     /**  ++ constants for limelight stuff, anything involved with calculations or keys etc */
     public static final class Limelight {
-        // public
+        // ++ ====== actual limelight values ============
+            /** angle of the limelight; degrees up from horizontal */
+        public static final double limelightAngleOffset = 25.0;
+
+        // ++ ======= field/robot measurements ============ (all in feet)
+
+        public static final double hubHeight = 8.6666666667; // ++ i put this as a decimal approx bc (104/12) was being weird
+
+            /** ++ this is the height of the shooter (where the ball leaves the robot) off the ground */
+        public static final double shooterHeight = 0.0; // ++ measure what this actually si
+
+            /** this is the difference in height between the shooter and the hub, in feet */
+        public static final double shooterToHubHeight = hubHeight - shooterHeight;
+
+        // ++ these are the offsets of the arbitrary point above the ring relative to the center of the ring 
+            /** ++ the horizontal distance between the (close) edge of the hub and the center */
+        public static final double arbPointXOffset = -2.0;
+            /** ++ the vertical distance between the hub and the arbitrary point */
+        public static final double arbPointYOffset = 1.0;
 
     }
 
