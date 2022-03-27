@@ -27,7 +27,7 @@ import frc.robot.commands.TeleopPIDDriveCommand;
 import frc.robot.commands.IntakeIndexer.AcceptCommand;
 import frc.robot.commands.IntakeIndexer.RebuffCommand;
 import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
-import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterRoutineCommands.ShooterCommand;
 // ++ auto
 import frc.robot.commands.AutonomousPIDTaxiCommand;
 
