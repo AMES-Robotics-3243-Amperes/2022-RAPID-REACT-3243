@@ -50,7 +50,8 @@ public class LimelightDriveCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // ++ conditions to finish: x error is within acceptable bounds (( AND the rest of the sub-routines are finished ? ))
+    // ++ conditions to finish: x error is within acceptable bounds 
+    // ++ (( AND the rest of the sub-routines are finished ?? (incase robot got bumped before it was ready to shoot) ))
     return false;
   }
 }
