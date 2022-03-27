@@ -237,6 +237,22 @@ public class DriveSubsystem extends SubsystemBase {
     return wheelSpeeds;
   }
 
+  /**
+   * ++ this method compose previous drive methods
+   * [ getWheelSpeeds() and then setVelocityReference() ]
+   * @param x x velocity
+   * @param y y velocity
+   * @param r rotation
+   * @return this doesn't return anything-- but it sets the speeds of the wheels
+   */
+  public void setReferencesFromWheelSpeeds(double x, double y, double r){
+    /* ++ the getWheelSpeeds() method returns a MecanumDriveWheelSpeeds object, 
+    *  and setVelocityReference() takes a MecanumDriveWheelSpeeds object and sets
+    *  the reference speeds of the wheels
+    */
+    setVelocityReference( getWheelSpeeds(x, y, r) );
+  }
+
 
 
 
