@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -46,6 +47,12 @@ public class ClimberSubsystem extends SubsystemBase {
 
   // :) variables
 
+  public double spinFF = 0;
+  public double spinI=0;
+  public double spinP=0;
+  public double spinD=0;
+
+
   public int currentClimberStep = 0;
   public int previousClimberStep = 0;
   public boolean isRunningClimbCommand = false;
@@ -75,6 +82,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public final double gripperOpenMaximum = 67;
   public final double gripperClosedMinimum = 0.4;
 
+  
+
   public ClimberSubsystem () {
     // :) reset things
     climberAngle = 0;
@@ -100,20 +109,15 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberL1PID.setP(0.025);
     grabberR0PID.setP(0.025);
     grabberR1PID.setP(0.025);
-    climberMotorLPID.setP(0.025);
-    climberMotorRPID.setP(0.025);
 
 
-    grabberL0PID.setOutputRange(-0.5, 0.5); // :) delete maybe? maybe not we'll see
-    grabberL1PID.setOutputRange(-0.5, 0.5);
-    grabberR0PID.setOutputRange(-0.5, 0.5);
-    grabberR1PID.setOutputRange(-0.5, 0.5);
-    climberMotorLPID.setOutputRange(-0.5, 0.5);
-    climberMotorRPID.setOutputRange(-0.5, 0.5);
-
-    // :) setting the I in the motor PIDs
-    //climberMotorLPID.setI(0.001);
-    //climberMotorRPID.setI(0.001);
+    // :) setting the output range in the motor PIDs
+    // grabberL0PID.setOutputRange(-0.5, 0.5); // :) delete maybe? maybe not we'll see
+    // grabberL1PID.setOutputRange(-0.5, 0.5);
+    // grabberR0PID.setOutputRange(-0.5, 0.5);
+    // grabberR1PID.setOutputRange(-0.5, 0.5);
+    climberMotorLPID.setOutputRange(-0.25, 0.25);
+    climberMotorRPID.setOutputRange(-0.25, 0.25);
 
     // :) resetting the encoder positions for the motors to 0
     climberMotorREncoder.setPosition(0);
@@ -144,7 +148,6 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberR0.setIdleMode(IdleMode.kBrake);
     SmartDashboard.putNumber("calibration speed", -0.17);
     SmartDashboard.putNumber("calibration current", 20);
-
   }
 
   public void initialize(){
@@ -152,7 +155,6 @@ public class ClimberSubsystem extends SubsystemBase {
     climberMotorLEncoder.setPosition(0);
     climberMotorREncoder.setPosition(0);
     currentClimberStep = 0;
-    
   }
 
   public void resetMotorPosReadings(){
@@ -168,6 +170,9 @@ public class ClimberSubsystem extends SubsystemBase {
     climberAngle = 0;
     grabberAngles[0]=0;
     grabberAngles[1]=0;
+
+    //climberMotorRPID.setReference(0,ControlType.kPosition);
+    //climberMotorLPID.setReference(0,ControlType.kPosition);
   }
 
   public void calibrateGrabbers(){
@@ -205,6 +210,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public void actuateClimber(double revolutions){
     // :) actuate both climber motors, to a specified number of revolutions from starting angle
     climberAngle = revolutions;
+    climberMotorRPID.setReference(climberAngle, ControlType.kPosition);
+    climberMotorLPID.setReference(climberAngle, ControlType.kPosition);
   }
 
   public void spinClimber(double speed){
@@ -215,6 +222,29 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.getNumber("spin FF", 0);
+    SmartDashboard.getNumber("spin I", 0);
+    SmartDashboard.getNumber("spin P", 0.025);
+    SmartDashboard.getNumber("spin d", 0);
+
+    if (spinFF!=SmartDashboard.getNumber("spin FF", 0) || spinI!=SmartDashboard.getNumber("spin I", 0) || spinP!=SmartDashboard.getNumber("spin P", 0.025) || spinD!=SmartDashboard.getNumber("spin D", 0)) {
+      spinFF = SmartDashboard.getNumber("spin FF", 0);
+      spinI = SmartDashboard.getNumber("spin I", 0);
+      spinP = SmartDashboard.getNumber("spin P", 0.025); //0.15 for KP and 0 for everything else with current output range works pretty well, gotta test tho. gonna have to tune for KI
+      spinD = SmartDashboard.getNumber("spin D", 0);
+      // move this back up to the pid stuff
+      climberMotorLPID.setP(spinP);
+      climberMotorRPID.setP(spinP);
+      // :) setting the I in the motor PIDs
+      climberMotorLPID.setI(spinI);
+      climberMotorRPID.setI(spinI);
+      // :) setting the FF in the motor PIDs
+      climberMotorLPID.setFF(spinFF);
+      climberMotorRPID.setFF(spinFF);
+
+      climberMotorLPID.setD(spinD);
+      climberMotorRPID.setD(spinD);
+    }
     calibrationCurrent=SmartDashboard.getNumber("calibration current", 20);
 
     encoderGrabberAngles[0] = (grabberL0Encoder.getPosition()+grabberR0Encoder.getPosition())/2; //is average
@@ -223,6 +253,10 @@ public class ClimberSubsystem extends SubsystemBase {
     
     climberAngleDegrees = climberAngle*(230.4/360);
 
+
+
+    
+
     // This method will be called once per scheduler run
 
     
@@ -230,8 +264,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     // :) super long if-statement is to prevent the motors from overrunning too far. (hopefully it works...)
     //if ( (climberAngle-climberMotorREncoder.getPosition()>1 && climberAngle<climberMotorREncoder.getPosition()) || (climberAngle-climberMotorREncoder.getPosition()<-0.1 && climberAngle>climberMotorREncoder.getPosition()) ) {
-      climberMotorRPID.setReference(climberAngle, ControlType.kPosition);
-      climberMotorLPID.setReference(climberAngle, ControlType.kPosition);
+      
     //}
 
     if (isCalibrated){
@@ -267,25 +300,25 @@ public class ClimberSubsystem extends SubsystemBase {
         grabberR1.set(0);
       }
     } else if (isCalibrating){
-      if (grabberR0.getOutputCurrent() > calibrationCurrent) {
+      if (grabberR0.getOutputCurrent() > calibrationCurrent || grabberR0.getLastError() == REVLibError.kCANDisconnected) {
         grabberR0.set(0);
         grabberR0Encoder.setPosition(0);
         grabberAngles[0]=0;
         isGrabberCalibrated[0] = true;
       }
-      if (grabberL0.getOutputCurrent() > calibrationCurrent){
+      if (grabberL0.getOutputCurrent() > calibrationCurrent || grabberL0.getLastError() == REVLibError.kCANDisconnected){
         grabberL0.set(0);
         grabberL0Encoder.setPosition(0);
         grabberAngles[0]=0;
         isGrabberCalibrated[1] = true;
       }
-      if (grabberR1.getOutputCurrent() > calibrationCurrent) {
+      if (grabberR1.getOutputCurrent() > calibrationCurrent || grabberR1.getLastError() == REVLibError.kCANDisconnected) {
         grabberR1.set(0);
         grabberR1Encoder.setPosition(0);
         grabberAngles[1]=0;
         isGrabberCalibrated[2] = true;
       }
-      if (grabberL1.getOutputCurrent() > calibrationCurrent){
+      if (grabberL1.getOutputCurrent() > calibrationCurrent || grabberL1.getLastError() == REVLibError.kCANDisconnected){
         grabberL1.set(0);
         grabberL1Encoder.setPosition(0);
         grabberAngles[1]=0;
@@ -314,11 +347,16 @@ public class ClimberSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("climber step", currentClimberStep);
     SmartDashboard.putBoolean("climb command", isRunningClimbCommand);
     SmartDashboard.putNumber("L spinner encoder", climberMotorLEncoder.getPosition());
+    SmartDashboard.putNumber("theoretical climber angle", climberAngle);
     
     // SmartDashboard.putNumber("Current of climber L", climberMotorL.getOutputCurrent());
     // SmartDashboard.putNumber("Current of climber R", climberMotorR.getOutputCurrent());
     // SmartDashboard.putNumber("Shaktool angle", climberMotorLEncoder.getPosition());
-    if (climberMotorR.getMotorTemperature()>maxTemp || climberMotorL.getMotorTemperature()>maxTemp || grabberL0.getMotorTemperature()>maxTemp || grabberL1.getMotorTemperature()>maxTemp || grabberR0.getMotorTemperature()>maxTemp || grabberR1.getMotorTemperature()>maxTemp) {
+    if (climberMotorR.getMotorTemperature()>maxTemp || climberMotorL.getMotorTemperature()>maxTemp ||
+        (grabberL0.getMotorTemperature()>maxTemp && grabberL0.getMotorTemperature()<150) ||
+        (grabberL1.getMotorTemperature()>maxTemp && grabberL1.getMotorTemperature()<150) ||
+        (grabberR0.getMotorTemperature()>maxTemp && grabberR0.getMotorTemperature()<150) ||
+        (grabberR1.getMotorTemperature()>maxTemp && grabberR1.getMotorTemperature()<150)) {
       isTooHot = true;
     } else {
       isTooHot = false;

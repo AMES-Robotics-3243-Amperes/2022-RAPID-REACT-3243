@@ -14,11 +14,16 @@ import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.climber_commands.ClimbManagerCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // ++ comment so I can rebase
 
 // ++ = max
 // :) = mason
+
+// also make sure user can't open gripper when lock engaged
+//grabber locking: 180 degrees is locking, 150 is unlocked
+//todo for grabber lock: in the case of an emergency and as a failsafe, if the robot detects something go wrong (motor controller disconnected, motor encoder reading dangerous values, etc) lock engages automatically and climber ability disables
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -57,6 +62,11 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
+    // SmartDashboard.putNumber("spin P", 0);
+    // SmartDashboard.putNumber("spin I", 0);
+    // SmartDashboard.putNumber("spin FF", 0);
+    // SmartDashboard.putNumber("spin D", 0);
   }
 
   /**
@@ -76,4 +86,9 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null; 
   }
+
+  public ClimberSubsystem getClimberSubsystem(){
+    return m_ClimberSubsystem;
+  }
+
 }
