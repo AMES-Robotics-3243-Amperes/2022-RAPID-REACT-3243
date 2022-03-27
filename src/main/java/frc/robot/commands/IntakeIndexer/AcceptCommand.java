@@ -50,6 +50,6 @@ public class AcceptCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (timer.get() > Constants.IntakeIndexer.acceptDuration);
+    return (timer.get() >= Constants.IntakeIndexer.acceptDuration);
   }
 }
