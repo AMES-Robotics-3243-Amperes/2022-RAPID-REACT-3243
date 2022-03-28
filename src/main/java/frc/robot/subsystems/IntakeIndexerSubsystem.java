@@ -83,13 +83,13 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void setIntakeSpeed(double speed) {
     // ~~ This method spins the intake bars
     intakeMotor.set(speed);
-    System.out.println(speed);
+    // System.out.println(speed);
   }
 
   public void setIndexerSpeed(double speed) {
     // ~~ This method spins the indexer wheels.
     indexMotor.set(speed);
-    System.out.println(speed);
+    // System.out.println(speed);
   }
 
   public void stepIndexer(double rotations) {

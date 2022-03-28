@@ -7,6 +7,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // ++ project stuff
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -91,6 +92,10 @@ public class RobotContainer {
     m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
 
     configureButtonBindings();
+
+    // ++ TEMP \/
+    SmartDashboard.putNumber("hood p gain", Constants.Shooter.hoodPGain);
+
 
   }
   /**

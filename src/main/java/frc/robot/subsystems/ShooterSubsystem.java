@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -47,10 +48,13 @@ public class ShooterSubsystem extends SubsystemBase {
     flywheelEncoder = flywheelMotor.getEncoder();
     hoodEncoder = hoodMotor.getEncoder();
     hoodEncoder.setPositionConversionFactor(Constants.Shooter.motorToHoodAngle);
+    // hoodEncoder.setPositionConversionFactor(1.0);
+
 
     // ++ define PID objects
     flywheelPID = flywheelMotor.getPIDController();
     hoodPID = hoodMotor.getPIDController();
+    hoodPID.setOutputRange(-0.15, 0.15);
 
   }
 
@@ -64,12 +68,17 @@ public class ShooterSubsystem extends SubsystemBase {
     return hoodEncoder.getPosition();
   }
 
+  public void zeroHoodEncoder() {
+    hoodEncoder.setPosition(0.0);
+  }
+
   /** this sets the P, I, and D values for the hood */
   public void setHoodPIDValues(){
     double pGain = Constants.Shooter.hoodPGain;
     double iGain = Constants.Shooter.hoodIGain;
     double dGain = Constants.Shooter.hoodDGain;
-    hoodPID.setP(pGain);
+    // hoodPID.setP(pGain);
+    hoodPID.setP( SmartDashboard.getNumber("hood p gain", 0.0));
     hoodPID.setI(iGain);
     hoodPID.setD(dGain);
   }
@@ -110,6 +119,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
+    setHoodPIDValues();
     // This method will be called once per scheduler run
 
   }

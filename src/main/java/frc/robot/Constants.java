@@ -74,10 +74,10 @@ public final class Constants {
         // ~~ Accept and Rebuff Constants
         public static final double acceptRotations = 30;
         public static final double acceptSpeed = 1;
-        public static final double acceptDuration = 0.2;
+        public static final double acceptDuration = 0.15;
         public static final double rebuffRotations = -30;
         public static final double rebuffSpeed = -1;
-        public static final double rebuffDuration = 0.2;
+        public static final double rebuffDuration = 0.15;
         // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
         public static final double intakeSpeed = 0.75;
         public static final double indexSpeed = -0.75;
@@ -118,7 +118,7 @@ public final class Constants {
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later 
         public static final double driveSpeedDamper = 0.65; 
-        public static final double rotationDamper = 2.0; 
+        public static final double rotationDamper = 3.0; 
 
         // ss This is the multiplier for Fast Mode
         // explained in JoyUtil.java
@@ -148,7 +148,7 @@ public final class Constants {
         public static final double flywheelIGain = 0.0025;
         public static final double flywheelDGain = 0.0;
         // ++ hood 
-        public static final double hoodPGain = 0.0;
+        public static final double hoodPGain = 0.001;
         public static final double hoodIGain = 0.0;
         public static final double hoodDGain = 0.0;
         
@@ -157,7 +157,7 @@ public final class Constants {
          * ++ this is (maybe) the conversion ratio between the angle of the hood motor and the actual angle of the hood
          * [this ratio needs to be verified]
          */
-        public static final double motorToHoodAngle = 768/7;
+        public static final double motorToHoodAngle = 7/768; //768/7;
 
     }
 
