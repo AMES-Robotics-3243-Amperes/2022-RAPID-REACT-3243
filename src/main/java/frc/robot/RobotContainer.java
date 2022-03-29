@@ -11,25 +11,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // ++ misc
-import frc.robot.subsystems.IMUSubsystem;
 
 // ++ SUBSYSTEMS
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShuffleboardSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.IntakeIndexerSubsystem;
 
 
 // ++ COMMANDS
   // ++ teleop
 import frc.robot.commands.TeleopPIDDriveCommand;
-import frc.robot.commands.IntakeIndexer.AcceptCommand;
-import frc.robot.commands.IntakeIndexer.RebuffCommand;
-import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
-import frc.robot.commands.ShooterCommand;
 // ++ auto
-import frc.robot.commands.AutonomousPIDTaxiCommand;
+// import frc.robot.commands.AutonomousPIDTaxiCommand;
 
 
 
@@ -62,23 +54,15 @@ public class RobotContainer {
   // SUBSYSTEMS -------------------
     // ++ robot subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-  private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
-  private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem = new IntakeIndexerSubsystem();
     // ++ "utility subsystems"
-  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
   private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
   
   // COMMANDS--------------------
     // ++ teleop commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
-  private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
-  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem);
-  private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);
-  private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
 
     // ++ auto commands
-  private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
+  // private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
   // ++ END SUBSYSTEMS/COMMANDS ===============================================
 
 
@@ -87,8 +71,6 @@ public class RobotContainer {
 
     // ++ command stuff
     m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
-    m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
-    m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
 
     configureButtonBindings();
 
@@ -100,8 +82,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    secondaryRightBumper.whenPressed(m_RebuffCommand);
-    secondaryXButton.whenPressed(m_AcceptCommand);
+
   }
 
   /**
@@ -111,7 +92,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousPIDTaxiCommand(m_DriveSubsystem);
-    // return null;
+    // return new AutonomousPIDTaxiCommand(m_DriveSubsystem);
+    return null;
   }
 }

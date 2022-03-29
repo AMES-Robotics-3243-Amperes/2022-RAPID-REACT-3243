@@ -146,15 +146,15 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     // ~~ ==================== END JOYSTICK CURVE OUTPUTS ================================================
 
     // ~~ ==================== IMU OUTPUTS ===============================================================
-    yawShuffle.getEntry().setDouble(IMUSubsystem.getYaw());
-    pitchShuffle.getEntry().setDouble(IMUSubsystem.getPitch());
-    rollShuffle.getEntry().setDouble(IMUSubsystem.getRoll());
-    xVelocityShuffle.getEntry().setDouble(IMUSubsystem.getXVelocity());
-    yVelocityShuffle.getEntry().setDouble(IMUSubsystem.getYVelocity());
-    zVelocityShuffle.getEntry().setDouble(IMUSubsystem.getZVelocity());
-    xPositionShuffle.getEntry().setDouble(IMUSubsystem.getXPosition());
-    yPositionShuffle.getEntry().setDouble(IMUSubsystem.getYPosition());
-    zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
+    // yawShuffle.getEntry().setDouble(IMUSubsystem.getYaw());
+    // pitchShuffle.getEntry().setDouble(IMUSubsystem.getPitch());
+    // rollShuffle.getEntry().setDouble(IMUSubsystem.getRoll());
+    // xVelocityShuffle.getEntry().setDouble(IMUSubsystem.getXVelocity());
+    // yVelocityShuffle.getEntry().setDouble(IMUSubsystem.getYVelocity());
+    // zVelocityShuffle.getEntry().setDouble(IMUSubsystem.getZVelocity());
+    // xPositionShuffle.getEntry().setDouble(IMUSubsystem.getXPosition());
+    // yPositionShuffle.getEntry().setDouble(IMUSubsystem.getYPosition());
+    // zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
   }
 }
