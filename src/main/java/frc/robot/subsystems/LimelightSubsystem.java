@@ -83,14 +83,21 @@ public class LimelightSubsystem extends SubsystemBase {
   // ++ these methods are used to calculate the necessary values for the ball's trajectory
 
 
-  // ++ --------------- distance from hub stuff ----------------------------
+  // ++ --------------- misc ----------------------------
 
   /** this finds the distance from the hub based on limelight values (y angle offset) */
-  public double findDistanceFromHub() {
+  private double findDistanceFromHub() {
     return (Constants.Limelight.shooterToHubHeight / Math.tan( getTargetY() ));
   }
 
-  // ++ --------------- end distance from hub stuff ------------------------
+  /** ++ this is the function that tells you the necessary flywheel velocity based on the distance. 
+   * NOTE: this is NOT the implementation of this! This just converts from 
+   */
+  private double flywheelVelocityFromDistance(double distance) {
+    // ++ THIS IS JUST A PLACEHOLDER FOR NOW, WE'LL NEED TO FIND THE ACTUAL FUNCTION WHEN THE ROBOT WORKS
+    return distance;
+  }
+  // ++ --------------- end misc  ------------------------
 
 
 
@@ -125,8 +132,13 @@ public class LimelightSubsystem extends SubsystemBase {
   }
   
   /** ++ this method returns angle the hood should be to make the ball in the hub*/
-  public double findHoodAngle() {
+  public double findTargetHoodAngle() {
     return Math.atan( findBCoeff( findDistanceFromHub() ) );
+  }
+
+  /** ++ this method gives you the necessary velocity of the flywheel  */
+  public double giveTargetFlywheelVelocity() {
+    return flywheelVelocityFromDistance( findDistanceFromHub() );
   }
   // ++ ----------- end trajectory stuff ---------------------------------------
 

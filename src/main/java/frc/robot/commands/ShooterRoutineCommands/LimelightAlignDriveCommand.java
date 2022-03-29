@@ -28,7 +28,7 @@ public class LimelightAlignDriveCommand extends CommandBase {
   private final DriveSubsystem m_DriveSubsystem;
 
   // ++ this is the important variable here! the entire goal of this class is to minimize this value
-  double rotationalError;
+  double rotationalOffset;
   // ++ turnVelocity is the speed that's fed into the rotation for the drivetrain
   double turnVelocity; 
   // ++ 
@@ -37,7 +37,7 @@ public class LimelightAlignDriveCommand extends CommandBase {
   /** ++ the LimelightSubsystem isn't actually the subsystem for this command,
    * it's just here so we can read the limelight values from it
    */
-  LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
+  private LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
 
 
 
@@ -59,13 +59,9 @@ public class LimelightAlignDriveCommand extends CommandBase {
 
   }
 
+  /** ++ this method returns true if the robot is successfully aligned */
   public boolean wasAlignSuccessful() {
-    if (isSuccessful) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return isSuccessful;
   }
 
   // Called when the command is initially scheduled. 
@@ -78,6 +74,9 @@ public class LimelightAlignDriveCommand extends CommandBase {
     clock.reset();
     clock.start();
 
+    drivePIDController.reset();
+
+    rotationalOffset = 0.0;
 
   }
 
@@ -85,23 +84,24 @@ public class LimelightAlignDriveCommand extends CommandBase {
   @Override
   public void execute() {
 
-    rotationalError = m_LimelightSubsystem.getTargetX();
-    turnVelocity = drivePIDController.calculate(rotationalError);
+    rotationalOffset = m_LimelightSubsystem.getTargetX();
+    turnVelocity = drivePIDController.calculate(rotationalOffset, 0.0);
 
     m_DriveSubsystem.setReferencesFromWheelSpeeds(0.0, 0.0, turnVelocity);
 
-    if ( Math.abs(rotationalError) < Constants.Shooter.rotationErrorTolerance) {
+    // ++ this might be a stupid way of deciding if it's successfully aligned; if it overshoots by a lot when turning,
+    // ++ then it'll return true but go past the target. It shouldn't do that if the PID is properly tuned
+    if ( Math.abs(rotationalOffset) < Constants.Shooter.rotationErrorTolerance) {
       isSuccessful = true;
+    } else {
+      isSuccessful = false;
     }
     
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    drivePIDController.reset();
-    rotationalError = 0.0;
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

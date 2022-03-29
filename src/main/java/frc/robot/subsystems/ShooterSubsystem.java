@@ -60,10 +60,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // ++ ============== HOOD STUFF ===================================
 
+  // ++ ALL OF THIS HOOD STUFF NEEDS TO BE UPDATED WHEN THE ACTUATION THING IS CHANGED TO A SERVO
   public void setHoodAngle(double angle) {
     hoodPID.setReference(angle, ControlType.kPosition);
   }
 
+  /** gives the current hood angle
+   * @return current hood angle
+   */
   public double getHoodAngle(){
     return hoodEncoder.getPosition();
   }
@@ -100,7 +104,8 @@ public class ShooterSubsystem extends SubsystemBase {
     flywheelMotor.set(0.0);
   }
 
-  public double getFlywheelSpeed() {
+  /** ++ returns the actual velocity of the flywheel */
+  public double getCurrentFlywheelSpeed() {
     // ++ returns the velocity of the flywheelEncoder
     return flywheelEncoder.getVelocity();
   }

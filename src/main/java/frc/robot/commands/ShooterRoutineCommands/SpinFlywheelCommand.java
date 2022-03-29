@@ -6,25 +6,61 @@ package frc.robot.commands.ShooterRoutineCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.Constants;
+import frc.robot.subsystems.LimelightSubsystem;
+
+import edu.wpi.first.wpilibj.Timer;
+
 
 public class SpinFlywheelCommand extends CommandBase {
 
-  public final ShooterSubsystem m_ShooterSubsystem;
+  private final ShooterSubsystem m_ShooterSubsystem;
+
+  private LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
+  private Timer clock;
+
+  // ++ these are the important variables for this method
+  double flywheelTargetVelocity;
+  boolean isSuccessful;
 
   /** Creates a new SpinFlywheelCommand. */
   public SpinFlywheelCommand(ShooterSubsystem subsystem) {
     m_ShooterSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_ShooterSubsystem);
+
+    clock = new Timer(); 
   }
 
+  public boolean wasSpinSuccessful() {
+    return isSuccessful;
+  }
+  
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    clock.reset();
+    clock.start();
+
+    isSuccessful = false;
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    flywheelTargetVelocity = m_LimelightSubsystem.giveTargetFlywheelVelocity();
+    double velocityError = m_ShooterSubsystem.getCurrentFlywheelSpeed() - flywheelTargetVelocity;
+
+    m_ShooterSubsystem.setFlywheelSpeed(flywheelTargetVelocity);
+
+    if ( Math.abs(velocityError) < Constants.Shooter.flywheelSpeedErrorTolerance)   {
+      isSuccessful = true;
+    } else {
+      isSuccessful = false;
+    }
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -33,6 +69,6 @@ public class SpinFlywheelCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (isSuccessful || (clock.get() >= Constants.Shooter.flywheelTimeoutTime) );
   }
 }
