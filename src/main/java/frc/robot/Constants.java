@@ -135,6 +135,9 @@ public final class Constants {
     }
 
 
+    /** ++ this is the class for all the shooting-related stuff. It isn't just for the actual shooter itself- instead, it's 
+     * for anything related to the shooter routine/shooting in general
+     */
     public static final class Shooter {
         // ++ shooter constants
         // CAN
@@ -142,22 +145,52 @@ public final class Constants {
         public static final int flywheelMotorID = 9;
         public static final int hoodMotorID = 5;
 
-        // ++ PID stuff ----
+        // ++ PID stuff --------------
         // ++ flywheel
         public static final double flywheelPGain = 0.0000015;
         public static final double flywheelIGain = 0.0025;
         public static final double flywheelDGain = 0.0;
+
+        // ++ THIS NEEDS TO BE UPDATED WHEN THE HOOD ACTUATION CHANGES
         // ++ hood 
         public static final double hoodPGain = 0.001;
         public static final double hoodIGain = 0.0;
         public static final double hoodDGain = 0.0;
-        
+
+        // ++ drive
+        public static double limelightDrivePGain;
+        public static double limelightDriveIGain;
+        public static double limelightDriveDGain;
+
+
+
         // ++ ENCODER STUFF -------
         /**
          * ++ this is (maybe) the conversion ratio between the angle of the hood motor and the actual angle of the hood
-         * [this ratio needs to be verified]
+         * [this ratio needs to be verified] THIS NEEDS TO BE UPDATED WHEN THE HOOD ACTUATION CHANGES
          */
         public static final double motorToHoodAngle = 7/768; //768/7;
+
+
+        // ++ -------- SHOOTER ROUTINE STUFF ----------------------------
+        
+        // ++ end condition tolerances ----
+            // ++ these are the tolerances that is the acceptable range to finish the shooter routine and fire the cargo
+                // ++ RIGHT NOW ALL OF THESE ARE VERY MUCH BALLPARKS. THIS IS JUST SO THEY HAVE A VALUE
+        public static double rotationErrorTolerance = 5.0;
+        public static double hoodErrorTolerance;
+        public static double flywheelSpeedErrorTolerance;
+
+        // ++ timeout lengths
+            // ++ FIGURE OUT WHAT THESE SHOULD ACTUALLY BE
+        public static double hoodTimeoutTime;
+        public static double turnTimeoutTime = 2.0;
+        public static double flywheelTimeoutTime;
+
+
+
+
+
 
     }
 

@@ -5,20 +5,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.XboxController; 
 
+
+/** ++ we'll use this class to write methods that help us process joystick inputs
+* and will mostly be for drive train things, and will include things like:
+* deadzone functions and joystick input curves, and anything else we need. 
+*/
 public final class JoyUtil extends XboxController {
 
 
-    /* ++ we'll use this class to write methods that help us process joystick inputs
-    * and will mostly be for drive train things, and will include things like:
-    * deadzone functions and joystick input curves, and anything else we need. 
-    */
+
 
     // ++ WE HAVE A BUNCH OF FUNCTIONS HERE, AND WE NEED TO APPLY THEM IN THE RIGHT ORDER
     // ++ check the "composeDriveJoyFunctions" method at the bottom to see the order this should be done in 
     // ++ (((I'm not putting it here to avoid multiple versions of the "correct" order)))
 
 
-    // ++ constructor
+    /** creates a new JoyUtil joystick.
+     * @param controllerID
+     */
     public JoyUtil(int controllerID) {
         super(controllerID);
     }
@@ -45,7 +49,6 @@ public final class JoyUtil extends XboxController {
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength); 
-        SmartDashboard.putNumber("joyx adj out", adjustedPos);
         prevFilteredX = lowPassFilter(rawJoyPos, prevFilteredX, filterStrength);
         return adjustedPos;
     }
@@ -81,8 +84,7 @@ public final class JoyUtil extends XboxController {
         // ++ takes input and compares it to deadzone size
         // returns joystick size if it's greater than the deadzone, 0 otherwise
 
-        double deadZoneSize = SmartDashboard.getNumber("deadzone size", Constants.Joysticks.deadZoneSize);
-        SmartDashboard.putNumber("deadzone size", deadZoneSize);
+        double deadZoneSize = Constants.Joysticks.deadZoneSize;
 
         if (Math.abs(pos) >= deadZoneSize ) {
             return pos;
@@ -167,12 +169,6 @@ public final class JoyUtil extends XboxController {
 
         double adjustedJoyPos = withDamper;
 
-        SmartDashboard.putNumber("with dead", withDead);
-        SmartDashboard.putNumber("with filter",withFilter);
-        SmartDashboard.putNumber("with curve", withCurve);
-        SmartDashboard.putNumber("with speedmode", withSpeedMode);
-        SmartDashboard.putNumber("in m/s", inMetersPerSec);
-        SmartDashboard.putNumber("drive output", withDamper);
 
         // ++ I decided to make seperate variables for everything to make it a little more readable
 

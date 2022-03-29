@@ -15,7 +15,7 @@ import java.util.Random;
 
 /** ++ This class is used to read values from the LimeLight and do calculations based on those numbers. 
  *  Pretty much all of the math for calculating things (like flywheel speed, hood angle, etc) should be done HERE 
- * instead of the corresponding subsystem. 
+ * instead of the corresponding subsystem. (This is basically just a subsystem full of methods that get values)
  */
 public class LimelightSubsystem extends SubsystemBase {
 
@@ -43,7 +43,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   //  ++ ---------------- target position methods -----------
 
-  /** ++ This method gets the X position of the target the Limelight sees 
+  /** ++ This method gets the X position of the target the Limelight sees. This is also the rotational error of the robot
    * @return the X position of the target (as an angle) */
   public double getTargetX() {
     return tx.getDouble(0.0);

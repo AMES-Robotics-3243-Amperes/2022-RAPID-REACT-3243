@@ -238,7 +238,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * ++ this method compose previous drive methods
+   * ++ this is an all-in-one drivetrain method- just give it x, y, and r, and it sets the wheel speeds
+   * this method composes previous drive methods. 
    * [ getWheelSpeeds() and then setVelocityReference() ]
    * @param x x velocity
    * @param y y velocity

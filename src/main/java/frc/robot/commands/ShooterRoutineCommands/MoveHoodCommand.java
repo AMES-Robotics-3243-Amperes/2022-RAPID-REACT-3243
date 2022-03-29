@@ -13,6 +13,10 @@ public class MoveHoodCommand extends CommandBase {
 
   public final ShooterSubsystem m_ShooterSubsystem;
 
+  double currentHoodAngle;
+  double targetHoodAngle;
+  // ++ these are super important variables for this class! the goal is to minimize the error between the current and the target
+
   /** Creates a new MoveHoodCommand. */
   public MoveHoodCommand(ShooterSubsystem subsystem) {
     m_ShooterSubsystem = subsystem;
