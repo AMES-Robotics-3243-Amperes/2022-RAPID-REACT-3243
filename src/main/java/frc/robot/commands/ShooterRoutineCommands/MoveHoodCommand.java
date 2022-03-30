@@ -23,7 +23,7 @@ public class MoveHoodCommand extends CommandBase {
   /** ++ the LimelightSubsystem isn't actually the subsystem for this command,
   * it's just here so we can read the limelight values from it
   */
-  private LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
+  private LimelightSubsystem m_LimelightSubsystem;
 
   // ++ these are super important variables for this class! the goal is to minimize the error between the current and the target
   double currentHoodAngle;
@@ -37,11 +37,12 @@ public class MoveHoodCommand extends CommandBase {
 
 
   /** Creates a new MoveHoodCommand. */
-  public MoveHoodCommand(ShooterSubsystem subsystem) {
+  public MoveHoodCommand(ShooterSubsystem subsystem, LimelightSubsystem limelightSubsystem) {
     m_ShooterSubsystem = subsystem;
+    m_LimelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_ShooterSubsystem);
-
+    addRequirements(m_LimelightSubsystem);
     clock = new Timer();
 
     hoodPIDController = new PIDController(
@@ -59,6 +60,7 @@ public class MoveHoodCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_ShooterSubsystem.setHoodPIDValues();
     clock.reset();
     clock.start();
 
@@ -77,11 +79,7 @@ public class MoveHoodCommand extends CommandBase {
 
     m_ShooterSubsystem.setHoodAngle(nextHoodOutput);
 
-    if ( Math.abs(currentHoodAngle - targetHoodAngle) < Constants.Shooter.hoodErrorTolerance ) {
-      isSuccessful = true;
-    } else {
-      isSuccessful = false;
-    }
+    isSuccessful = Math.abs(currentHoodAngle - targetHoodAngle) < Constants.Shooter.hoodErrorTolerance;
 
   }
 

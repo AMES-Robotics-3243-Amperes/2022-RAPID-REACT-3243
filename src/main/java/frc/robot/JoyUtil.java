@@ -28,6 +28,30 @@ public final class JoyUtil extends XboxController {
     }
 
 
+
+
+    // ++  rumble stuff ----------------
+
+    public void rumbleLeft(double strength) {
+        setRumble(RumbleType.kLeftRumble, strength);
+    }
+
+    public void rightRumble(double strength) {
+        setRumble(RumbleType.kRightRumble, strength);
+    }
+
+    public void stopRumbleLeft() {
+        setRumble(RumbleType.kLeftRumble, 0.0);
+    }
+
+    public void stopRumbleRight() {
+        setRumble(RumbleType.kRightRumble, 0.0);
+    }
+
+    // ++ end rumble stuff ------------
+
+
+
     // ++ these are the methods used to 
     double prevFilteredX;
     double prevFilteredY;
@@ -177,6 +201,11 @@ public final class JoyUtil extends XboxController {
 
         // it'll need to be changed if/when more functions are added
     }
+
+
+    
+
+
 
 }
 

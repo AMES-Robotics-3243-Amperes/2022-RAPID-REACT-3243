@@ -28,9 +28,11 @@ import frc.robot.commands.TeleopPIDDriveCommand;
 import frc.robot.commands.IntakeIndexer.AcceptCommand;
 import frc.robot.commands.IntakeIndexer.RebuffCommand;
 import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
-// ++ auto
+  // ++ auto
 import frc.robot.commands.AutonomousPIDTaxiCommand;
 import frc.robot.commands.ShooterCommand;
+  // ++ shooter routine
+import frc.robot.commands.ShooterRoutineCommands.LimelightAlignDriveCommand;
 
 
 
@@ -56,6 +58,7 @@ public class RobotContainer {
   public static JoyUtil secondaryController = new JoyUtil( Constants.Joysticks.secondaryControllerID );
     public static JoystickButton secondaryRightBumper = new JoystickButton(secondaryController, Constants.Joysticks.RightBumper);
     public static JoystickButton secondaryXButton = new JoystickButton(secondaryController, Constants.Joysticks.X);
+    public static JoystickButton primaryAButton = new JoystickButton(primaryController, Constants.Joysticks.A);
 
 
 
@@ -80,6 +83,10 @@ public class RobotContainer {
 
     // ++ auto commands
   private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
+
+    // ++ shooter routine commands
+  private final LimelightAlignDriveCommand m_LimeDriveCommand = new LimelightAlignDriveCommand(m_DriveSubsystem, m_LimelightSubsystem);
+
   // ++ END SUBSYSTEMS/COMMANDS ===============================================
 
 
@@ -90,7 +97,6 @@ public class RobotContainer {
     m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
     m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
     m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
-
     configureButtonBindings();
 
     // ++ TEMP \/
@@ -107,6 +113,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     secondaryRightBumper.whenPressed(m_RebuffCommand);
     secondaryXButton.whenPressed(m_AcceptCommand);
+    primaryAButton.whenPressed(m_LimeDriveCommand);
   }
 
   /**

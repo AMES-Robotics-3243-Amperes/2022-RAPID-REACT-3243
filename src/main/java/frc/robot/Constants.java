@@ -97,9 +97,9 @@ public final class Constants {
         public static final int RightJoystickY = 4;
 
         // ++ JOYSTICK BUTTON IDS -------------------------------------------------------------------
-        public static final int A = 2;
-        public static final int B = 3;
-        public static final int X = 1;
+        public static final int A = 1;
+        public static final int B = 2;
+        public static final int X = 3;
         public static final int Y = 4;
         public static final int Start = 10;
         public static final int Back = 9;
@@ -147,8 +147,8 @@ public final class Constants {
 
         // ++ PID stuff --------------
         // ++ flywheel
-        public static final double flywheelPGain = 0.0000015;
-        public static final double flywheelIGain = 0.0025;
+        public static final double flywheelPGain = 0.001;
+        public static final double flywheelIGain = 0.0;
         public static final double flywheelDGain = 0.0;
 
         // ++ THIS NEEDS TO BE UPDATED WHEN THE HOOD ACTUATION CHANGES
@@ -169,7 +169,7 @@ public final class Constants {
          * ++ this is (maybe) the conversion ratio between the angle of the hood motor and the actual angle of the hood
          * [this ratio needs to be verified] THIS NEEDS TO BE UPDATED WHEN THE HOOD ACTUATION CHANGES
          */
-        public static final double motorToHoodAngle = 7/768; //768/7;
+        public static final double motorToHoodAngle = (7/768); //768/7;
 
 
         // ++ -------- SHOOTER ROUTINE STUFF ----------------------------
@@ -177,15 +177,15 @@ public final class Constants {
         // ++ end condition tolerances ----
             // ++ these are the tolerances that is the acceptable range to finish the shooter routine and fire the cargo
                 // ++ RIGHT NOW ALL OF THESE ARE VERY MUCH BALLPARKS. THIS IS JUST SO THEY HAVE A VALUE
-        public static double rotationErrorTolerance = 5.0;
-        public static double hoodErrorTolerance;
-        public static double flywheelSpeedErrorTolerance;
+        public static final double rotationErrorTolerance = 5.0;
+        public static final double hoodErrorTolerance = 5.0;
+        public static final double flywheelSpeedErrorTolerance = 50.0;
 
         // ++ timeout lengths
             // ++ FIGURE OUT WHAT THESE SHOULD ACTUALLY BE
-        public static double hoodTimeoutTime;
-        public static double turnTimeoutTime = 2.0;
-        public static double flywheelTimeoutTime;
+        public static final double hoodTimeoutTime = 5.0;
+        public static final double turnTimeoutTime = 5.0;
+        public static final double flywheelTimeoutTime = 5.0;
 
 
 

@@ -16,7 +16,7 @@ public class SpinFlywheelCommand extends CommandBase {
 
   private final ShooterSubsystem m_ShooterSubsystem;
 
-  private LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
+  private LimelightSubsystem m_LimelightSubsystem;
   private Timer clock;
 
   // ++ these are the important variables for this method
@@ -24,10 +24,12 @@ public class SpinFlywheelCommand extends CommandBase {
   boolean isSuccessful;
 
   /** Creates a new SpinFlywheelCommand. */
-  public SpinFlywheelCommand(ShooterSubsystem subsystem) {
+  public SpinFlywheelCommand(ShooterSubsystem subsystem, LimelightSubsystem limelightSubsystem) {
     m_ShooterSubsystem = subsystem;
+    m_LimelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_ShooterSubsystem);
+    addRequirements(m_LimelightSubsystem);
 
     clock = new Timer(); 
   }
@@ -39,6 +41,8 @@ public class SpinFlywheelCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_ShooterSubsystem.setFlyhweelPIDValues();
+    
     clock.reset();
     clock.start();
 
@@ -54,11 +58,8 @@ public class SpinFlywheelCommand extends CommandBase {
 
     m_ShooterSubsystem.setFlywheelSpeed(flywheelTargetVelocity);
 
-    if ( Math.abs(velocityError) < Constants.Shooter.flywheelSpeedErrorTolerance)   {
-      isSuccessful = true;
-    } else {
-      isSuccessful = false;
-    }
+    isSuccessful = Math.abs(velocityError) < Constants.Shooter.flywheelSpeedErrorTolerance;
+
 
   }
 

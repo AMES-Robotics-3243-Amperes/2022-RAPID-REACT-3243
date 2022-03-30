@@ -82,7 +82,7 @@ public class ShooterSubsystem extends SubsystemBase {
     double iGain = Constants.Shooter.hoodIGain;
     double dGain = Constants.Shooter.hoodDGain;
     // hoodPID.setP(pGain);
-    hoodPID.setP( SmartDashboard.getNumber("hood p gain", 0.0));
+    hoodPID.setP( SmartDashboard.getNumber("hood p gain", Constants.Shooter.hoodPGain));
     hoodPID.setI(iGain);
     hoodPID.setD(dGain);
   }
@@ -96,8 +96,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ ============ FLYWHEEL STUFF ==============================
 
   public void setFlywheelSpeed(double speed) {
-    // flywheelPID.setReference(speed, ControlType.kVelocity);
-    flywheelMotor.set(speed);
+    flywheelPID.setReference(speed, ControlType.kVelocity);
   }
 
   public void stopFlywheel(){
@@ -125,7 +124,6 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     
-    setHoodPIDValues();
     // This method will be called once per scheduler run
 
   }

@@ -11,6 +11,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -26,6 +27,7 @@ public class LimelightAlignDriveCommand extends CommandBase {
   private Timer clock;
 
   private final DriveSubsystem m_DriveSubsystem;
+  private final LimelightSubsystem m_LimelightSubsystem;
 
   // ++ this is the important variable here! the entire goal of this class is to minimize this value
   double rotationalOffset;
@@ -37,15 +39,16 @@ public class LimelightAlignDriveCommand extends CommandBase {
   /** ++ the LimelightSubsystem isn't actually the subsystem for this command,
    * it's just here so we can read the limelight values from it
    */
-  private LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
 
 
 
   /** Creates a new LimelightDriveCommand. */
-  public LimelightAlignDriveCommand(DriveSubsystem subsystem) {
+  public LimelightAlignDriveCommand(DriveSubsystem subsystem, LimelightSubsystem limelightSubsystem) {
     m_DriveSubsystem = subsystem;
+    m_LimelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_DriveSubsystem);
+    addRequirements(m_LimelightSubsystem);
 
     
     drivePIDController = new PIDController (
@@ -91,17 +94,14 @@ public class LimelightAlignDriveCommand extends CommandBase {
 
     // ++ this might be a stupid way of deciding if it's successfully aligned; if it overshoots by a lot when turning,
     // ++ then it'll return true but go past the target. It shouldn't do that if the PID is properly tuned
-    if ( Math.abs(rotationalOffset) < Constants.Shooter.rotationErrorTolerance) {
-      isSuccessful = true;
-    } else {
-      isSuccessful = false;
-    }
-    
+    isSuccessful = Math.abs(rotationalOffset) < Constants.Shooter.rotationErrorTolerance;
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_DriveSubsystem.setReferencesFromWheelSpeeds(0.0, 0.0, 0.0);
+  }
 
   // Returns true when the command should end.
   @Override
