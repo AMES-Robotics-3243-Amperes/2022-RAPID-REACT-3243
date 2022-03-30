@@ -72,15 +72,15 @@ public final class Constants {
         public static final double intakePositionConversionRatio = (1/12);
         public static final double indexPositionConversionRatio = (1/120);
         // ~~ Accept and Rebuff Constants
-        public static final double acceptRotations = 30;
+        public static final double acceptRotations = -30;
         public static final double acceptSpeed = 1;
         public static final double acceptDuration = 0.2;
-        public static final double rebuffRotations = -30;
+        public static final double rebuffRotations = 30;
         public static final double rebuffSpeed = -1;
         public static final double rebuffDuration = 0.2;
         // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
         public static final double intakeSpeed = 0.75;
-        public static final double indexSpeed = -0.75;
+        public static final double indexSpeed = 0.75;
     }
 
 
@@ -144,8 +144,8 @@ public final class Constants {
 
         // ++ PID stuff ----
         // ++ flywheel
-        public static final double flywheelPGain = 0.0000015;
-        public static final double flywheelIGain = 0.0025;
+        public static final double flywheelPGain = 0.0;
+        public static final double flywheelIGain = 0.0;
         public static final double flywheelDGain = 0.0;
         // ++ hood 
         public static final double hoodPGain = 0.0;
@@ -163,7 +163,25 @@ public final class Constants {
 
     /**  ++ constants for limelight stuff, anything involved with calculations or keys etc */
     public static final class Limelight {
-        // public
+        // ++ ====== actual limelight values ============
+            /** angle of the limelight; degrees up from horizontal */
+        public static final double limelightAngleOffset = 25.0;
+
+        // ++ ======= field/robot measurements ============ (all in feet)
+
+        public static final double hubHeight = 8.6666666667; // ++ i put this as a decimal approx bc (104/12) was being weird
+
+            /** ++ this is the height of the shooter (where the ball leaves the robot) off the ground */
+        public static final double shooterHeight = 0.0; // ++ measure what this actually si
+
+            /** this is the difference in height between the shooter and the hub, in feet */
+        public static final double shooterToHubHeight = hubHeight - shooterHeight;
+
+        // ++ these are the offsets of the arbitrary point above the ring relative to the center of the ring 
+            /** ++ the horizontal distance between the (close) edge of the hub and the center */
+        public static final double arbPointXOffset = -2.0;
+            /** ++ the vertical distance between the hub and the arbitrary point */
+        public static final double arbPointYOffset = 1.0;
 
     }
 

@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Servo;
 
 import frc.robot.Constants;
 
@@ -29,10 +31,12 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ make motor objects  
   private CANSparkMax flywheelMotor = new CANSparkMax( Constants.Shooter.flywheelMotorID, MotorType.kBrushless ); 
   private CANSparkMax hoodMotor = new CANSparkMax( Constants.Shooter.hoodMotorID, MotorType.kBrushless ); 
+  private Servo servoMotor = new Servo( 0 );
 
   // ++ declare encoder objects
   public RelativeEncoder hoodEncoder; 
   public RelativeEncoder flywheelEncoder;
+  public RelativeEncoder servoEncoder;
 
   // ++ declare PID objects
   private SparkMaxPIDController hoodPID;
@@ -60,9 +64,13 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodPID.setReference(angle, ControlType.kPosition);
   }
 
+  public void setServoAngle(double servoAngle) {
+    servoMotor.setAngle(servoAngle);
+  }
+
   public double getHoodAngle(){
     return hoodEncoder.getPosition();
-  }
+ }
 
   /** this sets the P, I, and D values for the hood */
   public void setHoodPIDValues(){
@@ -83,8 +91,8 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ ============ FLYWHEEL STUFF ==============================
 
   public void setFlywheelSpeed(double speed) {
-    // flywheelPID.setReference(speed, ControlType.kVelocity);
-    flywheelMotor.set(speed);
+    flywheelPID.setReference(speed, ControlType.kVelocity);
+    // flywheelMotor.set(speed);
   }
 
   public void stopFlywheel(){
