@@ -27,24 +27,22 @@ public class ShooterCommand extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-
+  
 
   @Override
+  // ££ Hood Angle Code
   public void execute() {
-    double hoodAngle = 0;
-    if (joystick.getAButton()) {
-      hoodAngle += 0.1;
-    }
-    else if (joystick.getBButton()) {
-      hoodAngle -= 0.1;
-    }
-    else if (joystick.getRightStickButtonPressed())  {
-      hoodAngle = 0;
-    }
-    else {
-      m_ShooterSubsystem.setHoodAngle(hoodAngle);
-    }
-    
+    // double servoAngle = 0;
+    // if (joystick.getBButtonPressed()) {
+    //   servoAngle += 2;
+    // }
+    // else if (joystick.getAButtonPressed()) {
+    //   servoAngle -= 2;
+    // }
+    // else if (joystick.getRightStickButtonPressed())  {
+    //   servoAngle = 50;
+    // }
+    // m_ShooterSubsystem.setServoAngle(servoAngle);
 
     // ++ this sets the speed of the flywheel
     if (joystick.getYButton()) { 
