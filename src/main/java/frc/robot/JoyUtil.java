@@ -41,7 +41,7 @@ public final class JoyUtil extends XboxController {
     // ++ these methods make it so you don't have to pass anything in when you call them, you just call the 
     // ++ method that corresponds with the joystick you want. It also keeps track of the previous filtered value 
     public double getDriveXWithAdjustments(){
-        double rawJoyPos = getLeftX(); 
+        double rawJoyPos = getLeftX() + (getDPadX() * Constants.Joysticks.dPadDamper); 
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength); 
@@ -50,7 +50,7 @@ public final class JoyUtil extends XboxController {
         return adjustedPos;
     }
     public double getDriveYWithAdjustments(){
-        double rawJoyPos = getLeftY(); 
+        double rawJoyPos = getLeftY() + (getDPadY() * Constants.Joysticks.dPadDamper); 
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredY, filterStrength, damperStrength); 
@@ -180,6 +180,29 @@ public final class JoyUtil extends XboxController {
         // ++ we return [above variable] becasue that was the last thing done to the input
 
         // it'll need to be changed if/when more functions are added
+    }
+
+
+    /** ++ gets the x component vector of the D-Pad 
+     * @return D-Pad x component
+    */
+    public double getDPadX(){
+        if( getPOV() > -1 ) {
+            return Math.cos( Math.toRadians(getPOV() - 90.0) );
+        } else {
+            return 0.0;
+        }
+    }
+
+    /** ++ gets the y component of the D-Pad 
+     * @return D-Pad y component
+    */
+    public double getDPadY() {
+        if (getPOV() > -1) {
+            return Math.sin( Math.toRadians(getPOV() - 90.0) );
+        } else {
+            return 0.0;
+        }
     }
 
 }

@@ -37,11 +37,17 @@ public class TeleopPIDDriveCommand extends CommandBase {
   @Override
   public void execute() {
 
-    MecanumDriveWheelSpeeds wheelSpeeds = m_DriveSubsystem.getWheelSpeeds(
-      controller.getDriveXWithAdjustments(),
-      controller.getDriveYWithAdjustments(),
-      controller.getRotationWithAdjustments()
-      );
+    double driveX = controller.getDriveXWithAdjustments();
+    double driveY = controller.getDriveYWithAdjustments();
+
+
+    // MecanumDriveWheelSpeeds wheelSpeeds = m_DriveSubsystem.getWheelSpeeds(
+    //   controller.getDriveXWithAdjustments(),
+    //   controller.getDriveYWithAdjustments(),
+    //   controller.getRotationWithAdjustments()
+    //   );
+
+    MecanumDriveWheelSpeeds wheelSpeeds = m_DriveSubsystem.getWheelSpeeds(driveX, driveY, controller.getRotationWithAdjustments());
     
     m_DriveSubsystem.setVelocityReference(wheelSpeeds);
     

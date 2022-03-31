@@ -124,6 +124,9 @@ public final class Constants {
         // explained in JoyUtil.java
         public static final double fastModeMaxMultiplier = 0.3;
 
+        /** ++ the damper for the D-Pad inputs */
+        public static final double dPadDamper = 0.8;
+
 
         // ++ JOYSTICK CURVE CONSTANTS --------------------------------------------------------------
         public static final double aCoeff = 0.7;
