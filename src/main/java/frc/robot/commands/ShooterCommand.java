@@ -52,7 +52,7 @@ public class ShooterCommand extends CommandBase {
       m_ShooterSubsystem.stopFlywheel();
     }
 
-    m_ShooterSubsystem.setFlywheelSpeed(2 * joystick.getRightTriggerAxis());
+    m_ShooterSubsystem.setFlywheelSpeed( 2.0 * joystick.getRightTriggerAxis() );
     
     
   }

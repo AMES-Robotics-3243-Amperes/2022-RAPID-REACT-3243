@@ -91,8 +91,8 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ ============ FLYWHEEL STUFF ==============================
 
   public void setFlywheelSpeed(double speed) {
-    flywheelPID.setReference(speed, ControlType.kVelocity);
-    // flywheelMotor.set(speed);
+    // flywheelPID.setReference(speed, ControlType.kVelocity);
+    flywheelMotor.set(speed);
   }
 
   public void stopFlywheel(){
