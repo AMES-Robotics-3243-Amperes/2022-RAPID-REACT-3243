@@ -32,6 +32,12 @@ public final class Constants {
         public static final int grabberL1 = 15;
         public static final int grabberSide0 = 0;
         public static final int grabberSide1 = 1;
+        public static final int pawlR1 = 0;//UNKOWN! CHANGE!
+        public static final int pawlL0 = 0;//UNKOWN! CHANGE!
+        public static final int pawlR0 = 0;//UNKOWN! CHANGE!
+        public static final int pawlL1 = 0;//UNKOWN! CHANGE!
+        public static final double pawlOpen = 90;
+        public static final double pawlClosed = 180;
     }
     
     public static final class Joysticks {

@@ -6,18 +6,21 @@ package frc.robot.commands.climber_commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.JoyUtil;
 
 public class CloseGripperCommand extends CommandBase {
   private static ClimberSubsystem m_ClimberSubsystem;
+  private static JoyUtil joystick;
   public int actuatingSide = -1;
   
   
   /** Creates a new CloseGripperCommand. */
-  public CloseGripperCommand(ClimberSubsystem subsystem, int side) {
+  public CloseGripperCommand(JoyUtil joy, ClimberSubsystem subsystem, int side) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_ClimberSubsystem = subsystem;
     addRequirements(m_ClimberSubsystem);
     actuatingSide = side;
+    joystick = joy;
   }
 
   // Called when the command is initially scheduled.
@@ -45,7 +48,10 @@ public class CloseGripperCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] < m_ClimberSubsystem.gripperClosedMinimum+1) { //0.5 is the error room to stop the function.
+    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] < m_ClimberSubsystem.gripperClosedMinimum+1 || (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)) { //0.5 is the error room to stop the function.
+      if ( (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)){
+        m_ClimberSubsystem.isClimberStepStopped = true;
+      }
       m_ClimberSubsystem.isRunningClimbCommand = false;
       return true;
     } else {

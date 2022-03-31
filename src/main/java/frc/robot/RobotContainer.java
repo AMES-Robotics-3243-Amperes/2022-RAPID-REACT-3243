@@ -14,6 +14,8 @@ import frc.robot.commands.DriveCommand;
 
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.climber_commands.ClimbManagerCommand;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // ++ comment so I can rebase
@@ -21,8 +23,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // ++ = max
 // :) = mason
 
+//make the climb able to go back if it gets stuck
 // also make sure user can't open gripper when lock engaged
-//grabber locking: 180 degrees is locking, 150 is unlocked
+//grabber locking: 180 degrees is locking, 150 is unlocked or not I guess zain got that wrong
 //todo for grabber lock: in the case of an emergency and as a failsafe, if the robot detects something go wrong (motor controller disconnected, motor encoder reading dangerous values, etc) lock engages automatically and climber ability disables
 
 /**
@@ -34,6 +37,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
 
+  // :) this is a timer object, using in climber
+  public static DriverStation m_driverStation;
 
   // ++ JOYSTICK STUFF ========================================
   // ++ we make a JoyUtil object instead of an XboxController object; JoyUtil inherits XboxController
@@ -63,10 +68,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // SmartDashboard.putNumber("spin P", 0);
-    // SmartDashboard.putNumber("spin I", 0);
-    // SmartDashboard.putNumber("spin FF", 0);
-    // SmartDashboard.putNumber("spin D", 0);
+    SmartDashboard.putNumber("spin P", 0);
+    SmartDashboard.putNumber("spin I", 0);
+    SmartDashboard.putNumber("spin FF", 0);
+    SmartDashboard.putNumber("spin D", 0);
   }
 
   /**

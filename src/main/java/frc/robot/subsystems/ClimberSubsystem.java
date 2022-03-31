@@ -13,9 +13,12 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class ClimberSubsystem extends SubsystemBase {
   // :) all the object initialization
@@ -26,8 +29,10 @@ public class ClimberSubsystem extends SubsystemBase {
   private CANSparkMax grabberR1 = new CANSparkMax(Constants.Climber.grabberR1, MotorType.kBrushless);
   private CANSparkMax grabberL0 = new CANSparkMax(Constants.Climber.grabberL0, MotorType.kBrushless);
   private CANSparkMax grabberL1 = new CANSparkMax(Constants.Climber.grabberL1, MotorType.kBrushless);
-
-  private ShuffleboardTab shuffleboard_tab = Shuffleboard.getTab("Climber");
+  private Servo pawlR0 = new Servo(Constants.Climber.pawlR0);
+  private Servo pawlR1 = new Servo(Constants.Climber.pawlR1);
+  private Servo pawlL0 = new Servo(Constants.Climber.pawlL0);
+  private Servo pawlL1 = new Servo(Constants.Climber.pawlL1);
 
   //getting motor encoders, pids, etc.
 
@@ -56,25 +61,32 @@ public class ClimberSubsystem extends SubsystemBase {
   public int currentClimberStep = 0;
   public int previousClimberStep = 0;
   public boolean isRunningClimbCommand = false;
+  public boolean isClimberStepStopped = false;
+  public boolean prevStopped = false;
 
 
   public boolean isCalibrated = false;
   public boolean isCalibrating = false;
   public boolean isGrabberCalibrated[] = {false,false,false,false};
+  public boolean isPawlsConnected;
 
   public double climberAngle = 0;
   public double grabberAngles[] = {0,0};
   public double encoderGrabberAngles[]  = {0,0}; //[0] is side 0, [1] is side 1
+  public double prevEncoderGrabberAngles[] = {0,0};
   public double encoderClimberAngle;
   public double climberAngleDegrees = 0;
+  public double pawlServoAngles[] = {Constants.Climber.pawlOpen,Constants.Climber.pawlOpen};
+
+  public double avgSpinnerCurrentDraw;
 
   private double calibrationCurrent = 7;
 
   private final int grabberSoftCurrentLimit = 15;
   public final int grabberHardCurrentLimit = 20;
 
-  private final int climberSoftCurrentLimit = 80;
-  public final int climberHardCurrentLimit = 80;
+  private final int climberSoftCurrentLimit = 25;
+  public final int climberHardCurrentLimit = 30;
 
   private final double maxTemp = 40;
   public boolean isTooHot = false;
@@ -82,9 +94,9 @@ public class ClimberSubsystem extends SubsystemBase {
   public final double gripperOpenMaximum = 67;
   public final double gripperClosedMinimum = 0.4;
 
-  
 
   public ClimberSubsystem () {
+
     // :) reset things
     climberAngle = 0;
 
@@ -116,8 +128,8 @@ public class ClimberSubsystem extends SubsystemBase {
     // grabberL1PID.setOutputRange(-0.5, 0.5);
     // grabberR0PID.setOutputRange(-0.5, 0.5);
     // grabberR1PID.setOutputRange(-0.5, 0.5);
-    climberMotorLPID.setOutputRange(-0.25, 0.25);
-    climberMotorRPID.setOutputRange(-0.25, 0.25);
+    climberMotorLPID.setOutputRange(-0.35, 0.35);
+    climberMotorRPID.setOutputRange(-0.35, 0.35);
 
     // :) resetting the encoder positions for the motors to 0
     climberMotorREncoder.setPosition(0);
@@ -171,6 +183,7 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberAngles[0]=0;
     grabberAngles[1]=0;
 
+
     //climberMotorRPID.setReference(0,ControlType.kPosition);
     //climberMotorLPID.setReference(0,ControlType.kPosition);
   }
@@ -207,6 +220,7 @@ public class ClimberSubsystem extends SubsystemBase {
   // :) climber spinner is on a 64:1 gearbox which connects to a 15-tooth sprocket that is connected by chain to a 54-tooth sprocket
   // :) so unless my math is wrong (pretty likely haha) the ratio from the motor angle to the climber angle should be 64*(54/15):1 (which equals 230.4:1 and Milo got the same number)
   // :) then divide above number by 360 to set motor in terms of degrees
+  // :') ok yeah my math was wrong
   public void actuateClimber(double revolutions){
     // :) actuate both climber motors, to a specified number of revolutions from starting angle
     climberAngle = revolutions;
@@ -222,17 +236,21 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+
+
     SmartDashboard.getNumber("spin FF", 0);
     SmartDashboard.getNumber("spin I", 0);
     SmartDashboard.getNumber("spin P", 0.025);
     SmartDashboard.getNumber("spin d", 0);
 
-    if (spinFF!=SmartDashboard.getNumber("spin FF", 0) || spinI!=SmartDashboard.getNumber("spin I", 0) || spinP!=SmartDashboard.getNumber("spin P", 0.025) || spinD!=SmartDashboard.getNumber("spin D", 0)) {
-      spinFF = SmartDashboard.getNumber("spin FF", 0);
-      spinI = SmartDashboard.getNumber("spin I", 0);
-      spinP = SmartDashboard.getNumber("spin P", 0.025); //0.15 for KP and 0 for everything else with current output range works pretty well, gotta test tho. gonna have to tune for KI
-      spinD = SmartDashboard.getNumber("spin D", 0);
-      // move this back up to the pid stuff
+    // :) stuff is commented out cos we don't really need to tune these PIDs anymore
+    //if (spinFF!=SmartDashboard.getNumber("spin FF", 0) || spinI!=SmartDashboard.getNumber("spin I", 0) || spinP!=SmartDashboard.getNumber("spin P", 0.025) || spinD!=SmartDashboard.getNumber("spin D", 0)) {
+      spinFF = 0; //SmartDashboard.getNumber("spin FF", 0);
+      spinI = 0.000001; //SmartDashboard.getNumber("spin I", 0);
+      spinP = 0.15; //SmartDashboard.getNumber("spin P", 0.025); //0.15 for kP, 0.000001 for kI, and 0 for everything else with currently set output range works pretty well so far, gotta test tho.
+      spinD = 0; //SmartDashboard.getNumber("spin D", 0);
+      // move this back up to the pid stuff later
       climberMotorLPID.setP(spinP);
       climberMotorRPID.setP(spinP);
       // :) setting the I in the motor PIDs
@@ -244,16 +262,21 @@ public class ClimberSubsystem extends SubsystemBase {
 
       climberMotorLPID.setD(spinD);
       climberMotorRPID.setD(spinD);
-    }
+    //}
     calibrationCurrent=SmartDashboard.getNumber("calibration current", 20);
 
     encoderGrabberAngles[0] = (grabberL0Encoder.getPosition()+grabberR0Encoder.getPosition())/2; //is average
     encoderGrabberAngles[1] = (grabberL1Encoder.getPosition()+grabberR1Encoder.getPosition())/2;
     encoderClimberAngle = (climberMotorLEncoder.getPosition()+climberMotorREncoder.getPosition())/2; //also is average
     
-    climberAngleDegrees = climberAngle*(230.4/360);
+    avgSpinnerCurrentDraw = (climberMotorL.getOutputCurrent()+climberMotorR.getOutputCurrent())/2;
 
+    climberAngleDegrees = climberAngle*(230.4/360); // :) don't trust this number.....
 
+    pawlL0.setAngle(pawlServoAngles[0]);
+    pawlR0.setAngle(pawlServoAngles[0]);
+    pawlL1.setAngle(pawlServoAngles[1]);
+    pawlR1.setAngle(pawlServoAngles[1]);
 
     
 
@@ -262,12 +285,33 @@ public class ClimberSubsystem extends SubsystemBase {
     
     // :) update and spin the motors to their angles
 
-    // :) super long if-statement is to prevent the motors from overrunning too far. (hopefully it works...)
+    // :) super long if-statement is to prevent the motors from overrunning too far. (hopefully it works...) 
+    // :') spoiler alert: it didn't work
     //if ( (climberAngle-climberMotorREncoder.getPosition()>1 && climberAngle<climberMotorREncoder.getPosition()) || (climberAngle-climberMotorREncoder.getPosition()<-0.1 && climberAngle>climberMotorREncoder.getPosition()) ) {
       
     //}
 
+    if (DriverStation.getMatchTime()<1.5 && DriverStation.isTeleop()){
+      // :) engage pawls
+      pawlServoAngles[0] = Constants.Climber.pawlClosed;
+      pawlServoAngles[1] = Constants.Climber.pawlClosed;
+    }
+    if (currentClimberStep == 7){
+      pawlServoAngles[0] = Constants.Climber.pawlClosed;
+    }
+
+    if (prevEncoderGrabberAngles[0] < encoderGrabberAngles[0] && pawlServoAngles[0]==Constants.Climber.pawlClosed){
+      grabberAngles[0]=prevEncoderGrabberAngles[0];
+    }
+    if (prevEncoderGrabberAngles[1] < encoderGrabberAngles[1] && pawlServoAngles[1]==Constants.Climber.pawlClosed) {
+      grabberAngles[0]=prevEncoderGrabberAngles[0];
+    }
+
+
     if (isCalibrated){
+
+      
+
       if ((grabberL0Encoder.getPosition()<gripperOpenMaximum+2 && grabberL0Encoder.getPosition()<grabberAngles[0]) ||
           (grabberL0Encoder.getPosition()>gripperClosedMinimum && grabberL0Encoder.getPosition()>grabberAngles[0]) ) {
         grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
@@ -287,6 +331,8 @@ public class ClimberSubsystem extends SubsystemBase {
           (grabberR1Encoder.getPosition()>gripperClosedMinimum && grabberR1Encoder.getPosition()>grabberAngles[1])) {
         grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
       }
+
+
       if (grabberL0Encoder.getPosition()>gripperOpenMaximum+3 || grabberL0Encoder.getPosition()<gripperClosedMinimum-2){
         grabberL0.set(0);
       }
@@ -299,6 +345,9 @@ public class ClimberSubsystem extends SubsystemBase {
       if (grabberR1Encoder.getPosition()>gripperOpenMaximum+3 || grabberR1Encoder.getPosition()<gripperClosedMinimum-2){
         grabberR1.set(0);
       }
+
+      
+
     } else if (isCalibrating){
       if (grabberR0.getOutputCurrent() > calibrationCurrent || grabberR0.getLastError() == REVLibError.kCANDisconnected) {
         grabberR0.set(0);
@@ -325,10 +374,15 @@ public class ClimberSubsystem extends SubsystemBase {
         isGrabberCalibrated[3] = true;
       }
 
+      pawlServoAngles[0] = Constants.Climber.pawlOpen;
+      pawlServoAngles[1] = Constants.Climber.pawlOpen;
+
       // :) set isCalibrated to true only if all in the list is set to true
       isCalibrated = isGrabberCalibrated[0] && isGrabberCalibrated[1] && isGrabberCalibrated[2] && isGrabberCalibrated[3];
       // :) also stop calibrating when the above conditions are met
       isCalibrating = !isCalibrated;
+
+      prevEncoderGrabberAngles = encoderGrabberAngles;
       
     }
     
@@ -361,6 +415,7 @@ public class ClimberSubsystem extends SubsystemBase {
     } else {
       isTooHot = false;
     }
+    prevStopped = isClimberStepStopped;
   }
 
   @Override

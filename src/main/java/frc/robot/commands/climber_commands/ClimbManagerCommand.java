@@ -12,6 +12,7 @@ import frc.robot.commands.climber_commands.ManualClimbCommand;
 import frc.robot.Constants;
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.ClimberSubsystem;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class ClimbManagerCommand extends CommandBase {
   private JoyUtil joystick;
@@ -39,110 +40,113 @@ public class ClimbManagerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     // :) command process for climbing, starts with robot lined up inside 2nd bar (of 4), intake facing away from driver stations, and nearest grabber clamped on 2nd bar
     if (joystick.getBButton() && joystick.getXButton() == false && m_ClimberSubsystem.isRunningClimbCommand == false && m_ClimberSubsystem.isCalibrated) {
-      if (m_ClimberSubsystem.currentClimberStep >= 0 && m_ClimberSubsystem.currentClimberStep < 10) {
+      if (m_ClimberSubsystem.currentClimberStep >= 0 && m_ClimberSubsystem.currentClimberStep < 9 && m_ClimberSubsystem.isClimberStepStopped==false) {
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep < 0) {
         m_ClimberSubsystem.currentClimberStep *= -1;
+        m_ClimberSubsystem.isClimberStepStopped = false;
+      } else if (m_ClimberSubsystem.isClimberStepStopped){
+        m_ClimberSubsystem.isClimberStepStopped = false;
       }
     }
 
-    if (joystick.getXButton() && joystick.getBButton() == false && m_ClimberSubsystem.isRunningClimbCommand == false && m_ClimberSubsystem.isCalibrated) {
+    if (joystick.getXButton() && joystick.getBButton() == false && m_ClimberSubsystem.isRunningClimbCommand == false && m_ClimberSubsystem.isCalibrated
+        && ( (m_ClimberSubsystem.currentClimberStep!=3||m_ClimberSubsystem.currentClimberStep!=-4) && m_ClimberSubsystem.avgSpinnerCurrentDraw>13)) {
       if (m_ClimberSubsystem.currentClimberStep < 0) {
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep > 0) {
         m_ClimberSubsystem.currentClimberStep *= -1;
+        m_ClimberSubsystem.isClimberStepStopped = false;
+      } else if (m_ClimberSubsystem.isClimberStepStopped){
+        m_ClimberSubsystem.isClimberStepStopped = false;
       }
     }
 
     // :) make sure gripper B starts out open
     // :) negative is backwards direction
-    if (m_ClimberSubsystem.isRunningClimbCommand == false && m_ClimberSubsystem.currentClimberStep!=m_ClimberSubsystem.previousClimberStep) {
+    if (m_ClimberSubsystem.isRunningClimbCommand == false &&
+        (m_ClimberSubsystem.currentClimberStep!=m_ClimberSubsystem.previousClimberStep || m_ClimberSubsystem.isClimberStepStopped!=m_ClimberSubsystem.prevStopped) && m_ClimberSubsystem.isClimberStepStopped==false &&
+        (DriverStation.isTeleop() && DriverStation.getMatchTime()>1.5)) {
+      
       switch (m_ClimberSubsystem.currentClimberStep) {
         
         case 1:
-          new SpinClimberCommand(m_ClimberSubsystem, 30.85).schedule();
-          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
-          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, 39.85).schedule();
+          new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case -1:
-          new SpinClimberCommand(m_ClimberSubsystem, 0).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, 0).schedule();
           //new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
           //new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case 2:
-          new CloseGripperCommand(m_ClimberSubsystem,Constants.Climber.grabberSide0).schedule(); // :) I dunno what side we should actually actuate first so we'll have to figure it out
+          new CloseGripperCommand(joystick, m_ClimberSubsystem,Constants.Climber.grabberSide0).schedule(); // :) I dunno what side we should actually actuate first so we'll have to figure it out
           break;
         case -2:
           //open gripper(A)
-          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
           break;
         case 3:
           // rotate arm(~90)
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-77.01).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-77.01).schedule(); // this should be -77.01
           break;
         case -3:
           // rotate arm(~-90)
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+77.01).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+77.01).schedule(); // this should be +77.01
           break;
         case 4:
           // close gripper(B)
-          new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
+          new CloseGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case -4:
           // open gripper(B)
-          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
+          new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case 5:
           // rotate arm(~-90) probably closer to -75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+28.47).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+28.47).schedule();
           break;
         case -5:
           // rotate arm(~90) probably closer to 75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-28.47).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-28.47).schedule();
           break;
         case 6:
           // open gripper(A)
-          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
           break;
         case -6:
           // close gripper(A)
-          new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          new CloseGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
           break;
         case 7:
           // rotate arm(~180) probably closer to 240 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-143.01).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-137.01).schedule();
           break;
         case -7:
           // rotate arm(~-180) probably closer to -240 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+143.01).schedule();
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+137.01).schedule();
           break;
         case 8:
           // close gripper(A)
-          new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          new CloseGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
           break;
         case -8:
           // open gripper(A)
-          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
+          m_ClimberSubsystem.pawlServoAngles[0]=Constants.Climber.pawlOpen;
+          new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide0).schedule();
           break;
         case 9:
-          // rotate arm(~-90) -optional, probably closer to -75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle+30.14).schedule();
+          // open gripper(B)
+          new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case -9:
-          // rotate arm(~90) -optional, probably closer to 75 degrees
-          new SpinClimberCommand(m_ClimberSubsystem, m_ClimberSubsystem.climberAngle-30.14).schedule();
+          // DO NOTHING!!!
+          //new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
-        case 10:
-          // open gripper(B)
-          new OpenGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
-          break;
-        case -10:
-          // close gripper(B)
-          new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
-          break;
-      // -9 and -10 are probably unnecessary
         default:
 
           break;

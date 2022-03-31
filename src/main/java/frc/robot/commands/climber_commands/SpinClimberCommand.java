@@ -6,18 +6,21 @@ package frc.robot.commands.climber_commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.JoyUtil;
 
 public class SpinClimberCommand extends CommandBase {
   private static ClimberSubsystem m_ClimberSubsystem;
+  private static JoyUtil joystick;
   public double goalRevolution;
   
   
   /** Creates a new SpinClimberCommand. */
-  public SpinClimberCommand(ClimberSubsystem subsystem, double revolutions) {
+  public SpinClimberCommand(JoyUtil joy, ClimberSubsystem subsystem, double revolutions) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_ClimberSubsystem = subsystem;
     addRequirements(m_ClimberSubsystem);
     goalRevolution = revolutions; //*(230.4/360.0)
+    joystick = joy;
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +41,10 @@ public class SpinClimberCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(goalRevolution-m_ClimberSubsystem.encoderClimberAngle)<2.5) { // error room for end command
+    if (Math.abs(goalRevolution-m_ClimberSubsystem.encoderClimberAngle)<2.5 || (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)) { // error room for end command
+      if ( (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)){
+        m_ClimberSubsystem.isClimberStepStopped = true;
+      }
       m_ClimberSubsystem.isRunningClimbCommand = false;
       return true;
     } else {

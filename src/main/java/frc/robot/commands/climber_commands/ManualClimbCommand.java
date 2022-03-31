@@ -20,8 +20,7 @@ public class ManualClimbCommand extends CommandBase {
   public boolean climberMode = true;
 
   //climber speeds
-  private double half_1;
-  private double half_2;
+  private double spinSpeed;
 
 
   /**
@@ -52,9 +51,10 @@ public class ManualClimbCommand extends CommandBase {
     // :) they cancel each other out as well
 
     if (m_ClimberSubsystem.isRunningClimbCommand == false) {
-      half_1 = joystick.getRightTriggerAxis()/5;
-      half_2 = joystick.getLeftTriggerAxis()/-5;
-      m_ClimberSubsystem.spinClimber(half_1+half_2);
+      if (Math.abs(joystick.getRawAxis(0))>0.2) {
+        spinSpeed = joystick.getRawAxis(0)/4;
+      }
+      m_ClimberSubsystem.spinClimber(spinSpeed);
     }
 
     if (m_ClimberSubsystem.isTooHot){
