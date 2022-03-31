@@ -166,7 +166,7 @@ public final class Constants {
         public static double minActualServoAngle;
 
         /** ++ angle offset between servo and hood. It goes from servo to hood angle*/
-        public static final double servoAngleOffset = 11.0;
+        public static final double servoAngleOffset = 0.0;
         
         
     

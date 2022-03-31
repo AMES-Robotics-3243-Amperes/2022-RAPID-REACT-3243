@@ -27,6 +27,7 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void initialize() {
     m_ShooterSubsystem.setFlyhweelPIDValues();
+    hoodAngle = 0.0;
 
   }
 
@@ -36,12 +37,20 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void execute() {
     if (joystick.getStartButton()) {
-      hoodAngle += 0.5;
+      hoodAngle += 0.01;
     }
     if (joystick.getBackButton()) {
-      hoodAngle -= 0.5;
+      hoodAngle -= 0.01;
     }
+    if (hoodAngle < -1) {
+      hoodAngle = -1;
+    }
+    if (hoodAngle > 0) {
+      hoodAngle = 0;
+    }
+
     
+    SmartDashboard.putNumber("hood adjust", hoodAngle);
     m_ShooterSubsystem.setHoodAngle(hoodAngle);
 
 

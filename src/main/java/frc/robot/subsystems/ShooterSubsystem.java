@@ -57,14 +57,20 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ ============== HOOD STUFF ===================================
 
   public void setHoodAngle(double angle) {
-    hoodMotor.set( hoodAngleToServoPosition(angle) );
+    // hoodMotor.set( hoodAngleToServoPosition(angle) );
+    // hoodMotor.set(180);
+    hoodMotor.set(angle + 1);
   }
 
   /** gives the current hood angle
    * @return current hood angle
    */
   public double getHoodAngle() {
-    return hoodAngleToServoAngle( hoodMotor.get() );
+    return servoPositionToHoodAngle( hoodMotor.get() );
+  }
+
+  public double getServoPosition() {
+    return hoodMotor.get();
   }
 
 
@@ -135,6 +141,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("current servo position", getServoPosition() );
 
   }
 
