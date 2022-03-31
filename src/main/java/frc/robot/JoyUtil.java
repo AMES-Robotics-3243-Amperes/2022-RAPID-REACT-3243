@@ -41,7 +41,7 @@ public final class JoyUtil extends XboxController {
     // ++ these methods make it so you don't have to pass anything in when you call them, you just call the 
     // ++ method that corresponds with the joystick you want. It also keeps track of the previous filtered value 
     public double getDriveXWithAdjustments(){
-        double rawJoyPos = getLeftX() + (getDPadX() * Constants.Joysticks.dPadDamper); 
+        double rawJoyPos = getLeftX() + (getDPadX()); 
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength); 
@@ -50,7 +50,7 @@ public final class JoyUtil extends XboxController {
         return adjustedPos;
     }
     public double getDriveYWithAdjustments(){
-        double rawJoyPos = getLeftY() + (getDPadY() * Constants.Joysticks.dPadDamper); 
+        double rawJoyPos = getLeftY() + (getDPadY()); 
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredY, filterStrength, damperStrength); 
@@ -188,7 +188,7 @@ public final class JoyUtil extends XboxController {
     */
     public double getDPadX(){
         if( getPOV() > -1 ) {
-            return Math.cos( Math.toRadians(getPOV() - 90.0) );
+            return (Math.cos( Math.toRadians(getPOV() - 90.0) ) * Constants.Joysticks.dPadDamper);
         } else {
             return 0.0;
         }
@@ -199,7 +199,7 @@ public final class JoyUtil extends XboxController {
     */
     public double getDPadY() {
         if (getPOV() > -1) {
-            return Math.sin( Math.toRadians(getPOV() - 90.0) );
+            return (Math.sin( Math.toRadians(getPOV() - 90.0)  * Constants.Joysticks.dPadDamper));
         } else {
             return 0.0;
         }

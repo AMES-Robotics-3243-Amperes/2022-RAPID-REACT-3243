@@ -37,7 +37,6 @@ public class SpinTakeCommand extends CommandBase {
 
     if (isIntakeOn == true) {
       m_subsystem.setIntakeSpeed(Constants.IntakeIndexer.intakeSpeed);
-      m_subsystem.setIndexerSpeed(Constants.IntakeIndexer.indexSpeed);
     } else {
       m_subsystem.setIntakeSpeed(0);
       m_subsystem.setIndexerSpeed(0);
