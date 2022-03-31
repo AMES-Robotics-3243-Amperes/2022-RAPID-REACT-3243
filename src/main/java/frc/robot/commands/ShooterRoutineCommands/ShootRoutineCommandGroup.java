@@ -29,11 +29,15 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
                 new SpinFlywheelCommand(m_ShooterSubsystem, m_LimelightSubsystem),
                 new LimelightAlignDriveCommand(m_DriveSubsystem, m_LimelightSubsystem)
             ),
-            new AcceptCommand(m_IntakeIndexerSubsystem),
-            new AcceptCommand(m_IntakeIndexerSubsystem)
+            new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
+            new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
+            new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
+            new StopFlywheelCommand(m_ShooterSubsystem)
             );
 
     }
+
+    
 
     // ++ instantiate the commands in the contructor, then extend the isFinished() method by reading from the commands
 

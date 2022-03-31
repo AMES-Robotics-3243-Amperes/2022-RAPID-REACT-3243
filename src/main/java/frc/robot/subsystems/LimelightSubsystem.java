@@ -30,6 +30,7 @@ public class LimelightSubsystem extends SubsystemBase {
   // ++ random class object to see if shuffleboard is updating properly
   Random Waffles = new Random(); 
 
+  public boolean continueShooterRoutine = false;
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem() {

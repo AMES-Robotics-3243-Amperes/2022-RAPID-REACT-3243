@@ -28,7 +28,6 @@ public class MoveHoodCommand extends CommandBase {
   // ++ these are super important variables for this class! the goal is to minimize the error between the current and the target
   double currentHoodAngle;
   double targetHoodAngle;
-  boolean isSuccessful;
 
   private Timer clock;
 
@@ -45,18 +44,12 @@ public class MoveHoodCommand extends CommandBase {
 
   }
 
-  /** ++ this method returns true if the hood is successfully in place */
-  public boolean wasHoodAdjustSuccessful() {
-    return isSuccessful;
-  }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     clock.reset();
     clock.start();
-
-    isSuccessful = false;
 
 
   }
@@ -69,17 +62,17 @@ public class MoveHoodCommand extends CommandBase {
 
     m_ShooterSubsystem.setHoodAngle(targetHoodAngle);
 
-    isSuccessful = Math.abs(currentHoodAngle - targetHoodAngle) < Constants.Shooter.hoodErrorTolerance;
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (isSuccessful || (clock.get() >= Constants.Shooter.hoodTimeoutTime) );
+    return (clock.get() >= Constants.Shooter.hoodTimeoutTime);
   }
 }

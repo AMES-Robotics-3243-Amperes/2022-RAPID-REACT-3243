@@ -62,11 +62,7 @@ public class LimelightAlignDriveCommand extends CommandBase {
 
   }
 
-  /** ++ this method returns true if the robot is successfully aligned */
-  public boolean wasAlignSuccessful() {
-    return isSuccessful;
-  }
-
+   
   // Called when the command is initially scheduled. 
   @Override 
   public void initialize() {
@@ -99,6 +95,7 @@ public class LimelightAlignDriveCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_DriveSubsystem.setReferencesFromWheelSpeeds(0.0, 0.0, 0.0);
+    m_LimelightSubsystem.continueShooterRoutine = isSuccessful;
   }
 
   // Returns true when the command should end.

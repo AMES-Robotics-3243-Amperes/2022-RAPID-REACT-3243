@@ -50,8 +50,7 @@ public class ShooterCommand extends CommandBase {
     }
 
     
-    SmartDashboard.putNumber("hood adjust", hoodAngle);
-    m_ShooterSubsystem.setHoodAngle(hoodAngle);
+    // m_ShooterSubsystem.setHoodAngle(hoodAngle);
 
 
 

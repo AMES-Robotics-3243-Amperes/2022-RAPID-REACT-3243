@@ -33,6 +33,7 @@ import frc.robot.commands.AutonomousPIDTaxiCommand;
 import frc.robot.commands.ShooterCommand;
   // ++ shooter routine
 import frc.robot.commands.ShooterRoutineCommands.LimelightAlignDriveCommand;
+import frc.robot.commands.ShooterRoutineCommands.ShootRoutineCommandGroup;
 
 
 
@@ -59,6 +60,7 @@ public class RobotContainer {
     public static JoystickButton secondaryRightBumper = new JoystickButton(secondaryController, Constants.Joysticks.RightBumper);
     public static JoystickButton secondaryXButton = new JoystickButton(secondaryController, Constants.Joysticks.X);
     public static JoystickButton primaryAButton = new JoystickButton(primaryController, Constants.Joysticks.A);
+    public static JoystickButton autoShootRoutineButton = new JoystickButton(secondaryController, Constants.Joysticks.Y);
 
 
 
@@ -77,9 +79,16 @@ public class RobotContainer {
     // ++ teleop commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
-  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem);
+  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, null);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
+
+  private final ShootRoutineCommandGroup m_AutoShootCommand = new ShootRoutineCommandGroup(
+    m_DriveSubsystem,
+    m_LimelightSubsystem,
+    m_IntakeIndexerSubsystem,
+    m_ShooterSubsystem
+    );
 
     // ++ auto commands
   private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
@@ -112,6 +121,9 @@ public class RobotContainer {
     secondaryRightBumper.whenPressed(m_RebuffCommand);
     secondaryXButton.whenPressed(m_AcceptCommand);
     primaryAButton.whenPressed(m_LimeDriveCommand);
+    autoShootRoutineButton.whenPressed(m_AutoShootCommand);
+
+
   }
 
   /**
