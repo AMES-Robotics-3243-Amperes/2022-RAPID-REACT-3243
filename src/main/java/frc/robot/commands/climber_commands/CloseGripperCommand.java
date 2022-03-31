@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.JoyUtil;
 
+// :) this command's action really only needs to be run once, and in all honesty it probably doesn't really need to be a command, but I think it's cleaner this way
+
 public class CloseGripperCommand extends CommandBase {
   private static ClimberSubsystem m_ClimberSubsystem;
   private static JoyUtil joystick;
@@ -26,8 +28,10 @@ public class CloseGripperCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
     m_ClimberSubsystem.isRunningClimbCommand = true;
     if (actuatingSide != -1){
+      // :) basically closes the gripper
       m_ClimberSubsystem.actuateGrabber(actuatingSide, m_ClimberSubsystem.gripperClosedMinimum);
     } else {
       System.err.println("Uh... something went wrong in the gripper close command. You're somehow not setting the actuation side!");
@@ -48,6 +52,7 @@ public class CloseGripperCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // :) stops the command if the position gets achieved successfully or if it was interrupted by pushing the reverse button
     if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] < m_ClimberSubsystem.gripperClosedMinimum+1 || (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)) { //0.5 is the error room to stop the function.
       if ( (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)){
         m_ClimberSubsystem.isClimberStepStopped = true;

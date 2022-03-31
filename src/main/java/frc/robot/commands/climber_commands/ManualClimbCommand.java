@@ -38,7 +38,6 @@ public class ManualClimbCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //m_ClimberSubsystem.resetMotorPosReadings();
     m_ClimberSubsystem.calibrateGrabbers();
   }
 
@@ -47,7 +46,7 @@ public class ManualClimbCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // :) gets left and right trigger axes to spin the shaktool climber
+    // :) gets left and right trigger axes to spin the shaktool climber for fine manual adjustments (shouldn't need this if everything goes well)
     // :) they cancel each other out as well
 
     if (m_ClimberSubsystem.isRunningClimbCommand == false) {

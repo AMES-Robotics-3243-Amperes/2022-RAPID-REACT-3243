@@ -83,6 +83,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    
     m_ClimberSubsystem.resetMotorPosReadings();
 
     if (m_autonomousCommand != null) {

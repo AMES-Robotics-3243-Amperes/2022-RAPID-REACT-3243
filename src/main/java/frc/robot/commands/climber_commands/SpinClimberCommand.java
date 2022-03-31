@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.JoyUtil;
 
+// :) this command's action really only needs to be run once, and in all honesty it probably doesn't really need to be a command, but I think it's cleaner this way
+
 public class SpinClimberCommand extends CommandBase {
   private static ClimberSubsystem m_ClimberSubsystem;
   private static JoyUtil joystick;
@@ -26,8 +28,11 @@ public class SpinClimberCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
     m_ClimberSubsystem.isRunningClimbCommand = true;
+    // :) yup this tells the climber to rotate to a position
     m_ClimberSubsystem.actuateClimber(goalRevolution);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +46,7 @@ public class SpinClimberCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // :) stops the command if the position gets achieved successfully or if it was interrupted by pushing the reverse button
     if (Math.abs(goalRevolution-m_ClimberSubsystem.encoderClimberAngle)<2.5 || (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)) { // error room for end command
       if ( (joystick.getXButton() && m_ClimberSubsystem.currentClimberStep>0) || (joystick.getBButton() && m_ClimberSubsystem.currentClimberStep<0)){
         m_ClimberSubsystem.isClimberStepStopped = true;
