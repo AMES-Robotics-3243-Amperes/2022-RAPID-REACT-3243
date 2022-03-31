@@ -57,6 +57,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ Pose object for keeping track of robot position
   Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
+  Pose2d targetPose = new Pose2d(6.0, 4.0, new Rotation2d());
+  double frontLeftTarget;
+  double frontRightTarget;
+  double backLeftTarget;
+  double backRightTarget;
 
   // ~~ mecanum drive kinematics object for calculating wheel speeds and positions from chassis speeds and positions
   MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
@@ -127,11 +132,19 @@ public class DriveSubsystem extends SubsystemBase {
     dGainWidget = pidTab.add("D gain", Constants.DriveTrain.teleopDGain);
     speedErrorThresholdWidget = pidTab.add("Speed Error Tolerance", 0.1);
 
+
+    // ~~ Positional Stuff ============================================================
     IMUSubsystem.resetYaw();
 
     resetPose();
 
     odometry = new MecanumDriveOdometry(kinematics, IMUSubsystem.getGyroRotation(), pose);
+
+    frontLeftTarget = 0.0;
+    frontRightTarget = 0.0;
+    backLeftTarget = 0.0;
+    backRightTarget = 0.0;
+    // ~~ =============================================================================
 
   }
 
@@ -170,6 +183,26 @@ public class DriveSubsystem extends SubsystemBase {
       wheelSpeeds.frontRightMetersPerSecond,
       wheelSpeeds.rearLeftMetersPerSecond,
       wheelSpeeds.rearRightMetersPerSecond
+    );
+  }
+
+  public void setPositionalReference(double flRef, double frRef, double blRef, double brRef) {
+    frontLeftPIDController.setReference(flRef, ControlType.kPosition);
+    frontRightPIDController.setReference(frRef, ControlType.kPosition);
+    backLeftPIDController.setReference(blRef, ControlType.kPosition);
+    backRightPIDController.setReference(brRef, ControlType.kPosition);
+    frontLeftTarget = flRef;
+    frontRightTarget = frRef;
+    backLeftTarget = blRef;
+    backRightTarget = brRef;
+  }
+
+  public void setPositionalReference(MecanumDriveWheelSpeeds wheelPositions) {
+    setPositionalReference(
+      wheelPositions.frontLeftMetersPerSecond,
+      wheelPositions.frontRightMetersPerSecond,
+      wheelPositions.rearLeftMetersPerSecond,
+      wheelPositions.rearRightMetersPerSecond
     );
   }
 
@@ -294,6 +327,38 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightPIDController.setReference(frontRightPos, ControlType.kPosition);
     backLeftPIDController.setReference(backLeftPos, ControlType.kPosition);
     backRightPIDController.setReference(backRightPos, ControlType.kPosition);
+  }
+
+  public void changeRobotAngle(double radians) {
+    ChassisSpeeds chassisPos = new ChassisSpeeds(0,0, radians);
+    MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
+
+    frontLeftEncoder.setPosition(0.0);
+    frontRightEncoder.setPosition(0.0);
+    backLeftEncoder.setPosition(0.0);
+    backRightEncoder.setPosition(0.0);
+
+    setPositionalReference(wheelPos);
+  }
+
+  // ~~ Sets the angle of the robot in radians from -π to π
+  public void setRobotAngle(double radians) {
+    // ~~ Dumb math to make the angle of the robot continuous instead of linear 
+    // ~~ (ie. being at π and rotating π radians puts you at 0, not 2π)
+    // ~~ Also means the robot wont do a 360 just to turn from slightly left to slightly right
+    double currentAngle = IMUSubsystem.getGyroRotation().getRadians();
+    double standardDif = Math.abs(radians - currentAngle);
+    double highDif = Math.abs((radians + (2 * Math.PI)) - currentAngle);
+    double lowDif = Math.abs((radians - (2 * Math.PI)) - currentAngle);
+    double lowestDif = Math.min(standardDif, Math.min(lowDif, highDif));
+
+    if (lowestDif == standardDif) {
+      changeRobotAngle(radians - currentAngle);
+    } else if (lowestDif == lowDif) {
+      changeRobotAngle((radians + (2 * Math.PI)) - currentAngle);
+    }else {
+      changeRobotAngle((radians + (2 * Math.PI)) - currentAngle);
+    }
   }
 
   // public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
