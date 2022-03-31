@@ -31,8 +31,6 @@ public class MoveHoodCommand extends CommandBase {
   boolean isSuccessful;
 
   private Timer clock;
-  private PIDController hoodPIDController;
-
 
 
 
@@ -45,11 +43,6 @@ public class MoveHoodCommand extends CommandBase {
     addRequirements(m_LimelightSubsystem);
     clock = new Timer();
 
-    hoodPIDController = new PIDController(
-      Constants.Shooter.hoodPGain,
-      Constants.Shooter.hoodIGain,
-      Constants.Shooter.hoodDGain
-    );
   }
 
   /** ++ this method returns true if the hood is successfully in place */
@@ -60,7 +53,6 @@ public class MoveHoodCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_ShooterSubsystem.setHoodPIDValues();
     clock.reset();
     clock.start();
 
@@ -75,9 +67,7 @@ public class MoveHoodCommand extends CommandBase {
     currentHoodAngle = m_ShooterSubsystem.getHoodAngle();
     targetHoodAngle = m_LimelightSubsystem.findTargetHoodAngle();
 
-    double nextHoodOutput = hoodPIDController.calculate(currentHoodAngle, targetHoodAngle);
-
-    m_ShooterSubsystem.setHoodAngle(nextHoodOutput);
+    m_ShooterSubsystem.setHoodAngle(targetHoodAngle);
 
     isSuccessful = Math.abs(currentHoodAngle - targetHoodAngle) < Constants.Shooter.hoodErrorTolerance;
 

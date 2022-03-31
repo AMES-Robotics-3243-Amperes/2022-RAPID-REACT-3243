@@ -143,7 +143,8 @@ public final class Constants {
         // CAN
         // ++ motor stuff ----------------------------------
         public static final int flywheelMotorID = 9;
-        public static final int hoodMotorID = 5;
+            // ++ NOTE: this is a servo, so this is the PWM port on the rio
+        public static final int hoodServoPWMID = 0;
 
         // ++ PID stuff --------------
         // ++ flywheel
@@ -151,25 +152,26 @@ public final class Constants {
         public static final double flywheelIGain = 0.0;
         public static final double flywheelDGain = 0.0;
 
-        // ++ THIS NEEDS TO BE UPDATED WHEN THE HOOD ACTUATION CHANGES
-        // ++ hood 
-        public static final double hoodPGain = 0.001;
-        public static final double hoodIGain = 0.0;
-        public static final double hoodDGain = 0.0;
-
         // ++ drive
         public static double limelightDrivePGain;
         public static double limelightDriveIGain;
         public static double limelightDriveDGain;
 
+        // ++ max servo angle
+            // ++ this is the maximum angle on the spec sheet, NOT necessarily what it should be on the robot
+        public static final double maxSpecHoodServoAngle = 199;
+
+        // ++ maximum and minimum safe angles the servo can actually be at
+        public static double maxActualServoAngle;
+        public static double minActualServoAngle;
+
+        /** ++ angle offset between servo and hood. It goes from servo to hood angle*/
+        public static final double servoAngleOffset = 11.0;
+        
+        
+    
 
 
-        // ++ ENCODER STUFF -------
-        /**
-         * ++ this is (maybe) the conversion ratio between the angle of the hood motor and the actual angle of the hood
-         * [this ratio needs to be verified] THIS NEEDS TO BE UPDATED WHEN THE HOOD ACTUATION CHANGES
-         */
-        public static final double motorToHoodAngle = (7/768); //768/7;
 
 
         // ++ -------- SHOOTER ROUTINE STUFF ----------------------------
@@ -192,7 +194,7 @@ public final class Constants {
 
 
 
-    }
+    } // ++ -------------------------
 
     /**  ++ constants for limelight stuff, anything involved with calculations or keys etc */
     public static final class Limelight {
@@ -204,8 +206,8 @@ public final class Constants {
 
         public static final double hubHeight = 8.6666666667; // ++ i put this as a decimal approx bc (104/12) was being weird
 
-            /** ++ this is the height of the shooter (where the ball leaves the robot) off the ground */
-        public static final double shooterHeight = 0.0; // ++ measure what this actually si
+            /** ++ this is the height of the shooter (where the ball leaves the robot) off the ground  (in feet)*/
+        public static final double shooterHeight = 1.5; // ++ measure what this actually is 
 
             /** this is the difference in height between the shooter and the hub, in feet */
         public static final double shooterToHubHeight = hubHeight - shooterHeight;

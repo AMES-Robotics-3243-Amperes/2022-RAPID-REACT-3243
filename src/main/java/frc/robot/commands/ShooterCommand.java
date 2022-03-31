@@ -28,9 +28,6 @@ public class ShooterCommand extends CommandBase {
   public void initialize() {
     m_ShooterSubsystem.setFlyhweelPIDValues();
 
-    // m_ShooterSubsystem.setHoodPIDValues();
-    hoodAngle = 0.0;
-    m_ShooterSubsystem.zeroHoodEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,21 +43,13 @@ public class ShooterCommand extends CommandBase {
     }
     
     m_ShooterSubsystem.setHoodAngle(hoodAngle);
-    SmartDashboard.putNumber("hood target", hoodAngle);
-    SmartDashboard.putNumber("hood actual", m_ShooterSubsystem.getHoodAngle());
+
 
 
     
 
     // ++ this sets the speed of the flywheel
-    if (joystick.getYButton()) { 
-      double speed = 1.0;
-      m_ShooterSubsystem.setFlywheelSpeed(speed);
-    } else {
-      m_ShooterSubsystem.stopFlywheel();
-    }
-
-    m_ShooterSubsystem.setFlywheelSpeed(2.0 * joystick.getRightTriggerAxis());
+    m_ShooterSubsystem.setFlywheelSpeed(joystick.getRightTriggerAxis());
     
     
   }

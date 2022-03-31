@@ -99,8 +99,6 @@ public class RobotContainer {
     m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
     configureButtonBindings();
 
-    // ++ TEMP \/
-    SmartDashboard.putNumber("hood p gain", Constants.Shooter.hoodPGain);
 
 
   }

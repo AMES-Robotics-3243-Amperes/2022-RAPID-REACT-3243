@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -29,14 +30,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // ++ make motor objects  
   private CANSparkMax flywheelMotor = new CANSparkMax( Constants.Shooter.flywheelMotorID, MotorType.kBrushless ); 
-  private CANSparkMax hoodMotor = new CANSparkMax( Constants.Shooter.hoodMotorID, MotorType.kBrushless ); 
+    // ++ the servo model we're using is the HS-805BB (by HITEC)
+  private Servo hoodMotor = new Servo( Constants.Shooter.hoodServoPWMID);
+  
 
   // ++ declare encoder objects
-  public RelativeEncoder hoodEncoder; 
   public RelativeEncoder flywheelEncoder;
 
   // ++ declare PID objects
-  private SparkMaxPIDController hoodPID;
   private SparkMaxPIDController flywheelPID;
 
 
@@ -46,46 +47,55 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // ++ define encoder objects
     flywheelEncoder = flywheelMotor.getEncoder();
-    hoodEncoder = hoodMotor.getEncoder();
-    hoodEncoder.setPositionConversionFactor(Constants.Shooter.motorToHoodAngle);
-    // hoodEncoder.setPositionConversionFactor(1.0);
-
 
     // ++ define PID objects
     flywheelPID = flywheelMotor.getPIDController();
-    hoodPID = hoodMotor.getPIDController();
-    hoodPID.setOutputRange(-0.15, 0.15);
+
 
   }
 
   // ++ ============== HOOD STUFF ===================================
 
-  // ++ ALL OF THIS HOOD STUFF NEEDS TO BE UPDATED WHEN THE ACTUATION THING IS CHANGED TO A SERVO
   public void setHoodAngle(double angle) {
-    hoodPID.setReference(angle, ControlType.kPosition);
+    hoodMotor.set( hoodAngleToServoPosition(angle) );
   }
 
   /** gives the current hood angle
    * @return current hood angle
    */
-  public double getHoodAngle(){
-    return hoodEncoder.getPosition();
+  public double getHoodAngle() {
+    return hoodAngleToServoAngle( hoodMotor.get() );
   }
 
-  public void zeroHoodEncoder() {
-    hoodEncoder.setPosition(0.0);
+
+  public double hoodAngleToServoPosition(double hoodAngle) {
+    return hoodAngleToServoAngle( servoAngleToServoPosition(hoodAngle));
+    // ++ hood angle -> servo angle -> servo position
+  }
+  public double servoPositionToHoodAngle(double servoPosition) {
+    return servoPositionToServoAngle( servoAngleToHoodAngle(servoPosition));
+    // ++ servo position -> servo angle -> hood angle
   }
 
-  /** this sets the P, I, and D values for the hood */
-  public void setHoodPIDValues(){
-    double pGain = Constants.Shooter.hoodPGain;
-    double iGain = Constants.Shooter.hoodIGain;
-    double dGain = Constants.Shooter.hoodDGain;
-    // hoodPID.setP(pGain);
-    hoodPID.setP( SmartDashboard.getNumber("hood p gain", Constants.Shooter.hoodPGain));
-    hoodPID.setI(iGain);
-    hoodPID.setD(dGain);
+  public double servoAngleToServoPosition(double angle) {
+    return (angle / Constants.Shooter.maxSpecHoodServoAngle);
   }
+
+  public double servoPositionToServoAngle(double position) {
+    return (position * Constants.Shooter.maxSpecHoodServoAngle);
+  }
+
+
+  /** ++ converts from the servo angle to the hood angle  */
+  public double servoAngleToHoodAngle(double servoAngle) {
+    return (-servoAngle) + Constants.Shooter.servoAngleOffset;
+  }
+
+  /** ++ conveerts from the hood angle to the servo angle */
+  public double hoodAngleToServoAngle(double hoodAngle) {
+    return (-hoodAngle - Constants.Shooter.servoAngleOffset);
+  }
+
 
 
   // ++ ============== END HOOD STUFF ===============================

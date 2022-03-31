@@ -70,8 +70,6 @@ public class LimelightAlignDriveCommand extends CommandBase {
   // Called when the command is initially scheduled. 
   @Override 
   public void initialize() {
-    // ++ ASK DANIAL-- should this be in initialize() or end()? For a command group, does initialize() get scheduled(therefore run)
-    // ++ every time the command group is scheduled?
     isSuccessful = false;
 
     clock.reset();

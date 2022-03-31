@@ -35,4 +35,7 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
 
     }
 
+    // ++ instantiate the commands in the contructor, then extend the isFinished() method by reading from the commands
+
+
 }
