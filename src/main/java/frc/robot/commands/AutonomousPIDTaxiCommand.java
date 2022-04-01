@@ -17,8 +17,8 @@ public class AutonomousPIDTaxiCommand extends CommandBase {
     addRequirements(subsystem);
     m_subsystem = subsystem;
   }
-
   // Called when the command is initially scheduled.
+  
   @Override
   public void initialize() {
     m_subsystem.getShuffleboardPID();
