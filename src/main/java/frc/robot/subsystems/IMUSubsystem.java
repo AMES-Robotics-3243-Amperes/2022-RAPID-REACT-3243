@@ -19,16 +19,21 @@ public class IMUSubsystem extends SubsystemBase {
   public SimpleWidget wYaw, wRoll, wPitch, wXVelocity, wYVelocity, wZVelocity, wXPos, wYPos, wZPos;
   public NetworkTableEntry tYaw, tRoll, tPitch, tXVelocity, tYVelocity, tZVelocity, tXPos, tYPos, tZPos;
 
+  // ++ Offset that the getYaw() function adds to the yaw
+  private static double yawOffset;
+
   
   /** Creates a new IMUSubsystem. */
   public IMUSubsystem() {
-    
-      }
+    yawOffset = 0.0;
+  }
 
 
       
   public static double getYaw() {
-    return imu.getYaw();
+    double angle = imu.getAngle();
+    double yaw = (((angle + 180) % 360) - 180);
+    return yaw;
     // return 0.0;
   }
 
@@ -71,8 +76,10 @@ public class IMUSubsystem extends SubsystemBase {
     return rotation;
   }
 
-  public static void resetYaw() {
+  public static void setYaw(double angle) {
     imu.reset();
+    imu.setAngleAdjustment(angle);
+    
   }
 
   @Override
