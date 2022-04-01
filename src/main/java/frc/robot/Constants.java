@@ -54,6 +54,8 @@ public final class Constants {
         public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
         /**  maximum speed of robot in m/s (max rpm times conversion ratio), this also (I think) converts from RPM to m/s */
         public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
+        /** error tolerance for wheel encoders during autnomous */
+        public static final double errorTolerance = 0.1;
     }
 
     public static final class IntakeIndexer {

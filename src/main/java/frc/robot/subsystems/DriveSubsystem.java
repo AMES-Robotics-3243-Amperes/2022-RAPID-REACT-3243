@@ -363,7 +363,7 @@ public class DriveSubsystem extends SubsystemBase {
     double blError = Math.abs(backLeftTarget - backLeftEncoder.getPosition());
     double brError = Math.abs(backRightTarget - backRightEncoder.getPosition());
 
-    double tolerance = Constants.DriveTrain.angularErrorTolerance;
+    double tolerance = Constants.DriveTrain.errorTolerance;
     boolean atTargetPosition = ((flError <= tolerance) && (frError <= tolerance) && (blError <= tolerance) && (brError <= tolerance));
     return atTargetPosition;
   }
