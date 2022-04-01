@@ -83,6 +83,8 @@ public final class Constants {
         // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
         public static final double intakeSpeed = 0.75;
         public static final double indexSpeed = 0.75;
+        // ~~ Duration for intake command during autonomous
+        public static final double autonomousIntakeDuration = 0.1;
     }
 
 
