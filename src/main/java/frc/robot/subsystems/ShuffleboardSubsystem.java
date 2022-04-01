@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -31,6 +33,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<ControlOption> m_JoyCurve;
+
+  private static SendableChooser<Pose2d> m_StartingPosition, m_Target;
 
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
@@ -63,6 +67,22 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     m_JoyCurve = new SendableChooser<>();
     m_JoyCurve.setDefaultOption("Good Option", new ControlOption(3, 1, 0.7));
     m_JoyCurve.addOption("Bad Option", new ControlOption(4, 1, 1));
+
+    m_StartingPosition = new SendableChooser<>();
+    m_StartingPosition.setDefaultOption("Sector 1 Left", new Pose2d(6.1363, 5.9592, new Rotation2d(2.35619449)));
+    m_StartingPosition.addOption("Sector 1 Right", new Pose2d(5.7595, 5.5824, new Rotation2d(2.35619449)));
+    m_StartingPosition.addOption("Sector 2 Left", new Pose2d(5.4452, 4.8236, new Rotation2d(-3.141592654)));
+    m_StartingPosition.addOption("Sector 2 Right", new Pose2d(5.4452, 4.2909, new Rotation2d(-3.141592654)));
+    m_StartingPosition.addOption("Sector 3 Left", new Pose2d(6.3852, 2.0215, new Rotation2d(-2.35619449)));
+    m_StartingPosition.addOption("Sector 3 Right", new Pose2d(6.7620, 1.6447, new Rotation2d(-2.35619449)));
+    m_StartingPosition.addOption("Sector 4 Left", new Pose2d(7.5208, 1.3304, new Rotation2d(-1.570796327)));
+    m_StartingPosition.addOption("Sector 4 Right", new Pose2d(8.0535, 1.3304, new Rotation2d(-1.570796327)));
+
+    m_Target = new SendableChooser<>();
+    m_Target.setDefaultOption("Left Ball", new Pose2d(4.9983, 6.2739, new Rotation2d()));
+    m_Target.addOption("Center Ball", new Pose2d(4.9983, 1.9557, new Rotation2d()));
+    m_Target.addOption("Right Ball", new Pose2d(7.4714, 0.3033, new Rotation2d()));
+
 
     movementTab.add(m_JoyCurve);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
@@ -113,6 +133,14 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   public static double getDriveSpeedDamper(){
     return (double)(totalSpeedDamperShuffle.getEntry().getDouble((double)Constants.Joysticks.driveSpeedDamper));
+  }
+
+  public static Pose2d getStartingPose() {
+    return m_StartingPosition.getSelected();
+  }
+
+  public static Pose2d getTargetPose() {
+    return m_Target.getSelected();
   }
   // ++ ============================= END DRIVETRAIN METHODS =============================================
 

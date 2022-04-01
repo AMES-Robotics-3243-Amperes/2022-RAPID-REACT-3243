@@ -133,9 +133,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     // ~~ Positional Stuff ============================================================
-    IMUSubsystem.resetYaw();
 
-    resetPose();
+    resetPose(0.0, 0.0, 0.0);
 
     odometry = new MecanumDriveOdometry(kinematics, IMUSubsystem.getGyroRotation(), pose);
 
@@ -278,8 +277,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   // ~~ resets the Pose2d and encoder positions of all the motors
-  public void resetPose() {
-    pose = new Pose2d(6.0, 4.0, new Rotation2d());
+  public void resetPose(Pose2d newPose) {
+    IMUSubsystem.setYaw(newPose.getRotation().getDegrees());
+    pose = new Pose2d();
     setPositionalReference(0.0, 0.0, 0.0, 0.0);
     frontLeftEncoder.setPosition(0.0);
     frontRightEncoder.setPosition(0.0);
@@ -294,6 +294,11 @@ public class DriveSubsystem extends SubsystemBase {
     // backRightPIDController.setReference(backRightEncoder.getPosition(), ControlType.kPosition);
 
   }
+
+  public void resetPose(double x, double y, double r) {
+    resetPose(new Pose2d(x, y, new Rotation2d()));
+  }
+
 
   // ~~ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {

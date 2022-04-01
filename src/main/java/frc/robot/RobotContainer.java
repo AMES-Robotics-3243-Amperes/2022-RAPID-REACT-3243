@@ -29,7 +29,6 @@ import frc.robot.commands.IntakeIndexer.RebuffCommand;
 import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
 import frc.robot.commands.ShooterCommand;
 // ++ auto
-import frc.robot.commands.AutonomousPIDTaxiCommand;
 
 
 
@@ -78,7 +77,6 @@ public class RobotContainer {
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
 
     // ++ auto commands
-  private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
   // ++ END SUBSYSTEMS/COMMANDS ===============================================
 
 
@@ -111,7 +109,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousPIDTaxiCommand(m_DriveSubsystem);
-    // return null;
+    return null;
   }
 }
