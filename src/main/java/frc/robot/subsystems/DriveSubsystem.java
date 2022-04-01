@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -57,7 +57,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ Pose object for keeping track of robot position
   Pose2d pose = new Pose2d(6.0, 4.0, new Rotation2d());
-  Pose2d targetPose = new Pose2d(6.0, 4.0, new Rotation2d());
   double frontLeftTarget;
   double frontRightTarget;
   double backLeftTarget;
@@ -281,12 +280,11 @@ public class DriveSubsystem extends SubsystemBase {
   // ~~ resets the Pose2d and encoder positions of all the motors
   public void resetPose() {
     pose = new Pose2d(6.0, 4.0, new Rotation2d());
-    ChassisSpeeds chassisPos = new ChassisSpeeds(pose.getX(), pose.getY(), pose.getRotation().getRadians());
-    MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
-    frontLeftEncoder.setPosition(wheelPos.frontLeftMetersPerSecond);
-    frontRightEncoder.setPosition(wheelPos.frontRightMetersPerSecond);
-    backLeftEncoder.setPosition(wheelPos.rearLeftMetersPerSecond);
-    backRightEncoder.setPosition(wheelPos.rearRightMetersPerSecond);
+    setPositionalReference(0.0, 0.0, 0.0, 0.0);
+    frontLeftEncoder.setPosition(0.0);
+    frontRightEncoder.setPosition(0.0);
+    backLeftEncoder.setPosition(0.0);
+    backRightEncoder.setPosition(0.0);
 
     // IMPORTANT - we may need to set motor positional PID loop to the encoder position after resetting to prevent runaway robots.
     // Implementation would be:
@@ -299,34 +297,21 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {
-    ChassisSpeeds chassisTransform = new ChassisSpeeds(transform.getX(), transform.getY(), transform.getRotation().getRadians());
-    MecanumDriveWheelSpeeds wheelTransform = kinematics.toWheelSpeeds(chassisTransform);
+    ChassisSpeeds chassisPos = new ChassisSpeeds(transform.getX(), transform.getY(), 0);
+    MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
 
-    double frontLeftPos = frontLeftEncoder.getPosition() + wheelTransform.frontLeftMetersPerSecond;
-    double frontRightPos = frontRightEncoder.getPosition() + wheelTransform.frontRightMetersPerSecond;
-    double backLeftPos = backLeftEncoder.getPosition() + wheelTransform.rearLeftMetersPerSecond;
-    double backRightPos = backRightEncoder.getPosition() + wheelTransform.rearRightMetersPerSecond;
+    frontLeftEncoder.setPosition(0.0);
+    frontRightEncoder.setPosition(0.0);
+    backLeftEncoder.setPosition(0.0);
+    backRightEncoder.setPosition(0.0);
 
-    frontLeftPIDController.setReference(frontLeftPos, ControlType.kPosition);
-    frontRightPIDController.setReference(frontRightPos, ControlType.kPosition);
-    backLeftPIDController.setReference(backLeftPos, ControlType.kPosition);
-    backRightPIDController.setReference(backRightPos, ControlType.kPosition);
+    setPositionalReference(wheelPos);
   }
 
   // // ~~ sets the absolute robot position
   public void setRobotPosition(Pose2d position) {
-    ChassisSpeeds chassisPos = new ChassisSpeeds(position.getX(), position.getY(), position.getRotation().getRadians());
-    MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
-
-    double frontLeftPos = wheelPos.frontLeftMetersPerSecond;
-    double frontRightPos = wheelPos.frontRightMetersPerSecond;
-    double backLeftPos = wheelPos.rearLeftMetersPerSecond;
-    double backRightPos = wheelPos.rearRightMetersPerSecond;
-
-    frontLeftPIDController.setReference(frontLeftPos, ControlType.kPosition);
-    frontRightPIDController.setReference(frontRightPos, ControlType.kPosition);
-    backLeftPIDController.setReference(backLeftPos, ControlType.kPosition);
-    backRightPIDController.setReference(backRightPos, ControlType.kPosition);
+    Pose2d transform = new Pose2d(position.getX() - pose.getX(), position.getY() - pose.getY(), new Rotation2d(0.0));
+    changeRobotPosition(transform);
   }
 
   public void changeRobotAngle(double radians) {
@@ -359,6 +344,23 @@ public class DriveSubsystem extends SubsystemBase {
     }else {
       changeRobotAngle((radians + (2 * Math.PI)) - currentAngle);
     }
+  }
+
+  public void lookAt(Pose2d target) {
+    Pose2d vector = target.relativeTo(pose);
+    double radians = Math.atan2(vector.getY(), vector.getX());
+    setRobotAngle(radians);
+  }
+
+  public boolean atTargetPosition() {
+    double flError = Math.abs(frontLeftTarget - frontLeftEncoder.getPosition());
+    double frError = Math.abs(frontRightTarget - frontRightEncoder.getPosition());
+    double blError = Math.abs(backLeftTarget - backLeftEncoder.getPosition());
+    double brError = Math.abs(backRightTarget - backRightEncoder.getPosition());
+
+    double tolerance = Constants.DriveTrain.angularErrorTolerance;
+    boolean atTargetPosition = ((flError <= tolerance) && (frError <= tolerance) && (blError <= tolerance) && (brError <= tolerance));
+    return atTargetPosition;
   }
 
   // public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
