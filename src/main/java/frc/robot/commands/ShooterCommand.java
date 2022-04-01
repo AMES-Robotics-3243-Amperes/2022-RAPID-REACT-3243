@@ -27,7 +27,7 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void initialize() {
     m_ShooterSubsystem.setFlyhweelPIDValues();
-    hoodAngle = 0.0;
+    hoodAngle = 1.0;
 
   }
 
@@ -37,16 +37,16 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void execute() {
     if (joystick.getStartButton()) {
-      hoodAngle += 0.01;
+      hoodAngle += 0.001;
     }
     if (joystick.getBackButton()) {
-      hoodAngle -= 0.01;
+      hoodAngle -= 0.001;
     }
-    if (hoodAngle < -1) {
-      hoodAngle = -1;
+    if (hoodAngle > 1) {
+      hoodAngle = 1;
     }
-    if (hoodAngle > 0) {
-      hoodAngle = 0;
+    if (hoodAngle < 0.5) {
+      hoodAngle = 0.5;
     }
 
     
@@ -57,7 +57,7 @@ public class ShooterCommand extends CommandBase {
     
 
     // ++ this sets the speed of the flywheel
-    m_ShooterSubsystem.setFlywheelSpeed(joystick.getRightTriggerAxis());
+    m_ShooterSubsystem.setFlywheelSpeed(joystick.getRightTriggerAxis() * 4000);
     
     
   }

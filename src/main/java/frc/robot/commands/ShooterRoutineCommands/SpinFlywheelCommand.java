@@ -24,12 +24,10 @@ public class SpinFlywheelCommand extends CommandBase {
   boolean isSuccessful;
 
   /** Creates a new SpinFlywheelCommand. */
-  public SpinFlywheelCommand(ShooterSubsystem subsystem, LimelightSubsystem limelightSubsystem) {
+  public SpinFlywheelCommand(ShooterSubsystem subsystem) {
     m_ShooterSubsystem = subsystem;
-    m_LimelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_ShooterSubsystem);
-    addRequirements(m_LimelightSubsystem);
 
     clock = new Timer(); 
   }
@@ -53,7 +51,7 @@ public class SpinFlywheelCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flywheelTargetVelocity = m_LimelightSubsystem.giveTargetFlywheelVelocity();
+    flywheelTargetVelocity = LimelightSubsystem.giveTargetFlywheelVelocity();
     double velocityError = m_ShooterSubsystem.getCurrentFlywheelSpeed() - flywheelTargetVelocity;
 
     m_ShooterSubsystem.setFlywheelSpeed(flywheelTargetVelocity);

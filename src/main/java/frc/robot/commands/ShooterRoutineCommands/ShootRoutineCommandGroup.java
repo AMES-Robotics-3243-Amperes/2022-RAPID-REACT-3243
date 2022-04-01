@@ -26,14 +26,14 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
 
         addCommands(
             new ParallelCommandGroup(
-                new SpinFlywheelCommand(m_ShooterSubsystem, m_LimelightSubsystem),
+                new SpinFlywheelCommand(m_ShooterSubsystem),
                 new LimelightAlignDriveCommand(m_DriveSubsystem, m_LimelightSubsystem)
             ),
             new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
             new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
             new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
             new StopFlywheelCommand(m_ShooterSubsystem)
-            );
+        );
 
     }
 

@@ -24,7 +24,10 @@ public class AcceptCommand extends CommandBase {
     m_LimelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_IntakeIndexerSubsystem);
-    addRequirements(m_LimelightSubsystem);
+    
+    if (m_LimelightSubsystem != null) {
+      addRequirements(m_LimelightSubsystem);
+    }
 
     timer = new Timer();
   }

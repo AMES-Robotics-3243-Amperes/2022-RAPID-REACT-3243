@@ -20,12 +20,12 @@ import java.util.Random;
 public class LimelightSubsystem extends SubsystemBase {
 
   // ++ table object
-  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  static NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   // ++ LimeLight values -- table entry objects
-  NetworkTableEntry tx = limelightTable.getEntry("tx");   // ++ x offset 
-  NetworkTableEntry ty = limelightTable.getEntry("ty");   // ++ y offset
-  NetworkTableEntry ta = limelightTable.getEntry("ta");   // ++ area of target 
-  NetworkTableEntry tv = limelightTable.getEntry("tv");   // 1 if limelight sees a valid target, 0 otherwise
+  static NetworkTableEntry tx = limelightTable.getEntry("tx");   // ++ x offset 
+  static NetworkTableEntry ty = limelightTable.getEntry("ty");   // ++ y offset
+  static NetworkTableEntry ta = limelightTable.getEntry("ta");   // ++ area of target 
+  static NetworkTableEntry tv = limelightTable.getEntry("tv");   // 1 if limelight sees a valid target, 0 otherwise
 
   // ++ random class object to see if shuffleboard is updating properly
   Random Waffles = new Random(); 
@@ -52,7 +52,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
     /** ++ This method gets the Y position of the target the Limelight sees (including limelight angle offset) 
    * @return the Y position of the target (as an angle) */
-  public double getTargetY() {
+  public static double getTargetY() {
     return (ty.getDouble(-Constants.Limelight.limelightAngleOffset) + Constants.Limelight.limelightAngleOffset);
     // ++ I did a weird default value to make the method return 0 if no value is found
   }
@@ -87,14 +87,14 @@ public class LimelightSubsystem extends SubsystemBase {
   // ++ --------------- misc ----------------------------
 
   /** this finds the distance from the hub based on limelight values (y angle offset) */
-  private double findDistanceFromHub() {
+  private static double findDistanceFromHub() {
     return (Constants.Limelight.shooterToHubHeight / Math.tan( getTargetY() ));
   }
 
   /** ++ this is the function that tells you the necessary flywheel velocity based on the distance. 
    * NOTE: this is NOT the implementation of this! This just converts from 
    */
-  private double flywheelVelocityFromDistance(double distance) {
+  private static double flywheelVelocityFromDistance(double distance) {
     // ++ THIS IS JUST A PLACEHOLDER FOR NOW, WE'LL NEED TO FIND THE ACTUAL FUNCTION WHEN THE ROBOT WORKS
     return distance;
   }
@@ -138,7 +138,7 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   /** ++ this method gives you the necessary velocity of the flywheel  */
-  public double giveTargetFlywheelVelocity() {
+  public static double giveTargetFlywheelVelocity() {
     return flywheelVelocityFromDistance( findDistanceFromHub() );
   }
   // ++ ----------- end trajectory stuff ---------------------------------------
