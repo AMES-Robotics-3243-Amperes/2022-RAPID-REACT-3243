@@ -187,19 +187,19 @@ public final class JoyUtil extends XboxController {
      * @return D-Pad x component
     */
     public double getDPadX(){
-        if( getPOV() > -1 ) {
-            return (Math.cos( Math.toRadians(getPOV() - 90.0) ) * Constants.Joysticks.dPadDamper);
+        if( getPOV() != -1 ) {
+            return (Math.cos( Math.toRadians(getPOV() + 450.0) ) * Constants.Joysticks.dPadDamper);
         } else {
             return 0.0;
         }
     }
-
+ 
     /** ++ gets the y component of the D-Pad 
      * @return D-Pad y component
     */
     public double getDPadY() {
-        if (getPOV() > -1) {
-            return (Math.sin( Math.toRadians(getPOV() - 90.0)  * Constants.Joysticks.dPadDamper));
+        if (getPOV() != -1) {
+            return (Math.sin( Math.toRadians(getPOV() + 450.0)  * Constants.Joysticks.dPadDamper));
         } else {
             return 0.0;
         }
@@ -211,9 +211,9 @@ public final class JoyUtil extends XboxController {
 
 
 
-//int max = annette;waz here;
+//int maya = annette;waz here;
 //lol hiiiiiiiiiiiiiiiiiiii
-// hi max :)
+// hi maya :)
 // good job doing important things
 //go u
 // bbbbbbbbbbbbbb

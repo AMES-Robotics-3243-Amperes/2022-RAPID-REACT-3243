@@ -54,10 +54,6 @@ public final class Constants {
         public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
         /**  maximum speed of robot in m/s (max rpm times conversion ratio), this also (I think) converts from RPM to m/s */
         public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
-        /**  amount of error allowed in the encoders when turning in autonomous */
-        public static final double angularErrorTolerance = 0.1;
-        /**  amount of error allowed in the encoders when moving in autonomous */
-        public static final double linearErrorTolerance = 0.1;
     }
 
     public static final class IntakeIndexer {
@@ -101,18 +97,18 @@ public final class Constants {
         public static final int RightJoystickY = 4;
 
         // ++ JOYSTICK BUTTON IDS -------------------------------------------------------------------
-        public static final int A = 2;
-        public static final int B = 3;
-        public static final int X = 1;
+        public static final int A = 1;
+        public static final int B = 2;
+        public static final int X = 3;
         public static final int Y = 4;
-        public static final int Start = 10;
-        public static final int Back = 9;
+        public static final int Start = 8;
+        public static final int Back = 7;
         public static final int LeftBumper = 5;
         public static final int RightBumper = 6;
-        public static final int LeftTrigger = 7;
-        public static final int RightTrigger = 8;
-        public static final int DpadXaxis = 5;
-        public static final int DpadYaxis = 6;
+        public static final int JoystickButtonRight = 10;
+        public static final int JoystickButtonLeft = 9;
+        
+
 
 
         // ++ OTHER JOYSTICK CONSTANTS --------------------------------------------------------------

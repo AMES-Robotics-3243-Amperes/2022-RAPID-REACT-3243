@@ -19,8 +19,8 @@ public class GoToCommand extends CommandBase {
     m_subsystem = subsystem;
     addRequirements(m_subsystem);
   }
-
   // Called when the command is initially scheduled.
+  
   @Override
   public void initialize() {
     m_target = ShuffleboardSubsystem.getTargetPose();
