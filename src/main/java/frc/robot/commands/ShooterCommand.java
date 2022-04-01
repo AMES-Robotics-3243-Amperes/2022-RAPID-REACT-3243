@@ -50,7 +50,7 @@ public class ShooterCommand extends CommandBase {
     }
 
     
-    // m_ShooterSubsystem.setHoodAngle(hoodAngle);
+    m_ShooterSubsystem.setHoodAngle(hoodAngle);
 
 
 

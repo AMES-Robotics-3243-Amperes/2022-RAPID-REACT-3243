@@ -59,7 +59,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setHoodAngle(double angle) {
     // hoodMotor.set( hoodAngleToServoPosition(angle) );
     // hoodMotor.set(180);
-    hoodMotor.set(angle + 1);
+    hoodMotor.set(angle);
   }
 
   /** gives the current hood angle
