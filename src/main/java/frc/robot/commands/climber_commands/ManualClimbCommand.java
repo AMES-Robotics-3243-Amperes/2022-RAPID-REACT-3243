@@ -4,12 +4,10 @@
 
 package frc.robot.commands.climber_commands;
 import frc.robot.JoyUtil;
-import frc.robot.Constants; 
-
+import frc.robot.Constants;
 import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** An example command that uses an example subsystem. */
 public class ManualClimbCommand extends CommandBase {
@@ -51,9 +49,10 @@ public class ManualClimbCommand extends CommandBase {
 
     if (m_ClimberSubsystem.isRunningClimbCommand == false) {
       if (Math.abs(joystick.getRawAxis(0))>0.2) {
-        spinSpeed = joystick.getRawAxis(0)/4;
+        spinSpeed = joystick.getRawAxis(0);
       }
       m_ClimberSubsystem.spinClimber(spinSpeed);
+      m_ClimberSubsystem.climberOffsetAngle += spinSpeed;
     }
 
     if (m_ClimberSubsystem.isTooHot){

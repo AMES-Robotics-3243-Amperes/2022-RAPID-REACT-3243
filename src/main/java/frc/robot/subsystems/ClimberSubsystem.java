@@ -15,8 +15,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -79,7 +77,10 @@ public class ClimberSubsystem extends SubsystemBase {
   public double grabberAngles[] = {0,0};
   public double encoderGrabberAngles[]  = {0,0}; //[0] is side 0, [1] is side 1 for everything relating to grabbers
   public double prevEncoderGrabberAngles[] = {0,0};
+  public double grabberHoldAngles[] = {0,0};
   public double encoderClimberAngle;
+  public double climberOffsetAngle = 0;
+  public double climberHoldAngle = 0;
   public double climberAngleDegrees = 0;
   public double pawlServoAngles[] = {Constants.Climber.pawlOpen,Constants.Climber.pawlOpen};
 
@@ -179,6 +180,7 @@ public class ClimberSubsystem extends SubsystemBase {
     climberMotorLEncoder.setPosition(0);
     climberMotorREncoder.setPosition(0);
     currentClimberStep = 0;
+    previousClimberStep = 0;
   }
 
   public void resetMotorPosReadings(){
@@ -235,8 +237,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public void actuateClimber(double revolutions){
     // :) actuate both climber motors, to a specified number of revolutions from starting angle
     climberAngle = revolutions;
-    climberMotorRPID.setReference(climberAngle, ControlType.kPosition);
-    climberMotorLPID.setReference(climberAngle, ControlType.kPosition);
+    
   }
 
   public void spinClimber(double speed){
@@ -290,23 +291,50 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     if (isCalibrated){
+
+      if (isClimberStepStopped){ // :) if paused then hold current climber arm position
+        climberMotorRPID.setReference(climberHoldAngle, ControlType.kPosition);
+        climberMotorLPID.setReference(climberHoldAngle, ControlType.kPosition);
+      } else {
+        climberMotorRPID.setReference(climberAngle+climberOffsetAngle, ControlType.kPosition);
+        climberMotorLPID.setReference(climberAngle+climberOffsetAngle, ControlType.kPosition);
+      }
+
       // :) only actually does stuff if the grabbers are calibrated and the grabber encoders are within limits
       if ((grabberL0Encoder.getPosition()<gripperOpenMaximum+2 && grabberL0Encoder.getPosition()<grabberAngles[0]) ||
           (grabberL0Encoder.getPosition()>gripperClosedMinimum && grabberL0Encoder.getPosition()>grabberAngles[0]) ) {
-        grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
+        if (isClimberStepStopped) { // :) holds current position if told to pause
+          grabberL0PID.setReference(grabberHoldAngles[0], ControlType.kPosition);
+        } else {
+          grabberL0PID.setReference(grabberAngles[0], ControlType.kPosition);
+        }
       }
       if ((grabberR0Encoder.getPosition()<gripperOpenMaximum+2 && grabberR0Encoder.getPosition()<grabberAngles[0]) ||
           (grabberR0Encoder.getPosition()>gripperClosedMinimum && grabberR0Encoder.getPosition()>grabberAngles[0])) {
-        grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
+        if (isClimberStepStopped) {
+          grabberR0PID.setReference(grabberHoldAngles[0], ControlType.kPosition);
+        } else {
+          grabberR0PID.setReference(grabberAngles[0], ControlType.kPosition);
+        }
       }
       if ((grabberL1Encoder.getPosition()<gripperOpenMaximum+2 && grabberL1Encoder.getPosition()<grabberAngles[1]) ||
           (grabberL1Encoder.getPosition()>gripperClosedMinimum && grabberL1Encoder.getPosition()>grabberAngles[1])) {
-        grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
+        if (isClimberStepStopped) {
+          grabberL1PID.setReference(grabberHoldAngles[1], ControlType.kPosition);
+        } else {
+          grabberL1PID.setReference(grabberAngles[1], ControlType.kPosition);
+        }
       }
       if ((grabberR1Encoder.getPosition()<gripperOpenMaximum+2 && grabberR1Encoder.getPosition()<grabberAngles[1]) ||
           (grabberR1Encoder.getPosition()>gripperClosedMinimum && grabberR1Encoder.getPosition()>grabberAngles[1])) {
-        grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
+        if (isClimberStepStopped) { 
+          grabberR1PID.setReference(grabberHoldAngles[1], ControlType.kPosition);
+        } else {
+          grabberR1PID.setReference(grabberAngles[1], ControlType.kPosition);
+        }
       }
+
+
 
       // :) if the grabbers still somehow get outside of the normal range, they'll have their power cut until they are within ranges
       if (grabberL0Encoder.getPosition()>gripperOpenMaximum+3 || grabberL0Encoder.getPosition()<gripperClosedMinimum-2){
