@@ -134,6 +134,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // ~~ Positional Stuff ============================================================
 
+
     resetPose(0.0, 0.0, 0.0);
 
     odometry = new MecanumDriveOdometry(kinematics, IMUSubsystem.getGyroRotation(), pose);
@@ -142,6 +143,7 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightTarget = 0.0;
     backLeftTarget = 0.0;
     backRightTarget = 0.0;
+
     // ~~ =============================================================================
 
   }
@@ -279,7 +281,7 @@ public class DriveSubsystem extends SubsystemBase {
   // ~~ resets the Pose2d and encoder positions of all the motors
   public void resetPose(Pose2d newPose) {
     IMUSubsystem.setYaw(newPose.getRotation().getDegrees());
-    pose = new Pose2d();
+    pose = newPose;
     setPositionalReference(0.0, 0.0, 0.0, 0.0);
     frontLeftEncoder.setPosition(0.0);
     frontRightEncoder.setPosition(0.0);
@@ -366,6 +368,32 @@ public class DriveSubsystem extends SubsystemBase {
     double tolerance = Constants.DriveTrain.errorTolerance;
     boolean atTargetPosition = ((flError <= tolerance) && (frError <= tolerance) && (blError <= tolerance) && (brError <= tolerance));
     return atTargetPosition;
+  }
+
+  public void toAutonomousMode() {
+    double angle;
+    if (IMUSubsystem.getYaw() >= 0) {
+      angle = IMUSubsystem.getGyroRotation().getRadians();
+    }else {
+      angle = (2 * Math.PI) + IMUSubsystem.getGyroRotation().getRadians();
+    }
+    double xDif = 0.6604 * Math.cos(angle);
+    double yDif = 0.6604 * Math.sin(angle);
+
+    resetPose(pose.getX() + xDif, pose.getY() + yDif, pose.getRotation().getRadians());
+  }
+
+  public void toTeleopMode() {
+    double angle;
+    if (IMUSubsystem.getYaw() >= 0) {
+      angle = IMUSubsystem.getGyroRotation().getRadians();
+    }else {
+      angle = (2 * Math.PI) + IMUSubsystem.getGyroRotation().getRadians();
+    }
+    double xDif = -0.6604 * Math.cos(angle);
+    double yDif = -0.6604 * Math.sin(angle);
+
+    resetPose(pose.getX() + xDif, pose.getY() + yDif, pose.getRotation().getRadians());
   }
 
   // public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
