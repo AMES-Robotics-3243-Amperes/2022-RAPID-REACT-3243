@@ -168,8 +168,17 @@ public final class Constants {
 
         /** ++ angle offset between servo and hood. It goes from servo to hood angle*/
         public static final double servoAngleOffset = 0.0;
-        
-        
+
+        // ++ dump constants
+        /** ++ speed the flywheel spins at to dump a ball */
+        public static final double dumpFlywheelRPM =  150;
+        /** ++ the angle of the hood for dumping */
+        public static final double dumpHoodAngle = 10;
+
+        /** ++ dump flywheel timeout */
+        public static final double dumpFlywheelTimeout = 2.0;
+        /** ++ dump adjust hood timeout */
+        public static final double dumpHoodTimeout = 2.0;
     
 
 

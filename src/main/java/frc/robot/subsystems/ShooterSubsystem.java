@@ -113,7 +113,6 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ ============ FLYWHEEL STUFF ==============================
 
   public void setFlywheelSpeed(double speed) {
-    System.out.println("SPEED:" + speed);
     flywheelPID.setReference(speed, ControlType.kVelocity);
   }
 

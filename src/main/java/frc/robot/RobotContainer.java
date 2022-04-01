@@ -28,12 +28,11 @@ import frc.robot.commands.TeleopPIDDriveCommand;
 import frc.robot.commands.IntakeIndexer.AcceptCommand;
 import frc.robot.commands.IntakeIndexer.RebuffCommand;
 import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
-  // ++ auto
+import frc.robot.commands.ShooterStuff.ShooterCommand;
+import frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands.LimelightAlignDriveCommand;
+import frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands.ShootRoutineCommandGroup;
+// ++ auto
 import frc.robot.commands.AutonomousPIDTaxiCommand;
-import frc.robot.commands.ShooterCommand;
-  // ++ shooter routine
-import frc.robot.commands.ShooterRoutineCommands.LimelightAlignDriveCommand;
-import frc.robot.commands.ShooterRoutineCommands.ShootRoutineCommandGroup;
 
 
 

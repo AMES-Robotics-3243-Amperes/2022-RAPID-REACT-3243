@@ -37,7 +37,7 @@ public class AcceptCommand extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-    if (m_LimelightSubsystem == null || m_LimelightSubsystem.continueShooterRoutine) {
+    if ( m_LimelightSubsystem == null || m_LimelightSubsystem.continueShooterRoutine ) {
       m_IntakeIndexerSubsystem.setIntakeSpeed(Constants.IntakeIndexer.acceptSpeed);
       m_IntakeIndexerSubsystem.stepIndexer(Constants.IntakeIndexer.acceptRotations);
     }
@@ -60,7 +60,8 @@ public class AcceptCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    /* ++ immediately ends if the limelight subsytem exists AND the robot isn't aligned. 
+
+    /* ++ immediately ends if the limelight subsytem exists AND the robot isn't aligned (continueShooterRoutine is false). 
     * that ignores the limelight if the subsystem doesn't exist
     *
     * OR it ends when the indexer reaches its time duration
