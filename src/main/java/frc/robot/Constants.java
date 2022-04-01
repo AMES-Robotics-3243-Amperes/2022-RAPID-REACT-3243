@@ -151,6 +151,7 @@ public final class Constants {
         public static final double flywheelPGain = 0.001;
         public static final double flywheelIGain = 0.0;
         public static final double flywheelDGain = 0.0;
+        public static final double flywheelFFGain = 0.0;
 
         // ++ drive
         public static double limelightDrivePGain;
@@ -207,7 +208,7 @@ public final class Constants {
         public static final double hubHeight = 8.6666666667; // ++ i put this as a decimal approx bc (104/12) was being weird
 
             /** ++ this is the height of the shooter (where the ball leaves the robot) off the ground  (in feet)*/
-        public static final double shooterHeight = 1.5; // ++ measure what this actually is 
+        public static final double shooterHeight = 2.0; 
 
             /** this is the difference in height between the shooter and the hub, in feet */
         public static final double shooterToHubHeight = hubHeight - shooterHeight;

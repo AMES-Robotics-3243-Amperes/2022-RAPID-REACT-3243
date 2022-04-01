@@ -66,15 +66,15 @@ public class RobotContainer {
 
   // ++ SUBSYSTEMS AND COMMANDS ========================================
   // SUBSYSTEMS -------------------
+    // ++ "utility subsystems"
+  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
+  private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
+
     // ++ robot subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem = new IntakeIndexerSubsystem();
-    // ++ "utility subsystems"
-  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
-  private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
-  
   // COMMANDS--------------------
     // ++ teleop commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);

@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.ShuffleboardSubsystem;
 
 import frc.robot.Constants;
 
@@ -127,12 +128,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** this sets the P, I, and D values for the flywheel */
   public void setFlyhweelPIDValues() {
-    double pGain = Constants.Shooter.flywheelPGain; //SmartDashboard.getNumber("shootP", Constants.Shooter.flywheelPGain);
-    double iGain = Constants.Shooter.flywheelIGain; //SmartDashboard.getNumber("shootI", Constants.Shooter.flywheelIGain);
-    double dGain = Constants.Shooter.flywheelDGain; //SmartDashboard.getNumber("shootP", Constants.Shooter.flywheelDGain);
-    flywheelPID.setP(pGain); 
-    flywheelPID.setI(iGain);
-    flywheelPID.setD(dGain);
+    double values[] = ShuffleboardSubsystem.getFlywheelPIDValues();
+    flywheelPID.setP( values[0] ); 
+    flywheelPID.setI( values[1] );
+    flywheelPID.setD( values[2] );
+    flywheelPID.setFF( values[3] );
   }
   // ++ ============ END FLYWHEEL STUFF ==========================
 

@@ -28,6 +28,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static SimpleWidget firstPowerShuffle, secondPowerShuffle, aCoeffShuffle, bCoeffShuffle, fastModeMultiplierShuffle, totalSpeedDamperShuffle;
     // ~~ IMU Stuff
   static SimpleWidget yawShuffle, pitchShuffle, rollShuffle, xVelocityShuffle, yVelocityShuffle, zVelocityShuffle, xPositionShuffle, yPositionShuffle, zPositionShuffle;
+    // ++ shooter stuff
+  static SimpleWidget flywheelSpeed, flywheelPGain, flywheelIGain, flywheelDGain, flywheelFFGain;
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<ControlOption> m_JoyCurve;
@@ -48,6 +50,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   // // I'm gonna cry
   // ++ me too I'm freezing rn cottonwood's area is coldddddd
+  // :) loser my garage is colder
 
 
 
@@ -67,6 +70,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     movementTab.add(m_JoyCurve);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
 
+
+
     // ~~ ==================== IMU WIDGETS/STUFF =========================================================
     yawShuffle = IMUTab.add("Yaw", 0);
     pitchShuffle = IMUTab.add("Pitch", 0);
@@ -79,6 +84,16 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     zPositionShuffle = IMUTab.add("Z Position", 0);
     // ~~ ==================== END IMU WIDGETS/STUFF =====================================================
 
+
+
+    // ++ ==================== SHOOTER STUFF =============================================
+    flywheelSpeed = shooterTab.add("flywheel speed", 0.0);
+
+    flywheelPGain = shooterTab.add("flywheel P gain", Constants.Shooter.flywheelPGain);
+    flywheelIGain = shooterTab.add("flywheel I gain", Constants.Shooter.flywheelIGain);
+    flywheelDGain = shooterTab.add("flywheel D gain", Constants.Shooter.flywheelDGain);
+    flywheelFFGain = shooterTab.add("flywheel FF gain", Constants.Shooter.flywheelFFGain);
+    // ++ ==================== END SHOOTER STUFF =========================================
 
   }
 
@@ -116,6 +131,22 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   }
   // ++ ============================= END DRIVETRAIN METHODS =============================================
 
+
+  // ++ ============================= SHOOTER METHODS ===================================================
+  /** ++ this method returns the pid values for the shooter as an array,
+   * in the order P, I, D, FF */
+  public static double[] getFlywheelPIDValues(){
+    double PIDFValues[] = {
+    flywheelPGain.getEntry().getDouble( Constants.Shooter.flywheelPGain),
+    flywheelIGain.getEntry().getDouble( Constants.Shooter.flywheelIGain),
+    flywheelDGain.getEntry().getDouble( Constants.Shooter.flywheelDGain),
+    flywheelFFGain.getEntry().getDouble( Constants.Shooter.flywheelFFGain),
+    };
+
+    return PIDFValues;
+    
+  }
+  // ++ ============================= END SHOOTER METHODS ===============================================
 
   // ++ ================= IMU stuff ===============================
 
