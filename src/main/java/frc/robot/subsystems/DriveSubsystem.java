@@ -51,7 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMaxPIDController backRightPIDController;
 
   // ~~ Field Object for visulaization in shuffleboard or simulation
-  Field2d field = new Field2d();
+  static Field2d field = new Field2d();
   // // ++ IMU subsystem object
   // IMUSubsystem IMUSubsystem = new IMUSubsystem();
 
@@ -400,6 +400,9 @@ public class DriveSubsystem extends SubsystemBase {
   //   //++ I think this method is now redundant with PID stuff?
   //   speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
   // }
+  public static Field2d getField() {
+    return field;
+  }
 
 
 
@@ -457,6 +460,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
     SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
     // ~~ Update field object for shuffleboard
+    
     field.setRobotPose(pose);
   }
 

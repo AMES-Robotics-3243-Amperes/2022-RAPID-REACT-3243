@@ -9,15 +9,18 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.ControlOption;
+
+import frc.robot.subsystems.DriveSubsystem;
 
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
@@ -30,6 +33,10 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static SimpleWidget firstPowerShuffle, secondPowerShuffle, aCoeffShuffle, bCoeffShuffle, fastModeMultiplierShuffle, totalSpeedDamperShuffle;
     // ~~ IMU Stuff
   static SimpleWidget yawShuffle, pitchShuffle, rollShuffle, xVelocityShuffle, yVelocityShuffle, zVelocityShuffle, xPositionShuffle, yPositionShuffle, zPositionShuffle;
+  // ££ Driver Feedback
+  static ComplexWidget field;
+  // ££ Shooter Feedback
+  static SimpleWidget seesTarget;
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<ControlOption> m_JoyCurve;
@@ -98,8 +105,9 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     yPositionShuffle = IMUTab.add("Y Position", 0);
     zPositionShuffle = IMUTab.add("Z Position", 0);
     // ~~ ==================== END IMU WIDGETS/STUFF =====================================================
-
-
+      // ££
+      field = driverFeedbackTab.add(DriveSubsystem.getField());
+    // ££ 
   }
 
   // ++ =========================================== DRIVETRAIN METHODS ===================================
@@ -184,5 +192,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     yPositionShuffle.getEntry().setDouble(IMUSubsystem.getYPosition());
     zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
+
+    // ££ ==================== DRIVER STATION ============================================================
   }
 }
