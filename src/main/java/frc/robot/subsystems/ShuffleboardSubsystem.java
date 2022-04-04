@@ -92,6 +92,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
 
     movementTab.add(m_JoyCurve);
+    movementTab.add(m_StartingPosition);
+    movementTab.add(m_Target);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
 
     // ~~ ==================== IMU WIDGETS/STUFF =========================================================
