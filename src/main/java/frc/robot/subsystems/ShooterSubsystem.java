@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.Servo;
 
@@ -42,7 +43,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private SparkMaxPIDController hoodPID;
   private SparkMaxPIDController flywheelPID;
 
-
+  // ££ 
   
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
