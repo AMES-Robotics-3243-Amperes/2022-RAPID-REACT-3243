@@ -14,6 +14,7 @@ import frc.robot.subsystems.LimelightSubsystem;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 // ++ ==========================================
@@ -23,11 +24,9 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class LimelightAlignDriveCommand extends CommandBase {
 
-  private PIDController drivePIDController;
   private Timer clock;
 
   private final DriveSubsystem m_DriveSubsystem;
-  private final LimelightSubsystem m_LimelightSubsystem;
 
   // ++ this is the important variable here! the entire goal of this class is to minimize this value
   double rotationalOffset;
@@ -35,6 +34,7 @@ public class LimelightAlignDriveCommand extends CommandBase {
   double turnVelocity; 
   // ++ 
   boolean isSuccessful;
+  boolean seesTargetAtInit;
 
   /** ++ the LimelightSubsystem isn't actually the subsystem for this command,
    * it's just here so we can read the limelight values from it
@@ -43,19 +43,12 @@ public class LimelightAlignDriveCommand extends CommandBase {
 
 
   /** Creates a new LimelightDriveCommand. */
-  public LimelightAlignDriveCommand(DriveSubsystem subsystem, LimelightSubsystem limelightSubsystem) {
+  public LimelightAlignDriveCommand(DriveSubsystem subsystem) {
     m_DriveSubsystem = subsystem;
-    m_LimelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_DriveSubsystem);
-    addRequirements(m_LimelightSubsystem);
 
-    
-    drivePIDController = new PIDController (
-      Constants.Shooter.limelightDrivePGain,
-      Constants.Shooter.limelightDriveIGain,
-      Constants.Shooter.limelightDriveDGain
-      );
+  
 
     
     clock = new Timer();
@@ -68,10 +61,14 @@ public class LimelightAlignDriveCommand extends CommandBase {
   public void initialize() {
     isSuccessful = false;
 
+    seesTargetAtInit = LimelightSubsystem.isTargetValid();
+    SmartDashboard.putBoolean("sees target at init?", seesTargetAtInit);
+    LimelightSubsystem.continueShooterRoutine = seesTargetAtInit;
+
+
     clock.reset();
     clock.start();
 
-    drivePIDController.reset();
 
     rotationalOffset = 0.0;
 
@@ -81,8 +78,8 @@ public class LimelightAlignDriveCommand extends CommandBase {
   @Override
   public void execute() {
 
-    rotationalOffset = m_LimelightSubsystem.getTargetX();
-    turnVelocity = drivePIDController.calculate(rotationalOffset, 0.0);
+    rotationalOffset = LimelightSubsystem.getTargetX();
+    turnVelocity = rotationalOffset * 0.4;
 
     m_DriveSubsystem.setReferencesFromWheelSpeeds(0.0, 0.0, turnVelocity);
 
@@ -95,7 +92,8 @@ public class LimelightAlignDriveCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_DriveSubsystem.setReferencesFromWheelSpeeds(0.0, 0.0, 0.0);
-    m_LimelightSubsystem.continueShooterRoutine = isSuccessful;
+    LimelightSubsystem.continueShooterRoutine = (isSuccessful && seesTargetAtInit);
+    SmartDashboard.putBoolean("cont shoot routine?", LimelightSubsystem.continueShooterRoutine);
   }
 
   // Returns true when the command should end.
@@ -104,6 +102,6 @@ public class LimelightAlignDriveCommand extends CommandBase {
     // ++ conditions to finish: x error is within acceptable bounds 
     // ++ (( AND the rest of the sub-routines are finished ?? (incase robot got bumped before it was ready to shoot) ))
     // ++ FAILS IF: command times out (can't get within bounds in a certain amount of time)
-    return (isSuccessful || (clock.get() >= Constants.Shooter.turnTimeoutTime) );
+    return (isSuccessful || (clock.get() >= Constants.Shooter.turnTimeoutTime));
   }
 }

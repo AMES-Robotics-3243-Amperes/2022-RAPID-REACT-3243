@@ -23,7 +23,6 @@ public class LimelightMoveHoodCommand extends CommandBase {
   /** ++ the LimelightSubsystem isn't actually the subsystem for this command,
   * it's just here so we can read the limelight values from it
   */
-  private LimelightSubsystem m_LimelightSubsystem;
 
   // ++ these are super important variables for this class! the goal is to minimize the error between the current and the target
   double currentHoodAngle;
@@ -34,12 +33,10 @@ public class LimelightMoveHoodCommand extends CommandBase {
 
 
   /** Creates a new MoveHoodCommand. */
-  public LimelightMoveHoodCommand(ShooterSubsystem subsystem, LimelightSubsystem limelightSubsystem) {
+  public LimelightMoveHoodCommand(ShooterSubsystem subsystem) {
     m_ShooterSubsystem = subsystem;
-    m_LimelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_ShooterSubsystem);
-    addRequirements(m_LimelightSubsystem);
     clock = new Timer();
 
   }
@@ -57,10 +54,10 @@ public class LimelightMoveHoodCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentHoodAngle = m_ShooterSubsystem.getHoodAngle();
-    targetHoodAngle = m_LimelightSubsystem.findTargetHoodAngle();
+    // currentHoodAngle = m_ShooterSubsystem.getPrevHoodAngle();
+    targetHoodAngle = LimelightSubsystem.findTargetHoodAngle();
 
-    m_ShooterSubsystem.setHoodAngle(targetHoodAngle);
+    m_ShooterSubsystem.convertHoodAngleToServoPosition( targetHoodAngle );
 
   }
 
@@ -73,6 +70,6 @@ public class LimelightMoveHoodCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (clock.get() >= Constants.Shooter.hoodTimeoutTime);
+    return (clock.get() >= Constants.Shooter.hoodTimeoutTime || !LimelightSubsystem.continueShooterRoutine);
   }
 }

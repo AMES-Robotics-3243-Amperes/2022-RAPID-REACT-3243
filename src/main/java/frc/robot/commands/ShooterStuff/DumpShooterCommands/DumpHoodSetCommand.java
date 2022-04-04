@@ -29,7 +29,7 @@ public class DumpHoodSetCommand extends CommandBase {
   public void initialize() {
     clock.reset();
     clock.start();
-    m_ShooterSubsystem.setHoodAngle( Constants.Shooter.dumpHoodAngle );
+    // m_ShooterSubsystem.setHoodAngle( Constants.Shooter.dumpHoodAngle );
   }
 
   // Called every time the scheduler runs while the command is scheduled.

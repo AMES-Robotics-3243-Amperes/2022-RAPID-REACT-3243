@@ -15,6 +15,7 @@ public class DumpFlywheelCommand extends CommandBase {
   private final ShooterSubsystem m_ShooterSubsystem;
   private final Timer clock;
 
+
   /** Creates a new FlywheelDumpCommand. */
   public DumpFlywheelCommand(ShooterSubsystem shooterSubsystem) {
     m_ShooterSubsystem = shooterSubsystem;
@@ -27,14 +28,15 @@ public class DumpFlywheelCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    clock.stop();
+    clock.reset();
     clock.start();
     m_ShooterSubsystem.setFlywheelSpeed( Constants.Shooter.dumpFlywheelRPM );
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override

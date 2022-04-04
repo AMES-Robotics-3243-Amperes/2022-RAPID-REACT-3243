@@ -7,6 +7,7 @@ package frc.robot.commands.ShooterStuff.DumpShooterCommands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.IntakeIndexer.AcceptCommand;
+import frc.robot.commands.ShooterStuff.StopFlywheelCommand;
 import frc.robot.subsystems.IntakeIndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -18,17 +19,12 @@ public class DumpCommandGroup extends SequentialCommandGroup{
         IntakeIndexerSubsystem m_IntakeIndexerSubsystem
     ) {
 
-
-
         addCommands(
 
-            new ParallelCommandGroup(
-                new DumpFlywheelCommand( m_ShooterSubsystem ),
-                new DumpHoodSetCommand( m_ShooterSubsystem )
-            ),
-
-            new AcceptCommand( m_IntakeIndexerSubsystem, null),
-            new AcceptCommand( m_IntakeIndexerSubsystem, null)
+            new DumpFlywheelCommand(m_ShooterSubsystem),
+            new AcceptCommand( m_IntakeIndexerSubsystem, false),
+            new AcceptCommand( m_IntakeIndexerSubsystem, false),
+            new StopFlywheelCommand( m_ShooterSubsystem)
             
         );
 

@@ -72,10 +72,10 @@ public final class Constants {
         public static final double intakePositionConversionRatio = (1/12);
         public static final double indexPositionConversionRatio = (1/120);
         // ~~ Accept and Rebuff Constants
-        public static final double acceptRotations = 30;
+        public static final double acceptRotations = -20;
         public static final double acceptSpeed = 1;
         public static final double acceptDuration = 0.15;
-        public static final double rebuffRotations = -30;
+        public static final double rebuffRotations = 20;
         public static final double rebuffSpeed = -1;
         public static final double rebuffDuration = 0.15;
         // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
@@ -118,7 +118,7 @@ public final class Constants {
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed dampers as finals incase we want a fastmode/to change them later 
         public static final double driveSpeedDamper = 0.65; 
-        public static final double rotationDamper = 3.0; 
+        public static final double rotationDamper = 5.0; 
 
         // ss This is the multiplier for Fast Mode
         // explained in JoyUtil.java
@@ -148,8 +148,8 @@ public final class Constants {
 
         // ++ PID stuff --------------
         // ++ flywheel
-        public static final double flywheelPGain = 0.001;
-        public static final double flywheelIGain = 0.0;
+        public static final double flywheelPGain = 0.0005;
+        public static final double flywheelIGain = 0.0000005;
         public static final double flywheelDGain = 0.0;
         public static final double flywheelFFGain = 0.0;
 
@@ -160,7 +160,7 @@ public final class Constants {
 
         // ++ max servo angle
             // ++ this is the maximum angle on the spec sheet, NOT necessarily what it should be on the robot
-        public static final double maxSpecHoodServoAngle = 199;
+        public static final double maxSpecHoodServoAngle = 180;
 
         // ++ maximum and minimum safe angles the servo can actually be at
         public static double maxActualServoAngle;
@@ -171,14 +171,14 @@ public final class Constants {
 
         // ++ dump constants
         /** ++ speed the flywheel spins at to dump a ball */
-        public static final double dumpFlywheelRPM =  150;
+        public static final double dumpFlywheelRPM =  1000;
         /** ++ the angle of the hood for dumping */
-        public static final double dumpHoodAngle = 10;
+        public static final double dumpHoodAngle = 40;
 
         /** ++ dump flywheel timeout */
         public static final double dumpFlywheelTimeout = 2.0;
         /** ++ dump adjust hood timeout */
-        public static final double dumpHoodTimeout = 2.0;
+        public static final double dumpHoodTimeout = 1.0;
     
 
 
@@ -197,7 +197,7 @@ public final class Constants {
             // ++ FIGURE OUT WHAT THESE SHOULD ACTUALLY BE
         public static final double hoodTimeoutTime = 5.0;
         public static final double turnTimeoutTime = 5.0;
-        public static final double flywheelTimeoutTime = 5.0;
+        public static final double flywheelTimeoutTime = 3.0;
 
 
 
@@ -210,14 +210,14 @@ public final class Constants {
     public static final class Limelight {
         // ++ ====== actual limelight values ============
             /** angle of the limelight; degrees up from horizontal */
-        public static final double limelightAngleOffset = 25.0;
+        public static final double limelightAngleOffset = 34.0;
 
         // ++ ======= field/robot measurements ============ (all in feet)
 
         public static final double hubHeight = 8.6666666667; // ++ i put this as a decimal approx bc (104/12) was being weird
 
-            /** ++ this is the height of the shooter (where the ball leaves the robot) off the ground  (in feet)*/
-        public static final double shooterHeight = 2.0; 
+        /** ++ this should be the distance of the limelight above the ground */
+        public static final double shooterHeight = 1.333333; 
 
             /** this is the difference in height between the shooter and the hub, in feet */
         public static final double shooterToHubHeight = hubHeight - shooterHeight;

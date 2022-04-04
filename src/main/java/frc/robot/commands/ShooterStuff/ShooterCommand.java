@@ -6,6 +6,7 @@ package frc.robot.commands.ShooterStuff;
 
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShuffleboardSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -14,7 +15,6 @@ public class ShooterCommand extends CommandBase {
     private final ShooterSubsystem m_ShooterSubsystem;
     private final JoyUtil joystick;
 
-    double hoodAngle;
 
   public ShooterCommand(ShooterSubsystem subsystem, JoyUtil secondaryController) {
     m_ShooterSubsystem = subsystem;
@@ -27,7 +27,6 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void initialize() {
     m_ShooterSubsystem.setFlyhweelPIDValues();
-    hoodAngle = 1.0;
 
   }
 
@@ -36,28 +35,14 @@ public class ShooterCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (joystick.getStartButton()) {
-      hoodAngle += 0.001;
-    }
-    if (joystick.getBackButton()) {
-      hoodAngle -= 0.001;
-    }
-    if (hoodAngle > 1) {
-      hoodAngle = 1;
-    }
-    if (hoodAngle < 0.5) {
-      hoodAngle = 0.5;
-    }
-
-    
-    m_ShooterSubsystem.setHoodAngle(hoodAngle);
-
-
-
-    
-
+  
     // ++ this sets the speed of the flywheel
-    m_ShooterSubsystem.setFlywheelSpeed(joystick.getRightTriggerAxis() * 4000);
+    if (joystick.getRightTriggerAxis() * 3000 < 500){
+      m_ShooterSubsystem.stopFlywheel();
+    } else {
+      m_ShooterSubsystem.setFlywheelSpeed( joystick.getRightTriggerAxis() * 3000 );
+    }
+
     
     
   }

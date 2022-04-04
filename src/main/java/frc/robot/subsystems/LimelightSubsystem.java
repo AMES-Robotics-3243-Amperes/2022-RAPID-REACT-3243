@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public class LimelightSubsystem extends SubsystemBase {
   // ++ random class object to see if shuffleboard is updating properly
   Random Waffles = new Random(); 
 
-  public boolean continueShooterRoutine = false;
+  public static boolean continueShooterRoutine = false;
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem() {
@@ -46,27 +47,28 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /** ++ This method gets the X position of the target the Limelight sees. This is also the rotational error of the robot
    * @return the X position of the target (as an angle) */
-  public double getTargetX() {
+  public static double getTargetX() {
     return tx.getDouble(0.0);
   }
 
     /** ++ This method gets the Y position of the target the Limelight sees (including limelight angle offset) 
    * @return the Y position of the target (as an angle) */
   public static double getTargetY() {
-    return (ty.getDouble(-Constants.Limelight.limelightAngleOffset) + Constants.Limelight.limelightAngleOffset);
+    double angle = ((ty.getDouble( (-Constants.Limelight.limelightAngleOffset) )) + Constants.Limelight.limelightAngleOffset);
+    return angle;
     // ++ I did a weird default value to make the method return 0 if no value is found
   }
 
     /** ++ This method gets the area of the target the Limelight sees
    * @return the area position of the target (as a fraction of total camera area) */
-  public double getTargetArea() {
+  public static double getTargetArea() {
     return ta.getDouble(0.0);
   }
 
   /** ++ this method determines if the Limelight sees any valid targets
-   * @return true if it sees one or more validtargets, false otherwise
+   * @return true if it sees one or more valid targets, false otherwise
    */
-  public Boolean isTargetValid() {
+  public static Boolean isTargetValid() {
     // ++ NOTE: "ta" returns "1.0" if it sees ANY number of valid targets
       // ++ for example, it would still return "1.0" if it sees 3 valid targets
     double tvOutput = tv.getDouble(0.0);
@@ -88,7 +90,12 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /** this finds the distance from the hub based on limelight values (y angle offset) */
   private static double findDistanceFromHub() {
-    return (Constants.Limelight.shooterToHubHeight / Math.tan( getTargetY() ));
+    double distance = (Constants.Limelight.shooterToHubHeight / Math.tan( Math.toRadians(getTargetY() )));
+    // ShuffleboardSubsystem.displayCalcDistance( distance );
+    // SmartDashboard.putNumber("calcd distance", distance);
+    SmartDashboard.putNumber("CALCULATED DISTANCE: ", distance);
+    return distance;
+    // return getTargetY();
   }
 
   /** ++ this is the function that tells you the necessary flywheel velocity based on the distance. 
@@ -96,7 +103,7 @@ public class LimelightSubsystem extends SubsystemBase {
    */
   private static double flywheelVelocityFromDistance(double distance) {
     // ++ THIS IS JUST A PLACEHOLDER FOR NOW, WE'LL NEED TO FIND THE ACTUAL FUNCTION WHEN THE ROBOT WORKS
-    return distance;
+    return (distance) * 100;
   }
   // ++ --------------- end misc  ------------------------
 
@@ -120,7 +127,7 @@ public class LimelightSubsystem extends SubsystemBase {
    * @param distanceFromHub this the distance between the robot and the center of the hub
    * @return the B coefficient
    */
-  public double findBCoeff(double distanceFromHub) {
+  public static double findBCoeff(double distanceFromHub) {
     double hubHeight = Constants.Limelight.shooterToHubHeight;
     double arbPointX = distanceFromHub + Constants.Limelight.arbPointXOffset;
     double arbPointY = hubHeight + Constants.Limelight.arbPointYOffset;
@@ -133,8 +140,8 @@ public class LimelightSubsystem extends SubsystemBase {
   }
   
   /** ++ this method returns angle the hood should be to make the ball in the hub*/
-  public double findTargetHoodAngle() {
-    return Math.atan( findBCoeff( findDistanceFromHub() ) );
+  public static double findTargetHoodAngle() {
+    return 90 - Math.toDegrees( Math.atan( findBCoeff( findDistanceFromHub() ) ) );
   }
 
   /** ++ this method gives you the necessary velocity of the flywheel  */
@@ -149,6 +156,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putNumber("limelight angle: ", getTargetY());
+
     // This method will be called once per scheduler run
 
   }

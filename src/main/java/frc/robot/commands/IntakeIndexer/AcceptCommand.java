@@ -5,7 +5,6 @@
 package frc.robot.commands.IntakeIndexer;
 
 
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -15,19 +14,17 @@ import frc.robot.subsystems.LimelightSubsystem;
 public class AcceptCommand extends CommandBase {
 
   private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem;
-  private final LimelightSubsystem m_LimelightSubsystem;
   private Timer timer;
 
+  boolean doLimelight;
+
   /** Creates a new AcceptCommand. */
-  public AcceptCommand(IntakeIndexerSubsystem subsystem, LimelightSubsystem limelightSubsystem) {
+  public AcceptCommand(IntakeIndexerSubsystem subsystem, boolean useLimelight) {
     m_IntakeIndexerSubsystem = subsystem;
-    m_LimelightSubsystem = limelightSubsystem;
+    doLimelight = useLimelight;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_IntakeIndexerSubsystem);
     
-    if (m_LimelightSubsystem != null) {
-      addRequirements(m_LimelightSubsystem);
-    }
 
     timer = new Timer();
   }
@@ -37,10 +34,8 @@ public class AcceptCommand extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-    if ( m_LimelightSubsystem == null || m_LimelightSubsystem.continueShooterRoutine ) {
       m_IntakeIndexerSubsystem.setIntakeSpeed(Constants.IntakeIndexer.acceptSpeed);
       m_IntakeIndexerSubsystem.stepIndexer(Constants.IntakeIndexer.acceptRotations);
-    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -67,8 +62,7 @@ public class AcceptCommand extends CommandBase {
     * OR it ends when the indexer reaches its time duration
     */
     return (
-      (m_LimelightSubsystem != null 
-        && !m_LimelightSubsystem.continueShooterRoutine) 
+      (!doLimelight && !LimelightSubsystem.continueShooterRoutine ) 
       || timer.get() >= Constants.IntakeIndexer.acceptDuration
       );
   }

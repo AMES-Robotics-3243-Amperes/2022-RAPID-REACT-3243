@@ -19,7 +19,6 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
 
     public ShootRoutineCommandGroup(
         DriveSubsystem m_DriveSubsystem, 
-        LimelightSubsystem m_LimelightSubsystem,
         IntakeIndexerSubsystem m_IntakeIndexerSubsystem,
         ShooterSubsystem m_ShooterSubsystem
         ) {
@@ -27,12 +26,12 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
 
         addCommands(
             new ParallelCommandGroup(
-                new LimelightSpinFlywheelCommand(m_ShooterSubsystem),
-                new LimelightAlignDriveCommand(m_DriveSubsystem, m_LimelightSubsystem)
+                new LimelightAlignDriveCommand(m_DriveSubsystem),
+                new LimelightSpinFlywheelCommand(m_ShooterSubsystem)
             ),
-            new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
-            new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
-            new AcceptCommand(m_IntakeIndexerSubsystem, m_LimelightSubsystem),
+            new AcceptCommand(m_IntakeIndexerSubsystem, true),
+            new AcceptCommand(m_IntakeIndexerSubsystem, true),
+            new AcceptCommand(m_IntakeIndexerSubsystem, true),
             new StopFlywheelCommand(m_ShooterSubsystem)
         );
 
@@ -40,7 +39,6 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
 
     
 
-    // ++ instantiate the commands in the contructor, then extend the isFinished() method by reading from the commands
 
 
 }

@@ -7,6 +7,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // ++ project stuff
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +32,7 @@ import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
 import frc.robot.commands.ShooterStuff.ShooterCommand;
 import frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands.LimelightAlignDriveCommand;
 import frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands.ShootRoutineCommandGroup;
+import frc.robot.commands.ShooterStuff.DumpShooterCommands.DumpCommandGroup;
 // ++ auto
 import frc.robot.commands.AutonomousPIDTaxiCommand;
 
@@ -60,6 +62,7 @@ public class RobotContainer {
     public static JoystickButton secondaryXButton = new JoystickButton(secondaryController, Constants.Joysticks.X);
     public static JoystickButton primaryAButton = new JoystickButton(primaryController, Constants.Joysticks.A);
     public static JoystickButton autoShootRoutineButton = new JoystickButton(secondaryController, Constants.Joysticks.Y);
+    public static JoystickButton dumpButton = new JoystickButton(secondaryController, Constants.Joysticks.B);
 
 
 
@@ -78,22 +81,21 @@ public class RobotContainer {
     // ++ teleop commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
-  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, null);
+  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, false); // ++ not used in competition
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
 
-  private final ShootRoutineCommandGroup m_AutoShootCommand = new ShootRoutineCommandGroup(
+  private final ShootRoutineCommandGroup m_AutoShootRoutineCommand = new ShootRoutineCommandGroup(
     m_DriveSubsystem,
-    m_LimelightSubsystem,
     m_IntakeIndexerSubsystem,
     m_ShooterSubsystem
     );
 
+  private final DumpCommandGroup m_DumpCommand = new DumpCommandGroup(m_ShooterSubsystem, m_IntakeIndexerSubsystem);
+
     // ++ auto commands
   private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);
 
-    // ++ shooter routine commands
-  private final LimelightAlignDriveCommand m_LimeDriveCommand = new LimelightAlignDriveCommand(m_DriveSubsystem, m_LimelightSubsystem);
 
   // ++ END SUBSYSTEMS/COMMANDS ===============================================
 
@@ -119,8 +121,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     secondaryRightBumper.whenPressed(m_RebuffCommand);
     secondaryXButton.whenPressed(m_AcceptCommand);
-    primaryAButton.whenPressed(m_LimeDriveCommand);
-    autoShootRoutineButton.whenPressed(m_AutoShootCommand);
+    autoShootRoutineButton.whenPressed(m_AutoShootRoutineCommand);
+    dumpButton.whenPressed(m_DumpCommand);
 
 
   }

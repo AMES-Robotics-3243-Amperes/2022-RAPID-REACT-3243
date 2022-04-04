@@ -29,7 +29,17 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     // ~~ IMU Stuff
   static SimpleWidget yawShuffle, pitchShuffle, rollShuffle, xVelocityShuffle, yVelocityShuffle, zVelocityShuffle, xPositionShuffle, yPositionShuffle, zPositionShuffle;
     // ++ shooter stuff
-  static SimpleWidget flywheelSpeed, flywheelPGain, flywheelIGain, flywheelDGain, flywheelFFGain;
+  static SimpleWidget 
+      flywheelSpeed, 
+      
+      flywheelPGain, 
+      flywheelIGain, 
+      flywheelDGain, 
+      flywheelFFGain, 
+      servoTarget, 
+      servoLastSet,
+      routineConting, 
+      hubDistance;
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<ControlOption> m_JoyCurve;
@@ -93,6 +103,14 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     flywheelIGain = shooterTab.add("flywheel I gain", Constants.Shooter.flywheelIGain);
     flywheelDGain = shooterTab.add("flywheel D gain", Constants.Shooter.flywheelDGain);
     flywheelFFGain = shooterTab.add("flywheel FF gain", Constants.Shooter.flywheelFFGain);
+
+    servoTarget = shooterTab.add("servo target", 0.0);
+
+    servoLastSet = shooterTab.add("last servo set", 0.0);
+
+    // hubDistance = shooterTab.add("distance from hub", 999.0);
+
+    // routineConti
     // ++ ==================== END SHOOTER STUFF =========================================
 
   }
@@ -146,6 +164,32 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     return PIDFValues;
     
   }
+
+    // ++ --- display methods
+
+  // public static void displayFlywheelSpeed(double speed) {
+  //   flywheelSpeed.getEntry().setDouble( speed );
+  // }
+
+  public static void displayCalcDistance(double distance) {
+    hubDistance.getEntry().setDouble( distance );
+  }
+
+  public static void displayPrevServoSet(double lastSet) {
+    servoLastSet.getEntry().setDouble(lastSet);
+  }
+
+    // ++ --- read methods
+
+  public static double readTargetHoodAngle() {
+    return servoTarget.getEntry().getDouble(-1);
+  }
+
+  public static double readTargetFlywheelRPM(){
+    return flywheelSpeed.getEntry().getDouble(-1);
+  }
+
+
   // ++ ============================= END SHOOTER METHODS ===============================================
 
   // ++ ================= IMU stuff ===============================
@@ -187,5 +231,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     yPositionShuffle.getEntry().setDouble(IMUSubsystem.getYPosition());
     zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
+
   }
 }
