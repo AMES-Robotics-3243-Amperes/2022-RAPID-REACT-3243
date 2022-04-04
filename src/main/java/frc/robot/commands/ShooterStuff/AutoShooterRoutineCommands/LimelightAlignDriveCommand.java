@@ -93,7 +93,7 @@ public class LimelightAlignDriveCommand extends CommandBase {
   public void end(boolean interrupted) {
     m_DriveSubsystem.setReferencesFromWheelSpeeds(0.0, 0.0, 0.0);
     LimelightSubsystem.continueShooterRoutine = (isSuccessful && seesTargetAtInit);
-    SmartDashboard.putBoolean("cont shoot routine?", LimelightSubsystem.continueShooterRoutine);
+
   }
 
   // Returns true when the command should end.

@@ -35,8 +35,6 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem() {
-
-
     
   }
 
@@ -158,6 +156,7 @@ public class LimelightSubsystem extends SubsystemBase {
   public void periodic() {
 
     SmartDashboard.putNumber("limelight angle: ", getTargetY());
+    SmartDashboard.putBoolean("cont shoot routine?", continueShooterRoutine);
 
     // This method will be called once per scheduler run
 

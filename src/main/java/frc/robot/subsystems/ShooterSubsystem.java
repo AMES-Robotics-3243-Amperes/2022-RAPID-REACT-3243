@@ -38,11 +38,10 @@ public class ShooterSubsystem extends SubsystemBase {
   // ++ declare encoder objects
   public RelativeEncoder flywheelEncoder;
 
-  // ++ declare PID objects
+  // ++ declare PID objects 
   private SparkMaxPIDController flywheelPID;
 
   private double hoodAngleTarget;
-  private double servoPositionTarget;
 
 
   
@@ -61,7 +60,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // ++ ============== HOOD STUFF ===================================
 
-  public void setHoodAngle() {
+
+  /** ++ this sets the position of the hood. USE THIS METHOD instead of just setting it; it has some protections
+   * to help prevent the code from crashing.
+   */
+  public void setServoPositionFromHoodAngle(double hoodAngleTarget) {
+    double servoAngleTarget = servoAngleFromHoodAngle( hoodAngleTarget );
+    double servoPositionTarget = servoPositionFromServoAngle( servoAngleTarget );
+
 
     // ++ this if statement should be the last thing done before the .set() to help the code not crash
     if (servoPositionTarget > 1.0) {
@@ -73,52 +79,12 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodMotor.set( servoPositionTarget );
 
   }
-
-
-  /** ++ this gives the servo position based on the target hood angle
-   * @param hoodAngle target hood angle
-   */
-  public void convertHoodAngleToServoPosition(double hoodAngle) {
-    servoPositionTarget = servoAngleToServoPosition( hoodAngleToServoAngle(hoodAngle));
-  }
-
-  // /** gives the previous set hood angle
-  //  * @return previous set hood angle
-  //  */
-  // public double getPrevHoodAngle() {
-  //   return ();
-  // }
-
-  //** ++ this returns the last position the servo was told to set to */
-  public double getPrevServoPosition() {
-    return hoodMotor.get();
-  }
-  // ++ ---- calculation methods
-
-
   
-  // public double servoPositionToHoodAngle(double servoPosition) {
-  //   return ();
-  //   // ++ servo position -> servo angle -> hood angle
-  // }
-  // ++ ---
-
-  public double servoAngleToServoPosition(double angle) {
-    return (angle / Constants.Shooter.maxSpecHoodServoAngle);
-  }
-
-  public double servoPositionToServoAngle(double position) {
-    return (position * Constants.Shooter.maxSpecHoodServoAngle);
-  }
-
-
-  // /** ++ converts from the servo angle to the hood angle  */
-  // public double servoAngleToHoodAngle(double servoAngle) {
-  //   return ();
-  // }
-
-  /** ++ converts from the hood angle to the servo angle. This is the inverse of the previous method */
-  public double hoodAngleToServoAngle(double hoodAngle) {
+  /** ++ this gives you the necessary servo angle based on the desired angle of the hood
+   * @param hoodAngle this is the desired angle of the hood
+   * @return servoAngle this is the necessary angle of the servo to achieve that hood angle
+   */
+  public double servoAngleFromHoodAngle(double hoodAngle) {
     double servoAngle;
     /* ++ the values for this if statement are HARD-CODED because the code crashes if the equation below ONLY
     * works for angles ( 26 <= a <= 42 ), otherwise the code crashes! DONT CHANGE THEM! */
@@ -130,6 +96,27 @@ public class ShooterSubsystem extends SubsystemBase {
     servoAngle = Math.toDegrees( (Math.asin( (( Math.toRadians(hoodAngle) - 0.596)/0.154 )) + 1.683 ) / 1.105  ) + 1.0;
     return ( servoAngle );
   }
+
+  /** ++ converts from a servo angle (out of 180) to a position of the servo on [0, 1] */
+  public double servoPositionFromServoAngle(double servoAngle) {
+    return (servoAngle / Constants.Shooter.maxSpecHoodServoAngle);
+  }
+
+
+  /** ++ this returns the last position the servo was told to set to */
+  public double getPrevServoPosition() {
+    return hoodMotor.get();
+  }
+  // ++ ---- calculation methods
+
+
+
+  // /** ++ converts from a position of the servo on [0, 1] to a servo angle (out of 180) */
+  // public double servoPositionToServoAngle(double position) {
+  //   return (position * Constants.Shooter.maxSpecHoodServoAngle);
+  // }
+
+
 
 
 
@@ -169,21 +156,7 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     
-    if ( !LimelightSubsystem.isTargetValid() ){
-      hoodAngleTarget = Constants.Shooter.dumpHoodAngle;
-    } else if ( LimelightSubsystem.isTargetValid() ) {
-      hoodAngleTarget = LimelightSubsystem.findTargetHoodAngle();
-    }
-
-
-    // ++ this should update servoPositionTarget \/
-    convertHoodAngleToServoPosition( hoodAngleTarget );
-  
-    setHoodAngle();
-
-
     
-    SmartDashboard.putNumber("hood angle target", hoodAngleTarget);
     // ShuffleboardSubsystem.displayFlywheelSpeed( getCurrentFlywheelSpeed() );
     ShuffleboardSubsystem.displayPrevServoSet( getPrevServoPosition() );
     

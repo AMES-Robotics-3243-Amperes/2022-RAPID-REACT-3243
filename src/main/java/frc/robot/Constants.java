@@ -189,7 +189,7 @@ public final class Constants {
         // ++ end condition tolerances ----
             // ++ these are the tolerances that is the acceptable range to finish the shooter routine and fire the cargo
                 // ++ RIGHT NOW ALL OF THESE ARE VERY MUCH BALLPARKS. THIS IS JUST SO THEY HAVE A VALUE
-        public static final double rotationErrorTolerance = 5.0;
+        public static final double rotationErrorTolerance = 10.0;
         public static final double hoodErrorTolerance = 5.0;
         public static final double flywheelSpeedErrorTolerance = 50.0;
 

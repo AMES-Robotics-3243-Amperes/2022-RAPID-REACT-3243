@@ -11,6 +11,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.LimelightSubsystem;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class LimelightSpinFlywheelCommand extends CommandBase {
@@ -41,16 +42,17 @@ public class LimelightSpinFlywheelCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    flywheelTargetVelocity = LimelightSubsystem.giveTargetFlywheelVelocity();
-    velocityError = m_ShooterSubsystem.getCurrentFlywheelSpeed() - flywheelTargetVelocity;
-
     m_ShooterSubsystem.setFlyhweelPIDValues();
-    
+
+    // ++ THIS IS WHAT THIS SHOULD ACTUALY BE, THE OTHER CODE IS JUST A TEST \/
+    // flywheelTargetVelocity = LimelightSubsystem.giveTargetFlywheelVelocity();
+    flywheelTargetVelocity = ShuffleboardSubsystem.readTargetFlywheelRPM();
+
     clock.reset();
     clock.start();
 
     isSuccessful = false;
+    SmartDashboard.putBoolean("flywheel succeeded", isSuccessful);
 
   }
 
@@ -58,12 +60,12 @@ public class LimelightSpinFlywheelCommand extends CommandBase {
   @Override
   public void execute() {
 
+    velocityError = m_ShooterSubsystem.getCurrentFlywheelSpeed() - flywheelTargetVelocity;
 
-    // m_ShooterSubsystem.setFlywheelSpeed( flywheelTargetVelocity );
-    m_ShooterSubsystem.setFlywheelSpeed( ShuffleboardSubsystem.readTargetFlywheelRPM() );
+    m_ShooterSubsystem.setFlywheelSpeed( flywheelTargetVelocity );
 
-    isSuccessful = Math.abs(velocityError) < Constants.Shooter.flywheelSpeedErrorTolerance;
-
+    isSuccessful = Math.abs(velocityError) <= Constants.Shooter.flywheelSpeedErrorTolerance;
+    SmartDashboard.putBoolean("flywheel succeeded", isSuccessful);
 
   }
 

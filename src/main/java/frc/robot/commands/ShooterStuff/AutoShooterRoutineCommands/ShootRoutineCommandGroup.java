@@ -29,6 +29,7 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
                 new LimelightAlignDriveCommand(m_DriveSubsystem),
                 new LimelightSpinFlywheelCommand(m_ShooterSubsystem)
             ),
+            new LimelightMoveHoodCommand(m_ShooterSubsystem),
             new AcceptCommand(m_IntakeIndexerSubsystem, true),
             new AcceptCommand(m_IntakeIndexerSubsystem, true),
             new AcceptCommand(m_IntakeIndexerSubsystem, true),

@@ -55,9 +55,10 @@ public class LimelightMoveHoodCommand extends CommandBase {
   @Override
   public void execute() {
     // currentHoodAngle = m_ShooterSubsystem.getPrevHoodAngle();
-    targetHoodAngle = LimelightSubsystem.findTargetHoodAngle();
 
-    m_ShooterSubsystem.convertHoodAngleToServoPosition( targetHoodAngle );
+    if (LimelightSubsystem.continueShooterRoutine) {
+      m_ShooterSubsystem.setServoPositionFromHoodAngle( LimelightSubsystem.findTargetHoodAngle() );
+    }
 
   }
 
