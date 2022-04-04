@@ -2,7 +2,7 @@ package frc.robot;
 
 import frc.robot.subsystems.ShuffleboardSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController; 
 
 public final class JoyUtil extends XboxController {
@@ -44,8 +44,10 @@ public final class JoyUtil extends XboxController {
         double rawJoyPos = getLeftX() + (getDPadX()); 
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
-        double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength); 
-        SmartDashboard.putNumber("joyx adj out", adjustedPos);
+        double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength);
+        if (DriverStation.isTest()) {
+            SmartDashboard.putNumber("joyx adj out", adjustedPos);
+        }
         prevFilteredX = lowPassFilter(rawJoyPos, prevFilteredX, filterStrength);
         return adjustedPos;
     }
@@ -82,7 +84,6 @@ public final class JoyUtil extends XboxController {
         // returns joystick size if it's greater than the deadzone, 0 otherwise
 
         double deadZoneSize = SmartDashboard.getNumber("deadzone size", Constants.Joysticks.deadZoneSize);
-        SmartDashboard.putNumber("deadzone size", deadZoneSize);
 
         if (Math.abs(pos) >= deadZoneSize ) {
             return pos;
@@ -166,13 +167,14 @@ public final class JoyUtil extends XboxController {
         double withDamper = inMetersPerSec * ShuffleboardSubsystem.getDriveSpeedDamper();
 
         double adjustedJoyPos = withDamper;
-
-        SmartDashboard.putNumber("with dead", withDead);
-        SmartDashboard.putNumber("with filter",withFilter);
-        SmartDashboard.putNumber("with curve", withCurve);
-        SmartDashboard.putNumber("with speedmode", withSpeedMode);
-        SmartDashboard.putNumber("in m/s", inMetersPerSec);
-        SmartDashboard.putNumber("drive output", withDamper);
+        if (DriverStation.isTest()) {
+            SmartDashboard.putNumber("with dead", withDead);
+            SmartDashboard.putNumber("with filter",withFilter);
+            SmartDashboard.putNumber("with curve", withCurve);
+            SmartDashboard.putNumber("with speedmode", withSpeedMode);
+            SmartDashboard.putNumber("in m/s", inMetersPerSec);
+            SmartDashboard.putNumber("drive output", withDamper);
+        }
 
         // ++ I decided to make seperate variables for everything to make it a little more readable
 
