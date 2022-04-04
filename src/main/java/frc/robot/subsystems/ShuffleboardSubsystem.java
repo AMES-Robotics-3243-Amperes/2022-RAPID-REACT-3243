@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -37,16 +38,16 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   
   public ShuffleboardSubsystem() {
     // ++ define all the tabs
-    driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
-    movementTab = Shuffleboard.getTab("Drivetrain");
-    IMUTab = Shuffleboard.getTab("IMU");
-    shooterTab = Shuffleboard.getTab("Shooter");
+      driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
+      movementTab = Shuffleboard.getTab("Drivetrain");
+      IMUTab = Shuffleboard.getTab("IMU");
+      shooterTab = Shuffleboard.getTab("Shooter");
 
     
 
 
 
-  // // I'm gonna cry
+  // // I'm gonna cry\
   // ++ me too I'm freezing rn cottonwood's area is coldddddd
 
 
@@ -146,6 +147,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     // ~~ ==================== END JOYSTICK CURVE OUTPUTS ================================================
 
     // ~~ ==================== IMU OUTPUTS ===============================================================
+    if (DriverStation.isTest()) {
     yawShuffle.getEntry().setDouble(IMUSubsystem.getYaw());
     pitchShuffle.getEntry().setDouble(IMUSubsystem.getPitch());
     rollShuffle.getEntry().setDouble(IMUSubsystem.getRoll());
@@ -156,5 +158,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     yPositionShuffle.getEntry().setDouble(IMUSubsystem.getYPosition());
     zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
+    }
   }
 }
