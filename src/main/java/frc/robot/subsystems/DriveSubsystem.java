@@ -51,7 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMaxPIDController backRightPIDController;
 
   // ~~ Field Object for visulaization in shuffleboard or simulation
-  Field2d field = new Field2d();
+  static Field2d field = new Field2d();
   // // ++ IMU subsystem object
   // IMUSubsystem IMUSubsystem = new IMUSubsystem();
 
@@ -133,9 +133,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     // ~~ Positional Stuff ============================================================
-    IMUSubsystem.resetYaw();
 
-    resetPose();
+
+    resetPose(0.0, 0.0, 0.0);
 
     odometry = new MecanumDriveOdometry(kinematics, IMUSubsystem.getGyroRotation(), pose);
 
@@ -143,6 +143,7 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightTarget = 0.0;
     backLeftTarget = 0.0;
     backRightTarget = 0.0;
+
     // ~~ =============================================================================
 
   }
@@ -278,8 +279,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   // ~~ resets the Pose2d and encoder positions of all the motors
-  public void resetPose() {
-    pose = new Pose2d(6.0, 4.0, new Rotation2d());
+  public void resetPose(Pose2d newPose) {
+    IMUSubsystem.setYaw(newPose.getRotation().getDegrees());
+    pose = newPose;
     setPositionalReference(0.0, 0.0, 0.0, 0.0);
     frontLeftEncoder.setPosition(0.0);
     frontRightEncoder.setPosition(0.0);
@@ -294,6 +296,11 @@ public class DriveSubsystem extends SubsystemBase {
     // backRightPIDController.setReference(backRightEncoder.getPosition(), ControlType.kPosition);
 
   }
+
+  public void resetPose(double x, double y, double r) {
+    resetPose(new Pose2d(x, y, new Rotation2d()));
+  }
+
 
   // ~~ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {
@@ -358,15 +365,44 @@ public class DriveSubsystem extends SubsystemBase {
     double blError = Math.abs(backLeftTarget - backLeftEncoder.getPosition());
     double brError = Math.abs(backRightTarget - backRightEncoder.getPosition());
 
-    double tolerance = Constants.DriveTrain.angularErrorTolerance;
+    double tolerance = Constants.DriveTrain.errorTolerance;
     boolean atTargetPosition = ((flError <= tolerance) && (frError <= tolerance) && (blError <= tolerance) && (brError <= tolerance));
     return atTargetPosition;
+  }
+
+  public void toAutonomousMode() {
+    double angle;
+    if (IMUSubsystem.getYaw() >= 0) {
+      angle = IMUSubsystem.getGyroRotation().getRadians();
+    }else {
+      angle = (2 * Math.PI) + IMUSubsystem.getGyroRotation().getRadians();
+    }
+    double xDif = 0.6604 * Math.cos(angle);
+    double yDif = 0.6604 * Math.sin(angle);
+
+    resetPose(pose.getX() + xDif, pose.getY() + yDif, pose.getRotation().getRadians());
+  }
+
+  public void toTeleopMode() {
+    double angle;
+    if (IMUSubsystem.getYaw() >= 0) {
+      angle = IMUSubsystem.getGyroRotation().getRadians();
+    }else {
+      angle = (2 * Math.PI) + IMUSubsystem.getGyroRotation().getRadians();
+    }
+    double xDif = -0.6604 * Math.cos(angle);
+    double yDif = -0.6604 * Math.sin(angle);
+
+    resetPose(pose.getX() + xDif, pose.getY() + yDif, pose.getRotation().getRadians());
   }
 
   // public void driveCartesian (double X_speed, double Y_speed, double Z_rotation) {
   //   //++ I think this method is now redundant with PID stuff?
   //   speeds.driveCartesian(-Y_speed, X_speed, Z_rotation);
   // }
+  public static Field2d getField() {
+    return field;
+  }
 
 
 
@@ -424,6 +460,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FL Speed", frontLeftEncoder.getVelocity());
     SmartDashboard.putNumber("FL Position", frontLeftEncoder.getPosition());
     // ~~ Update field object for shuffleboard
+    
     field.setRobotPose(pose);
   }
 

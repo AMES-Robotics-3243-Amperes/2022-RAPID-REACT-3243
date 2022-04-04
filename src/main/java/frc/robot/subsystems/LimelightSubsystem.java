@@ -5,11 +5,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
+import java.lang.annotation.Target;
 import java.util.Random;
 
 
@@ -20,22 +21,22 @@ import java.util.Random;
 public class LimelightSubsystem extends SubsystemBase {
 
   // ++ table object
-  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  static NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   // ++ LimeLight values -- table entry objects
   NetworkTableEntry tx = limelightTable.getEntry("tx");   // ++ x offset 
   NetworkTableEntry ty = limelightTable.getEntry("ty");   // ++ y offset
   NetworkTableEntry ta = limelightTable.getEntry("ta");   // ++ area of target 
-  NetworkTableEntry tv = limelightTable.getEntry("tv");   // 1 if limelight sees a valid target, 0 otherwise
+  static NetworkTableEntry tv = limelightTable.getEntry("tv");   // 1 if limelight sees a valid target, 0 otherwise
+
 
   // ++ random class object to see if shuffleboard is updating properly
   Random Waffles = new Random(); 
-
-
   /** Creates a new LimelightSubsystem. */
+  static Pose2d target = new Pose2d();
+  public static Pose2d getTarget() {
+    return target;
+  }
   public LimelightSubsystem() {
-
-
-    
   }
 
 
@@ -70,7 +71,7 @@ public class LimelightSubsystem extends SubsystemBase {
   /** ++ this method determines if the Limelight sees any valid targets
    * @return true if it sees one or more validtargets, false otherwise
    */
-  public Boolean isTargetValid() {
+  public static Boolean isTargetValid() {
     // ++ NOTE: "ta" returns "1.0" if it sees ANY number of valid targets
       // ++ for example, it would still return "1.0" if it sees 3 valid targets
     double tvOutput = tv.getDouble(0.0);
@@ -82,7 +83,6 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   // ++ --------------------------------------------------------------------------------
-
 
 
 

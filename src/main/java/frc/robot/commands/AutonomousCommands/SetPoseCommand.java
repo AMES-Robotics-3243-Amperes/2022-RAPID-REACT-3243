@@ -1,32 +1,30 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-package frc.robot.commands;
+
+package frc.robot.commands.AutonomousCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IMUSubsystem;
-//Taxi means moving out of the tarmac with the autonomous PIDs. Thanks Gabe
-public class AutonomousPIDTaxiCommand extends CommandBase {
-  private DriveSubsystem m_subsystem;
-  /** Creates a new AutonomousPIDTaxi. */
-  public AutonomousPIDTaxiCommand(DriveSubsystem subsystem) {
+import frc.robot.subsystems.ShuffleboardSubsystem;
+
+public class SetPoseCommand extends CommandBase {
+  private final DriveSubsystem m_subsystem;
+  private Pose2d m_newPose;
+  /** Creates a new SetPoseCommand. */
+  public SetPoseCommand(DriveSubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
     m_subsystem = subsystem;
+    addRequirements(m_subsystem);
   }
+
   // Called when the command is initially scheduled.
-  
   @Override
   public void initialize() {
-    m_subsystem.getShuffleboardPID();
-    m_subsystem.setPIDValues(m_subsystem.pGain.getDouble(1.0),m_subsystem.iGain.getDouble(0.0),m_subsystem.dGain.getDouble(0.0));
-    m_subsystem.resetPose();
-    IMUSubsystem.resetYaw();
-    Pose2d transform = new Pose2d(0, -2.4, new Rotation2d());
-    m_subsystem.changeRobotPosition(transform);
+    m_newPose = ShuffleboardSubsystem.getStartingPose();
+    m_subsystem.resetPose(m_newPose);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,6 +38,6 @@ public class AutonomousPIDTaxiCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
