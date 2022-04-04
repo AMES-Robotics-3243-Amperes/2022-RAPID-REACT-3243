@@ -21,6 +21,9 @@ import frc.robot.Constants;
 import frc.robot.ControlOption;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import java.util.function.BooleanSupplier;
+
 
 public class ShuffleboardSubsystem extends SubsystemBase {
   /** Creates a new shuffleboard. */
@@ -59,7 +62,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   // // I'm gonna cry
   // ++ me too I'm freezing rn cottonwood's area is coldddddd
-
 
 
     // ++ ==================== DRIVETRAIN WIDGETS/STUFF ===============================================
@@ -105,9 +107,12 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     yPositionShuffle = IMUTab.add("Y Position", 0);
     zPositionShuffle = IMUTab.add("Z Position", 0);
     // ~~ ==================== END IMU WIDGETS/STUFF =====================================================
-      // ££
+    
+      // ££ ============================= DRIVER FEEDBACK ================================================
       field = driverFeedbackTab.add(DriveSubsystem.getField());
-    // ££ 
+      // ££ ==================== SHOOTER FEEDBACK ==========================================================
+      seesTarget = driverFeedbackTab.add("Sees Target is True", LimelightSubsystem.isTargetValid());
+      
   }
 
   // ++ =========================================== DRIVETRAIN METHODS ===================================
@@ -168,6 +173,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     ThisIsPascalCase
    this_is_python_case_whatever_it's_really_called
    thisiswhatjessedidwhenoriginallywritingthisclasscase
+   Camel Case is superior
   */
 
   @Override
