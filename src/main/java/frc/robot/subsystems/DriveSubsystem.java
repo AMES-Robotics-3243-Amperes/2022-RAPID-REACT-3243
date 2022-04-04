@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -163,16 +164,18 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftPIDController.setReference(blRef, ControlType.kVelocity);
     backRightPIDController.setReference(brRef, ControlType.kVelocity);
 
-    SmartDashboard.putNumber("FL target speed", flRef);
-    SmartDashboard.putNumber("FR target speed", frRef);
-    SmartDashboard.putNumber("BL target speed", blRef);
-    SmartDashboard.putNumber("BR target speed", brRef);
+    if (DriverStation.isTest()) {
+      SmartDashboard.putNumber("FL target speed", flRef);
+      SmartDashboard.putNumber("FR target speed", frRef);
+      SmartDashboard.putNumber("BL target speed", blRef);
+      SmartDashboard.putNumber("BR target speed", brRef);
 
-    //annette be cool
-    SmartDashboard.putNumber("FL ACTUAL speed", frontLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("FR ACTUAL speed", frontRightEncoder.getVelocity());
-    SmartDashboard.putNumber("BL ACTUAL speed", backLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("BR ACTUAL speed", backRightEncoder.getVelocity());
+      //annette be cool
+      SmartDashboard.putNumber("FL ACTUAL speed", frontLeftEncoder.getVelocity());
+      SmartDashboard.putNumber("FR ACTUAL speed", frontRightEncoder.getVelocity());
+      SmartDashboard.putNumber("BL ACTUAL speed", backLeftEncoder.getVelocity());
+      SmartDashboard.putNumber("BR ACTUAL speed", backRightEncoder.getVelocity());
+    }
   
     // speeds.feed();
   }
@@ -428,14 +431,18 @@ public class DriveSubsystem extends SubsystemBase {
     
     Double speedError = Math.sqrt(Math.pow(xError, 2) + Math.pow(yError, 2));
 
-    SmartDashboard.putNumber("Speed Error", speedError);
+    if (DriverStation.isTest()) {
+      SmartDashboard.putNumber("Speed Error", speedError);
+    }
 
     // ~~ Checks if the robot's wheels are slipping to determine if odometry or the imu would be more accurate
     if (speedError < speedErrorThreshold.getDouble(0.1)) {
       // ~~ Calculates position based on odometry
       pose = odometry.update(IMUSubsystem.getGyroRotation(), wheelspeeds);
 
-      SmartDashboard.putBoolean("Slipping?", false);
+      if (DriverStation.isTest()) {
+        SmartDashboard.putBoolean("Slipping?", false);
+      }
     } 
     else {
       // ~~ Calculates position based on imu
