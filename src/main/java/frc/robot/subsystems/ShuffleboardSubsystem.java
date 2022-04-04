@@ -201,11 +201,9 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     yPositionShuffle.getEntry().setDouble(IMUSubsystem.getYPosition());
     zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
-<<<<<<< HEAD
-    }
-=======
+
 
     // ££ ==================== DRIVER STATION ============================================================
->>>>>>> 030361b5775e60858d0a48cf5b21a7e7de12a125
   }
+}
 }
