@@ -57,6 +57,23 @@ public final class Constants {
         /** error tolerance for wheel encoders during autnomous */
         public static final double errorTolerance = 0.1;
     }
+    
+    public static final class Climber {
+        public static final int climberMotorR = 11;
+        public static final int climberMotorL = 10;
+        public static final int grabberR0 = 12;
+        public static final int grabberR1 = 14;
+        public static final int grabberL0 = 13;
+        public static final int grabberL1 = 15;
+        public static final int grabberSide0 = 0;
+        public static final int grabberSide1 = 1;
+        public static final int pawlR1 = 4;//UNKOWN! CHANGE!
+        public static final int pawlL0 = 2;//UNKOWN! CHANGE!
+        public static final int pawlR0 = 1;//UNKOWN! CHANGE!
+        public static final int pawlL1 = 3;//UNKOWN! CHANGE!
+        public static final double pawlOpen = 90;
+        public static final double pawlClosed = 180;
+    }
 
     public static final class IntakeIndexer {
         // ~~ these are the values for the intake/indexer motors
@@ -86,7 +103,6 @@ public final class Constants {
         // ~~ Duration for intake command during autonomous
         public static final double autonomousIntakeDuration = 0.1;
     }
-
 
     public static final class Joysticks {
         // ++ CONTROLLER IDS --------------------------------------------------------------------

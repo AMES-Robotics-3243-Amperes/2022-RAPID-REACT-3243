@@ -43,6 +43,22 @@ import frc.robot.commands.AutonomousCommands.LookAtCommand;
 *}
 */
 
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.commands.climber_commands.ClimbManagerCommand;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+// ++ comment so I can rebase
+
+// ++ = max
+// :) = mason
+
+//make the climb able to go back if it gets stuck
+// also make sure user can't open gripper when lock engaged
+//grabber locking: 180 degrees is locking, 150 is unlocked or not I guess zain got that wrong
+//todo for grabber lock: in the case of an emergency and as a failsafe, if the robot detects something go wrong (motor controller disconnected, motor encoder reading dangerous values, etc) lock engages automatically and climber ability disables
+//ok actually sounds like it's gonna be better if we readjust the COM before/during letting go of the last bar
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,6 +68,10 @@ import frc.robot.commands.AutonomousCommands.LookAtCommand;
  */
 
 public class RobotContainer {
+
+  // :) this is a timer object, using in climber
+  public static DriverStation m_driverStation;
+
   // ++ JOYSTICK STUFF ========================================
   // ++ we make a JoyUtil object instead of an XboxController object; JoyUtil inherits XboxController
   public static JoyUtil primaryController = new JoyUtil( Constants.Joysticks.primaryControllerID );
@@ -65,6 +85,10 @@ public class RobotContainer {
   // SUBSYSTEMS -------------------
     // ++ robot subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
+  private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
+  // commands
+  private final ClimbManagerCommand m_ClimbCommand = new ClimbManagerCommand(m_ClimberSubsystem, secondaryController);
+  // ++ =================================================
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem = new IntakeIndexerSubsystem();
@@ -90,12 +114,18 @@ public class RobotContainer {
   public RobotContainer() {
 
     // ++ command stuff
-    // m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
+    // m_DriveSubsystem.setDefaultCommand(m_DriveCommand);
+    m_ClimberSubsystem.setDefaultCommand(m_ClimbCommand);
+    m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
     m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
     m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
 
     configureButtonBindings();
 
+    SmartDashboard.putNumber("spin P", 0);
+    SmartDashboard.putNumber("spin I", 0);
+    SmartDashboard.putNumber("spin FF", 0);
+    SmartDashboard.putNumber("spin D", 0);
   }
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -120,5 +150,8 @@ public class RobotContainer {
     return m_lookAtCommand;
   }
 
+  public ClimberSubsystem getClimberSubsystem(){
+    return m_ClimberSubsystem;
+  }
 
 }
