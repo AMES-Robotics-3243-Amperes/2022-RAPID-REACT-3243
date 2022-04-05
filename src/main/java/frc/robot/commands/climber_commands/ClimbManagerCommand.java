@@ -45,7 +45,7 @@ public class ClimbManagerCommand extends CommandBase {
     
     // :) increment the climber steps when the b button is pressed
     if (joystick.getBButton() && !joystick.getXButton() && !m_ClimberSubsystem.isRunningClimbCommand && m_ClimberSubsystem.isCalibrated) { // :) only if the claws are calibrated, there is not command running and only the intended button is pressed
-      if (m_ClimberSubsystem.currentClimberStep >= 0 && m_ClimberSubsystem.currentClimberStep < 9 && !m_ClimberSubsystem.isClimberStepStopped) { // :) only goes forward up to step 9, and as long as the current command step wasn't interrupted
+      if (m_ClimberSubsystem.currentClimberStep >= 0 && m_ClimberSubsystem.currentClimberStep < 10 && !m_ClimberSubsystem.isClimberStepStopped) { // :) only goes forward up to step 9, and as long as the current command step wasn't interrupted
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep < 0) { // :) in case it wasn't already going forward, redo the undid step
         m_ClimberSubsystem.currentClimberStep *= -1;
@@ -57,7 +57,7 @@ public class ClimbManagerCommand extends CommandBase {
 
     // :) increment the climber reverse steps when the x button is pressed
     if (joystick.getXButton() && !joystick.getBButton() && !m_ClimberSubsystem.isRunningClimbCommand && m_ClimberSubsystem.isCalibrated   // :) only if the claws are calibrated, there is not command running and only the intended button is pressed
-        && ( (m_ClimberSubsystem.currentClimberStep!=3 && m_ClimberSubsystem.currentClimberStep!=-4 && m_ClimberSubsystem.currentClimberStep!=9))) { // :) and the climber is not on the step where it lifted itself up for the first time (as long as it succeeds)
+        && ( (m_ClimberSubsystem.currentClimberStep!=3 && m_ClimberSubsystem.currentClimberStep!=-4 && m_ClimberSubsystem.currentClimberStep<9))) { // :) and the climber is not on the step where it lifted itself up for the first time (as long as it succeeds)
       if (m_ClimberSubsystem.currentClimberStep < 0 && !m_ClimberSubsystem.isClimberStepStopped) { // :) only go reverse until it reaches 0 or it'll start doing positive stuff
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep > 0) { // :) if it wasn't already going in reverse, then first undo the current step
@@ -133,7 +133,7 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 7:
           // :) seventh step: rotate the bar down and around so that the side 0 grippers now line up with the final bar
-          new SpinClimberCommand(joystick, m_ClimberSubsystem, -145.7).schedule(); // subtracts by 137.01
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, -146.7).schedule(); // subtracts by 137.01
           break;
         case -7:
           // :) reverse seventh step
@@ -153,6 +153,14 @@ public class ClimbManagerCommand extends CommandBase {
           new OpenGripperCommand(joystick, m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
         case -9:
+          // :) DO NOTHING!!! don't reverse this step and also don't allow the robot to reverse after it reaches step 9
+          //new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
+          break;
+        case 10:
+          // :) ninth step: release the side 1 grabbers, completing the climb. this will cause the robot to swing since it doesn't readjust its center of mass, but it's fine
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, -170).schedule();
+          break;
+        case -10:
           // :) DO NOTHING!!! don't reverse this step and also don't allow the robot to reverse after it reaches step 9
           //new CloseGripperCommand(m_ClimberSubsystem, Constants.Climber.grabberSide1).schedule();
           break;
