@@ -12,29 +12,23 @@ import frc.robot.subsystems.ShuffleboardSubsystem;
 public class LookAtCommand extends CommandBase {
   private final DriveSubsystem m_subsystem;
   private Pose2d m_target;
-  private boolean shuffleboard;
+  private final boolean m_toBall;
   /** Creates a new LookAtCommand using the target position from shuffleboard. */
-  public LookAtCommand(DriveSubsystem subsystem) {
+  public LookAtCommand(DriveSubsystem subsystem, boolean toBall) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_subsystem = subsystem;
     addRequirements(m_subsystem);
-    shuffleboard = true;
-  }
-
-  /** Creates a new LookAtCommand using the supplied target position */
-  public LookAtCommand(DriveSubsystem subsystem, Pose2d target) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_subsystem = subsystem;
-    addRequirements(m_subsystem);
-    m_target = target;
-    shuffleboard = false;
+    m_toBall = toBall;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (shuffleboard) {
+    // If m_toBall is true, the robot will point towards the target ball. If not, it will point to it's original starting position
+    if (m_toBall) {
       m_target = ShuffleboardSubsystem.getTargetPose();
+    }else {
+      m_target = ShuffleboardSubsystem.getStartingPose();
     }
     m_subsystem.lookAt(m_target);
   }

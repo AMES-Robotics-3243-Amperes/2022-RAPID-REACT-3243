@@ -13,17 +13,23 @@ public class GoToCommand extends CommandBase {
 
   private final DriveSubsystem m_subsystem;
   private Pose2d m_target;
+  private final boolean m_toBall;
   /** Creates a new GoToCommand. */
-  public GoToCommand(DriveSubsystem subsystem) {
+  public GoToCommand(DriveSubsystem subsystem, boolean toBall) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_subsystem = subsystem;
+    m_toBall = toBall;
     addRequirements(m_subsystem);
   }
   // Called when the command is initially scheduled.
   
   @Override
   public void initialize() {
-    m_target = ShuffleboardSubsystem.getTargetPose();
+    if (m_toBall) {
+      m_target = ShuffleboardSubsystem.getTargetPose();
+    }else {
+      m_target = ShuffleboardSubsystem.getStartingPose();
+    }
     m_subsystem.setRobotPosition(m_target);
   }
 
