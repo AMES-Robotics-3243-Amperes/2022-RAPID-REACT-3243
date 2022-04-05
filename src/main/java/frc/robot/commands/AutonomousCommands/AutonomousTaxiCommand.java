@@ -14,10 +14,14 @@ import frc.robot.subsystems.ShuffleboardSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonomousTaxiCommand extends SequentialCommandGroup {
   /** Creates a new AutonomousTaxiCommand. */
-  public AutonomousTaxiCommand(DriveSubsystem subsystem) {
+  public AutonomousTaxiCommand(DriveSubsystem subsystem, boolean to_ball) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SetPoseCommand(subsystem), new LookAtCommand(subsystem), new GoToCommand(subsystem));
+    if (to_ball) {
+      addCommands(new SetPoseCommand(subsystem), new LookAtCommand(subsystem, true), new GoToCommand(subsystem, true));
+    }else {
+      addCommands(new LookAtCommand(subsystem, false), new LookAtCommand(subsystem, false));
+    }
   }
 
 }

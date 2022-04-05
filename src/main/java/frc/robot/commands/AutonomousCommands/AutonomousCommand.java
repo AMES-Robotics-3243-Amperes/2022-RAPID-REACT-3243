@@ -23,9 +23,9 @@ public class AutonomousCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     InstantCommand initializeAutonomous = new InstantCommand(drive::toAutonomousMode, drive);
-    AutonomousTaxiCommand moveToBall = new AutonomousTaxiCommand(drive);
+    AutonomousTaxiCommand moveToBall = new AutonomousTaxiCommand(drive, true);
     AutonomousSpintakeCommand intakeBall = new AutonomousSpintakeCommand(intake, drive);
-    LookAtCommand turnToHub = new LookAtCommand(drive, new Pose2d(0, 0, new Rotation2d()));
+    LookAtCommand turnToHub = new LookAtCommand(drive, false);
     InstantCommand initializeTeleop = new InstantCommand(drive::toTeleopMode, drive);
     addCommands(initializeAutonomous, moveToBall, intakeBall, turnToHub, initializeTeleop);
   }
