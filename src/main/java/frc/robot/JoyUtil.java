@@ -45,9 +45,7 @@ public final class JoyUtil extends XboxController {
         double filterStrength = Constants.Joysticks.driveLowPassFilterStrength;
         double damperStrength = Constants.Joysticks.driveSpeedDamper;
         double adjustedPos = composeDriveJoyFunctions(rawJoyPos, prevFilteredX, filterStrength, damperStrength);
-        if (DriverStation.isTest()) {
-            SmartDashboard.putNumber("joyx adj out", adjustedPos);
-        }
+
         prevFilteredX = lowPassFilter(rawJoyPos, prevFilteredX, filterStrength);
         return adjustedPos;
     }
@@ -167,14 +165,7 @@ public final class JoyUtil extends XboxController {
         double withDamper = inMetersPerSec * ShuffleboardSubsystem.getDriveSpeedDamper();
 
         double adjustedJoyPos = withDamper;
-        if (DriverStation.isTest()) {
-            SmartDashboard.putNumber("with dead", withDead);
-            SmartDashboard.putNumber("with filter",withFilter);
-            SmartDashboard.putNumber("with curve", withCurve);
-            SmartDashboard.putNumber("with speedmode", withSpeedMode);
-            SmartDashboard.putNumber("in m/s", inMetersPerSec);
-            SmartDashboard.putNumber("drive output", withDamper);
-        }
+
 
         // ++ I decided to make seperate variables for everything to make it a little more readable
 
@@ -190,7 +181,7 @@ public final class JoyUtil extends XboxController {
     */
     public double getDPadX(){
         if( getPOV() != -1 ) {
-            return (Math.cos( Math.toRadians(getPOV() + 450.0) ) * Constants.Joysticks.dPadDamper);
+            return Math.cos( Math.toRadians(getPOV() - 90.0) ) * Constants.Joysticks.dPadDamper;
         } else {
             return 0.0;
         }
@@ -201,7 +192,7 @@ public final class JoyUtil extends XboxController {
     */
     public double getDPadY() {
         if (getPOV() != -1) {
-            return (Math.sin( Math.toRadians(getPOV() + 450.0)  * Constants.Joysticks.dPadDamper));
+            return Math.sin( Math.toRadians(getPOV() -90.0)) * Constants.Joysticks.dPadDamper;
         } else {
             return 0.0;
         }
