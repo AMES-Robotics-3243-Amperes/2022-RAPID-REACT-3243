@@ -48,8 +48,10 @@ public class ManualClimbCommand extends CommandBase {
     // :) they cancel each other out as well
 
     if (m_ClimberSubsystem.isRunningClimbCommand == false) {
-      if (Math.abs(joystick.getRawAxis(0))>0.2) {
-        spinSpeed = joystick.getRawAxis(0);
+      if (Math.abs(joystick.getLeftY())>0.1) {
+        spinSpeed = joystick.getLeftY()/4;
+      } else {
+        spinSpeed = 0;
       }
       m_ClimberSubsystem.spinClimber(spinSpeed);
       m_ClimberSubsystem.climberOffsetAngle += spinSpeed;

@@ -32,10 +32,10 @@ public final class Constants {
         public static final int grabberL1 = 15;
         public static final int grabberSide0 = 0;
         public static final int grabberSide1 = 1;
-        public static final int pawlR1 = 1;//UNKOWN! CHANGE!
+        public static final int pawlR1 = 4;//UNKOWN! CHANGE!
         public static final int pawlL0 = 2;//UNKOWN! CHANGE!
-        public static final int pawlR0 = 3;//UNKOWN! CHANGE!
-        public static final int pawlL1 = 4;//UNKOWN! CHANGE!
+        public static final int pawlR0 = 1;//UNKOWN! CHANGE!
+        public static final int pawlL1 = 3;//UNKOWN! CHANGE!
         public static final double pawlOpen = 90;
         public static final double pawlClosed = 180;
     }

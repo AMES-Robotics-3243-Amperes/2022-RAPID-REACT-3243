@@ -92,8 +92,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final int grabberSoftCurrentLimit = 15;
   public final int grabberHardCurrentLimit = 20;
 
-  private final int climberSoftCurrentLimit = 25;
-  public final int climberHardCurrentLimit = 30;
+  private final int climberSoftCurrentLimit = 50;
+  public final int climberHardCurrentLimit = 55;
 
   private final double maxTemp = 40;
   public boolean isTooHot = false;
@@ -272,13 +272,13 @@ public class ClimberSubsystem extends SubsystemBase {
     // :') spoiler alert: it didn't work
 
 
-    // :) update and spin the motors to their angles
-    if (DriverStation.getMatchTime()<1.5 && DriverStation.isTeleop()){
-      // :) engage pawls when match is nearly over
-      pawlServoAngles[0] = Constants.Climber.pawlClosed;
-      pawlServoAngles[1] = Constants.Climber.pawlClosed;
-    }
-    if (currentClimberStep == 7 && grabberAngles[0]<40){
+    // :) update and spin the motors to their angles UNCOMMENT TO TEST PAWLS
+    // if (DriverStation.getMatchTime()<1.5 && DriverStation.isTeleop()){
+    //   // :) engage pawls when match is nearly over
+    //   pawlServoAngles[0] = Constants.Climber.pawlClosed;
+    //   pawlServoAngles[1] = Constants.Climber.pawlClosed;
+    // }
+    if (currentClimberStep == 7){
       pawlServoAngles[0] = Constants.Climber.pawlClosed;
     }
 

@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // also make sure user can't open gripper when lock engaged
 //grabber locking: 180 degrees is locking, 150 is unlocked or not I guess zain got that wrong
 //todo for grabber lock: in the case of an emergency and as a failsafe, if the robot detects something go wrong (motor controller disconnected, motor encoder reading dangerous values, etc) lock engages automatically and climber ability disables
+//ok actually sounds like it's gonna be better if we readjust the COM before/during letting go of the last bar
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

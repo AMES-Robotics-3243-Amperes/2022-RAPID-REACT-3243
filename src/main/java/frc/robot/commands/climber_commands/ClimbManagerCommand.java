@@ -74,8 +74,8 @@ public class ClimbManagerCommand extends CommandBase {
     // :') I forgot what this comment means^ so ignore it I guess
 
     if (!m_ClimberSubsystem.isRunningClimbCommand && // :) won't start if a command is already running
-        (m_ClimberSubsystem.currentClimberStep!=m_ClimberSubsystem.previousClimberStep) && !m_ClimberSubsystem.isClimberStepStopped && // :) won't start a new climb command if you canceled the last one, until it is told which direction to go next
-        (DriverStation.isTeleop() && DriverStation.getMatchTime()>1.5)) { // :) won't start a new climb command if match is almost over
+        (m_ClimberSubsystem.currentClimberStep!=m_ClimberSubsystem.previousClimberStep) && !m_ClimberSubsystem.isClimberStepStopped// && // :) won't start a new climb command if you canceled the last one, until it is told which direction to go next
+        ){//(DriverStation.isTeleop() && DriverStation.getMatchTime()>1.5)) { // :) won't start a new climb command if match is almost over UNCOMMENT TO TEST PAWLS
       
       // :) this switch statement is basically the climb sequence. They count up from 1 to 9 step by step and the negative versions undo the positive versions (so you can go backwards)
 
