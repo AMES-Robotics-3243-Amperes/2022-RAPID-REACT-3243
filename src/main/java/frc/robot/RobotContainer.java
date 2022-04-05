@@ -28,6 +28,7 @@ import frc.robot.commands.IntakeIndexer.AcceptCommand;
 import frc.robot.commands.IntakeIndexer.RebuffCommand;
 import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.TestPid;
 // ++ auto
 
 
@@ -84,7 +85,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     // ++ command stuff
-    m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
+    // m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
     m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
     m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
 
@@ -109,6 +110,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    //return null;
+    return new TestPid(m_DriveSubsystem);
   }
+
+
 }
