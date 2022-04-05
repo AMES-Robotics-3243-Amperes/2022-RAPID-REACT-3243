@@ -17,11 +17,11 @@ public class AutonomousTaxiCommand extends SequentialCommandGroup {
   public AutonomousTaxiCommand(DriveSubsystem subsystem, boolean to_ball) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    if (to_ball) {
+    // if (to_ball) {
       addCommands(new SetPoseCommand(subsystem), new LookAtCommand(subsystem, true), new GoToCommand(subsystem, true));
-    }else {
-      addCommands(new LookAtCommand(subsystem, false), new LookAtCommand(subsystem, false));
-    }
+    // }else {
+    //   addCommands(new LookAtCommand(subsystem, false), new LookAtCommand(subsystem, false));
+    // }
   }
 
 }

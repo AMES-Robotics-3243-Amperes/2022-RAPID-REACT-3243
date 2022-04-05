@@ -31,6 +31,7 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TestPid;
 import frc.robot.commands.AutonomousCommands.AutonomousCommand;
 // ++ auto
+import frc.robot.commands.AutonomousCommands.LookAtCommand;
 
 
 
@@ -78,6 +79,7 @@ public class RobotContainer {
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
   private final AutonomousCommand m_AutonomousCommand = new AutonomousCommand(m_DriveSubsystem, m_ShooterSubsystem, m_IntakeIndexerSubsystem);
+  private final LookAtCommand m_lookAtCommand = new LookAtCommand(m_DriveSubsystem, true);
 
     // ++ auto commands
   // ++ END SUBSYSTEMS/COMMANDS ===============================================
@@ -114,7 +116,7 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     //return null;
     // return new TestPid(m_DriveSubsystem);
-    return m_AutonomousCommand;
+    return m_lookAtCommand;
   }
 
 

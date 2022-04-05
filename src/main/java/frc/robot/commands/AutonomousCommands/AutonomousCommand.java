@@ -18,22 +18,24 @@ import frc.robot.subsystems.ShooterSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonomousCommand extends SequentialCommandGroup {
-  DriveSubsystem m_drive;
-  ShooterSubsystem m_shooter;
-  IntakeIndexerSubsystem m_intake;
+  // DriveSubsystem drive;
+  // ShooterSubsystem m_shooter;
+  // IntakeIndexerSubsystem m_intake;
   /** Creates a new AutonomousCommand. */
   public AutonomousCommand(DriveSubsystem drive, ShooterSubsystem shooter, IntakeIndexerSubsystem intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    m_drive = drive;
-    m_shooter = shooter;
-    m_intake = intake;
-    addRequirements(m_drive, m_shooter, m_intake);
-    InstantCommand initializeAutonomous = new InstantCommand(m_drive::toAutonomousMode, m_drive);
-    AutonomousTaxiCommand moveToBall = new AutonomousTaxiCommand(m_drive, true);
-    AutonomousSpintakeCommand intakeBall = new AutonomousSpintakeCommand(m_intake, m_drive);
-    LookAtCommand turnToHub = new LookAtCommand(m_drive, false);
-    InstantCommand initializeTeleop = new InstantCommand(m_drive::toTeleopMode, m_drive);
-    addCommands(initializeAutonomous, moveToBall, intakeBall, turnToHub, initializeTeleop);
+    // drive = drive;
+    // m_shooter = shooter;
+    // m_intake = intake;
+    // addRequirements(m_drive, m_shooter, m_intake);
+    // InstantCommand initializeAutonomous = new InstantCommand(drive::toAutonomousMode, drive);
+    // AutonomousTaxiCommand moveToBall = new AutonomousTaxiCommand(drive, true);
+    // AutonomousSpintakeCommand intakeBall = new AutonomousSpintakeCommand(intake, drive);
+    // LookAtCommand turnToHub = new LookAtCommand(drive, false);
+    // InstantCommand initializeTeleop = new InstantCommand(drive::toTeleopMode, drive);
+    addCommands(new AutonomousTaxiCommand(drive, true),
+                new AutonomousSpintakeCommand(intake, drive),
+                new LookAtCommand(drive, false));
   }
 }
