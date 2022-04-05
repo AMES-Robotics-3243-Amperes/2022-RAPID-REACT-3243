@@ -3,8 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 
-// ++ comment so I can merge into main
-
 //  ++ FRC stuff
 package frc.robot;
 
