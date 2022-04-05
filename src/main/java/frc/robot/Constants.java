@@ -142,7 +142,7 @@ public final class Constants {
 
         // ss This is the multiplier for Fast Mode
         // explained in JoyUtil.java
-        public static final double fastModeMaxMultiplier = 0.3;
+        public static final double fastModeMaxMultiplier = 0.5;
 
         /** ++ the damper for the D-Pad inputs */
         public static final double dPadDamper = 0.7;
