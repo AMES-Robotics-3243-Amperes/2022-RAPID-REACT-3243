@@ -18,10 +18,13 @@ public class AcceptCommand extends CommandBase {
 
   boolean doLimelightCheck;
 
+  double duration;
+
   /** Creates a new AcceptCommand. */
-  public AcceptCommand(IntakeIndexerSubsystem subsystem, boolean useLimelightCheck) {
+  public AcceptCommand(IntakeIndexerSubsystem subsystem, boolean useLimelightCheck, double commandDuration) {
     m_IntakeIndexerSubsystem = subsystem;
     doLimelightCheck = useLimelightCheck;
+    duration = commandDuration;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_IntakeIndexerSubsystem);
     
@@ -73,10 +76,12 @@ public class AcceptCommand extends CommandBase {
     * that ignores the limelight if the subsystem doesn't exist
     *
     * OR it ends when the indexer reaches its time duration
+    *
+    * 
     */
     return (
       ( doLimelightCheck && !LimelightSubsystem.continueShooterRoutine ) 
-      || timer.get() >= Constants.IntakeIndexer.acceptDuration
+      || timer.get() >= duration
       );
   }
 }

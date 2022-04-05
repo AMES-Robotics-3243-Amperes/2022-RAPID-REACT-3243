@@ -17,6 +17,7 @@ import frc.robot.subsystems.IMUSubsystem;
 
 // ++ SUBSYSTEMS
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.ShuffleboardSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -77,21 +78,24 @@ public class RobotContainer {
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem = new IntakeIndexerSubsystem();
+  private final HoodSubsystem m_HoodSubsystem = new HoodSubsystem();
   // COMMANDS--------------------
     // ++ teleop commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
-  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, false); // ++ not used in competition
+  // ++ m_AcceptCommand probably shouldn't be used in competition, but idk
+  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, false, Constants.IntakeIndexer.acceptDuration);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
 
   private final ShootRoutineCommandGroup m_AutoShootRoutineCommand = new ShootRoutineCommandGroup(
     m_DriveSubsystem,
     m_IntakeIndexerSubsystem,
-    m_ShooterSubsystem
+    m_ShooterSubsystem,
+    m_HoodSubsystem
     );
 
-  private final DumpCommandGroup m_DumpCommand = new DumpCommandGroup(m_ShooterSubsystem, m_IntakeIndexerSubsystem);
+  private final DumpCommandGroup m_DumpCommand = new DumpCommandGroup(m_ShooterSubsystem, m_IntakeIndexerSubsystem, m_HoodSubsystem);
 
     // ++ auto commands
   private final AutonomousPIDTaxiCommand m_AutonomousPIDTaxiCommand = new AutonomousPIDTaxiCommand(m_DriveSubsystem);

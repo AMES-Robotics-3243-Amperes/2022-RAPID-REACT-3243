@@ -5,7 +5,7 @@
 package frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.LimelightSubsystem;
 
@@ -19,7 +19,7 @@ public class LimelightMoveHoodCommand extends CommandBase {
 
 
   /**++ this is the subsystem this command controls */
-  private final ShooterSubsystem m_ShooterSubsystem;
+  private final HoodSubsystem m_HoodSubsystem;
   /** ++ the LimelightSubsystem isn't actually the subsystem for this command,
   * it's just here so we can read the limelight values from it
   */
@@ -33,10 +33,10 @@ public class LimelightMoveHoodCommand extends CommandBase {
 
 
   /** Creates a new MoveHoodCommand. */
-  public LimelightMoveHoodCommand(ShooterSubsystem subsystem) {
-    m_ShooterSubsystem = subsystem;
+  public LimelightMoveHoodCommand(HoodSubsystem subsystem) {
+    m_HoodSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_ShooterSubsystem);
+    addRequirements(m_HoodSubsystem);
     clock = new Timer();
 
   }
@@ -54,10 +54,10 @@ public class LimelightMoveHoodCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // currentHoodAngle = m_ShooterSubsystem.getPrevHoodAngle();
+    // currentHoodAngle = m_HoodSubsystem.getPrevHoodAngle();
 
     if (LimelightSubsystem.continueShooterRoutine) {
-      m_ShooterSubsystem.setServoPositionFromHoodAngle( LimelightSubsystem.findTargetHoodAngle() );
+      m_HoodSubsystem.setServoPositionFromHoodAngle( LimelightSubsystem.findTargetHoodAngle() );
     }
 
   }

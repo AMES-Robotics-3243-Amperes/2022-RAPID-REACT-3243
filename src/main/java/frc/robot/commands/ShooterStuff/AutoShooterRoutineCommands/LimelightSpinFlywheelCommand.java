@@ -61,6 +61,7 @@ public class LimelightSpinFlywheelCommand extends CommandBase {
   public void execute() {
 
     velocityError = m_ShooterSubsystem.getCurrentFlywheelSpeed() - flywheelTargetVelocity;
+    SmartDashboard.putNumber("flywheel error", velocityError);
 
     m_ShooterSubsystem.setFlywheelSpeed( flywheelTargetVelocity );
 
