@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.ControlOption;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -71,7 +70,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
   
-  public ShuffleboardSubsystem() {
+  public ShuffleboardSubsystem(recalibrate_grippers gripperCommand) {
     // ++ define all the tabs
     driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
     movementTab = Shuffleboard.getTab("Drivetrain");
@@ -141,6 +140,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       // ££===================== CLIMBER FEEDBACK ==========================================================
       pawlsEngaged = driverFeedbackTab.add("Are pawls engaged", false);
       climberSteps = driverFeedbackTab.add("What climber step is it", 0);
+      recalibrateGrippers = driverFeedbackTab.add("Recalibrate Grippers", gripperCommand);
 
 
 
