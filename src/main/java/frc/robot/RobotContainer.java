@@ -109,7 +109,7 @@ public class RobotContainer {
   // COMMANDS--------------------
     // ++ teleop commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
-  private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
+  private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, m_HoodSubsystem, secondaryController);
   // ++ m_AcceptCommand probably shouldn't be used in competition, but idk
   private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, false, Constants.IntakeIndexer.acceptDuration);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);

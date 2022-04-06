@@ -6,6 +6,7 @@ package frc.robot.commands.ShooterStuff;
 
 import frc.robot.Constants;
 import frc.robot.JoyUtil;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShuffleboardSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,14 +16,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ShooterCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final ShooterSubsystem m_ShooterSubsystem;
+    private final HoodSubsystem m_HoodSubsystem;
     private final JoyUtil joystick;
 
 
-  public ShooterCommand(ShooterSubsystem subsystem, JoyUtil secondaryController) {
-    m_ShooterSubsystem = subsystem;
+  public ShooterCommand(ShooterSubsystem shooterSubsystem, HoodSubsystem hoodSubsystem, JoyUtil secondaryController) {
+    m_ShooterSubsystem = shooterSubsystem;
+    m_HoodSubsystem = hoodSubsystem;
     joystick = secondaryController;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_ShooterSubsystem);
+    addRequirements(m_HoodSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -42,6 +46,9 @@ public class ShooterCommand extends CommandBase {
     // ++ this sets the speed of the flywheel
     if ( joystick.getRightTriggerAxis() > 0.5 ) {
       m_ShooterSubsystem.setFlywheelSpeed( Constants.Shooter.flywheelRPMFromLaunchPad );
+      m_HoodSubsystem.setServoPositionFromHoodAngle( 60.0 );
+    } else {
+      m_ShooterSubsystem.stopFlywheel();
     }
 
     
