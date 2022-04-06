@@ -45,7 +45,8 @@ public class AcceptCommand extends CommandBase {
 
     if ( (doLimelightCheck && LimelightSubsystem.continueShooterRoutine ) || !doLimelightCheck) {
       m_IntakeIndexerSubsystem.setIntakeSpeed(Constants.IntakeIndexer.acceptSpeed);
-      m_IntakeIndexerSubsystem.stepIndexer(Constants.IntakeIndexer.acceptRotations);
+      // m_IntakeIndexerSubsystem.stepIndexer(Constants.IntakeIndexer.acceptRotations);
+      m_IntakeIndexerSubsystem.setIndexerSpeed(-500);
     }
 
 
@@ -65,7 +66,8 @@ public class AcceptCommand extends CommandBase {
   public void end(boolean interrupted) {
     // ++ in this method, we want to stop both the intake and indexer
     m_IntakeIndexerSubsystem.setIntakeSpeed(0.0);
-    m_IntakeIndexerSubsystem.stepIndexer(0.0);
+    // m_IntakeIndexerSubsystem.stepIndexer(0.0);
+    m_IntakeIndexerSubsystem.setIndexerSpeed(0.0);
   }
 
   // Returns true when the command should end.

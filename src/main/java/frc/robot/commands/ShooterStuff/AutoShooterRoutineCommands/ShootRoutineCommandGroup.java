@@ -34,8 +34,6 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
                 new LimelightSpinFlywheelCommand(m_ShooterSubsystem),
                 new LimelightMoveHoodCommand(m_HoodSubsystem)
             ),
-
-            // ++ we need a ton of AcceptCommands because the duration is so short
             new AcceptCommand(m_IntakeIndexerSubsystem, true, Constants.Shooter.acceptCommandDuration),
 
 

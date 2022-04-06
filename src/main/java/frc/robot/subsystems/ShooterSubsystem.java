@@ -34,7 +34,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // ++ make motor objects  
   private CANSparkMax flywheelMotor = new CANSparkMax( Constants.Shooter.flywheelMotorID, MotorType.kBrushless ); 
-  private Servo servoMotor = new Servo( 0 );
 
   // ++ declare encoder objects
   public RelativeEncoder flywheelEncoder;

@@ -4,11 +4,13 @@
 
 package frc.robot.commands.ShooterStuff;
 
+import frc.robot.Constants;
 import frc.robot.JoyUtil;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShuffleboardSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 
 public class ShooterCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -38,11 +40,11 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
   
     // ++ this sets the speed of the flywheel
-    if (joystick.getRightTriggerAxis() * 3000 < 500){
-      m_ShooterSubsystem.stopFlywheel();
-    } else {
-      m_ShooterSubsystem.setFlywheelSpeed( joystick.getRightTriggerAxis() * 3000 );
+    if ( joystick.getRightTriggerAxis() > 0.5 ) {
+      m_ShooterSubsystem.setFlywheelSpeed( Constants.Shooter.flywheelRPMFromLaunchPad );
     }
+
+    
 
     
     

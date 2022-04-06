@@ -33,7 +33,7 @@ public class SpinTakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean isIntakeOn = secondaryController.getLeftBumper();
+    boolean isIntakeOn = secondaryController.getLeftTriggerAxis() >= 0.5;
 
     if (isIntakeOn == true) {
       m_subsystem.setIntakeSpeed(Constants.IntakeIndexer.intakeSpeed);
