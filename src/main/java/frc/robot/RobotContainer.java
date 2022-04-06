@@ -52,7 +52,7 @@ import frc.robot.commands.AutonomousCommands.LookAtCommand;
 
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.climber_commands.ClimbManagerCommand;
-
+import frc.robot.commands.climber_commands.recalibrate_grippers;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -101,6 +101,7 @@ public class RobotContainer {
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
   // commands
   private final ClimbManagerCommand m_ClimbCommand = new ClimbManagerCommand(m_ClimberSubsystem, secondaryController);
+  private final recalibrate_grippers m_recalibrateGrip = new recalibrate_grippers(m_ClimberSubsystem);
   // ++ =================================================
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
