@@ -94,8 +94,6 @@ public class RobotContainer {
   // SUBSYSTEMS -------------------
     // ++ "utility subsystems"
   private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
-  private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
-
     // ++ robot subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
@@ -127,6 +125,7 @@ public class RobotContainer {
 
   private final DumpCommandGroup m_DumpCommand = new DumpCommandGroup(m_ShooterSubsystem, m_IntakeIndexerSubsystem, m_HoodSubsystem);
 
+  private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem(m_recalibrateGrip);
     // ++ auto commands
 
 
