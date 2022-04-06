@@ -38,7 +38,7 @@ public final class JoyUtil extends XboxController {
         setRumble(RumbleType.kLeftRumble, strength);
     }
 
-    public void rightRumble(double strength) {
+    public void rumbleRight(double strength) {
         setRumble(RumbleType.kRightRumble, strength);
     }
 
@@ -233,6 +233,12 @@ public final class JoyUtil extends XboxController {
         } else {
             return 0.0;
         }
+    }
+
+
+
+
+    public void stopRightRumble() {
     }
 
 }

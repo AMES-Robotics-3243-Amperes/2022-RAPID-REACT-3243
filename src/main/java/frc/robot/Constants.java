@@ -194,20 +194,20 @@ public final class Constants {
 
         // ++ dump constants
         /** ++ speed the flywheel spins at to dump a ball */
-        public static final double dumpFlywheelRPM =  1500;
+        public static final double dumpFlywheelRPM =  2500;
         /** ++ the angle of the hood for dumping */
         public static final double dumpHoodAngle = 0;
 
         /** ++ dump flywheel timeout */
         public static final double dumpFlywheelTimeout = 2.0;
         /** ++ dump adjust hood timeout */
-        public static final double dumpHoodTimeout = 1.0;
+        public static final double dumpHoodTimeout = 0.5;
         /** ++ accept command duration (like a timeout) */
         public static final double acceptCommandDuration = 1.0;
 
 
         // ++ figure out what this should actually be
-        public static final double flywheelRPMFromLaunchPad = 4000;
+        public static final double flywheelRPMFromLaunchPad = 3600;
 
 
 

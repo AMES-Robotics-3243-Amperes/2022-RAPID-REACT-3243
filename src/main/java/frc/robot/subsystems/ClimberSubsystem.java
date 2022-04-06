@@ -184,7 +184,7 @@ public class ClimberSubsystem extends SubsystemBase {
   static int c = 0;
   public int climberStep() {
     if (currentClimberStep < 9) {
-      c += 1;
+      c ++;
     }
     return c;
   }

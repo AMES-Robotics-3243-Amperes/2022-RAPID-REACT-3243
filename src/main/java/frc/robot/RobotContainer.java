@@ -122,7 +122,8 @@ public class RobotContainer {
     m_DriveSubsystem,
     m_IntakeIndexerSubsystem,
     m_ShooterSubsystem,
-    m_HoodSubsystem
+    m_HoodSubsystem,
+    secondaryController
     );
 
   private final DumpCommandGroup m_DumpCommand = new DumpCommandGroup(m_ShooterSubsystem, m_IntakeIndexerSubsystem, m_HoodSubsystem);

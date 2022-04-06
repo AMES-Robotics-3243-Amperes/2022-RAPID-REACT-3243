@@ -108,7 +108,8 @@ public class LimelightSubsystem extends SubsystemBase {
    */
   private static double flywheelVelocityFromDistance(double distance) {
     // ++ THIS IS JUST A PLACEHOLDER FOR NOW, WE'LL NEED TO FIND THE ACTUAL FUNCTION WHEN THE ROBOT WORKS
-    return (distance) * 100;
+    // return (distance) * 100;
+    return (63.1242 * distance) + 2873.94;
   }
   // ++ --------------- end misc  ------------------------
 

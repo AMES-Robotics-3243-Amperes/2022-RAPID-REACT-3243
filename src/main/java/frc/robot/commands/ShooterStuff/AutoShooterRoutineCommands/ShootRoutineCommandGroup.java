@@ -7,6 +7,7 @@ package frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.JoyUtil;
 import frc.robot.commands.IntakeIndexer.AcceptCommand;
 import frc.robot.commands.ShooterStuff.StopFlywheelCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -23,7 +24,8 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
         DriveSubsystem m_DriveSubsystem, 
         IntakeIndexerSubsystem m_IntakeIndexerSubsystem,
         ShooterSubsystem m_ShooterSubsystem,
-        HoodSubsystem m_HoodSubsystem
+        HoodSubsystem m_HoodSubsystem,
+        JoyUtil secondaryController
         ) {
 
 
@@ -37,7 +39,8 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
             new AcceptCommand(m_IntakeIndexerSubsystem, true, Constants.Shooter.acceptCommandDuration),
 
 
-            new StopFlywheelCommand(m_ShooterSubsystem)
+            new StopFlywheelCommand(m_ShooterSubsystem),
+            new ShootRoutineFailedRumble(secondaryController)
         );
 
     }
