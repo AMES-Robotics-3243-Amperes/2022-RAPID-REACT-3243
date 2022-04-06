@@ -208,9 +208,12 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberR0Encoder.setPosition(0);
     grabberL0Encoder.setPosition(0);
 
-    climberAngle = 0;
+    climberAngle = 5;
     grabberAngles[0]=0;
     grabberAngles[1]=0;
+
+    isClimbEnabled = false;
+    wasClimbEnabled = false;
   }
 
   public void calibrateGrabbers(){
