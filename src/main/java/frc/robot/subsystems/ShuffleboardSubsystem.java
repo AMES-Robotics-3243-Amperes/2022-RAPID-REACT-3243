@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.ControlOption;
-
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -48,6 +49,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   // ££ Climber Feedback
   static SimpleWidget pawlsEngaged;
   static SimpleWidget climberSteps;
+  static ComplexWidget recalibrateGrippers;
     // ++ shooter stuff
   static SimpleWidget 
       flywheelSpeed, 
@@ -139,7 +141,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       // ££===================== CLIMBER FEEDBACK ==========================================================
       pawlsEngaged = driverFeedbackTab.add("Are pawls engaged", false);
       climberSteps = driverFeedbackTab.add("What climber step is it", 0);
-      
 
 
 
