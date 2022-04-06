@@ -59,8 +59,8 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     intakeEncoder.setPosition(0);
     indexEncoder.setPosition(0);
 
-    intakeMotor.setSmartCurrentLimit(35);
-    intakeMotor.setSecondaryCurrentLimit(40);
+    intakeMotor.setSmartCurrentLimit(20);
+    intakeMotor.setSecondaryCurrentLimit(25);
 
     indexMotor.setSmartCurrentLimit(20);
     indexMotor.setSecondaryCurrentLimit(30);
