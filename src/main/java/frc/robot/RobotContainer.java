@@ -115,7 +115,7 @@ public class RobotContainer {
   private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, false, Constants.IntakeIndexer.acceptDuration);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
-  private final AutonomousCommand m_AutonomousCommand = new AutonomousCommand(m_DriveSubsystem, m_ShooterSubsystem, m_IntakeIndexerSubsystem);
+  private final AutonomousCommand m_AutonomousCommand = new AutonomousCommand(m_DriveSubsystem, m_ShooterSubsystem, m_IntakeIndexerSubsystem, m_HoodSubsystem);
   private final LookAtCommand m_lookAtCommand = new LookAtCommand(m_DriveSubsystem, true);
 
   private final ShootRoutineCommandGroup m_AutoShootRoutineCommand = new ShootRoutineCommandGroup(
