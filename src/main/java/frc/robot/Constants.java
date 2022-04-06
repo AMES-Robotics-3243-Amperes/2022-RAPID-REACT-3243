@@ -55,7 +55,8 @@ public final class Constants {
         /**  maximum speed of robot in m/s (max rpm times conversion ratio), this also (I think) converts from RPM to m/s */
         public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
         /** error tolerance for wheel encoders during autnomous */
-        public static final double errorTolerance = 0.01;
+        public static final double errorTolerance = 0.2;
+        public static final double autoTimeout = 5;
     }
     
     public static final class Climber {
