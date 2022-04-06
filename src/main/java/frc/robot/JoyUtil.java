@@ -5,23 +5,51 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController; 
 
+
+/** ++ we'll use this class to write methods that help us process joystick inputs
+* and will mostly be for drive train things, and will include things like:
+* deadzone functions and joystick input curves, and anything else we need. 
+*/
 public final class JoyUtil extends XboxController {
 
 
-    /* ++ we'll use this class to write methods that help us process joystick inputs
-    * and will mostly be for drive train things, and will include things like:
-    * deadzone functions and joystick input curves, and anything else we need. 
-    */
+
 
     // ++ WE HAVE A BUNCH OF FUNCTIONS HERE, AND WE NEED TO APPLY THEM IN THE RIGHT ORDER
     // ++ check the "composeDriveJoyFunctions" method at the bottom to see the order this should be done in 
     // ++ (((I'm not putting it here to avoid multiple versions of the "correct" order)))
 
 
-    // ++ constructor
+    /** creates a new JoyUtil joystick.
+     * @param controllerID
+     */
     public JoyUtil(int controllerID) {
         super(controllerID);
     }
+
+
+
+
+    // ++  rumble stuff ----------------
+
+    public void rumbleLeft(double strength) {
+        setRumble(RumbleType.kLeftRumble, strength);
+    }
+
+    public void rightRumble(double strength) {
+        setRumble(RumbleType.kRightRumble, strength);
+    }
+
+    public void stopRumbleLeft() {
+        setRumble(RumbleType.kLeftRumble, 0.0);
+    }
+
+    public void stopRumbleRight() {
+        setRumble(RumbleType.kRightRumble, 0.0);
+    }
+
+    // ++ end rumble stuff ------------
+
 
 
     // ++ these are the methods used to 
@@ -81,7 +109,7 @@ public final class JoyUtil extends XboxController {
         // ++ takes input and compares it to deadzone size
         // returns joystick size if it's greater than the deadzone, 0 otherwise
 
-        double deadZoneSize = SmartDashboard.getNumber("deadzone size", Constants.Joysticks.deadZoneSize);
+        double deadZoneSize = Constants.Joysticks.deadZoneSize;
 
         if (Math.abs(pos) >= deadZoneSize ) {
             return pos;

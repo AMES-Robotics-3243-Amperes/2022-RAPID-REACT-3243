@@ -8,6 +8,8 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // ++ project stuff
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -16,6 +18,7 @@ import frc.robot.subsystems.IMUSubsystem;
 
 // ++ SUBSYSTEMS
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.ShuffleboardSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -28,9 +31,13 @@ import frc.robot.commands.TeleopPIDDriveCommand;
 import frc.robot.commands.IntakeIndexer.AcceptCommand;
 import frc.robot.commands.IntakeIndexer.RebuffCommand;
 import frc.robot.commands.IntakeIndexer.SpinTakeCommand;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TestPid;
 import frc.robot.commands.AutonomousCommands.AutonomousCommand;
+import frc.robot.commands.AutonomousCommands.AutonomousTaxiCommand;
+import frc.robot.commands.ShooterStuff.ShooterCommand;
+import frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands.LimelightAlignDriveCommand;
+import frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands.ShootRoutineCommandGroup;
+import frc.robot.commands.ShooterStuff.DumpShooterCommands.DumpCommandGroup;
 // ++ auto
 import frc.robot.commands.AutonomousCommands.LookAtCommand;
 
@@ -78,11 +85,18 @@ public class RobotContainer {
   public static JoyUtil secondaryController = new JoyUtil( Constants.Joysticks.secondaryControllerID );
     public static JoystickButton secondaryRightBumper = new JoystickButton(secondaryController, Constants.Joysticks.RightBumper);
     public static JoystickButton secondaryXButton = new JoystickButton(secondaryController, Constants.Joysticks.X);
+    public static JoystickButton primaryAButton = new JoystickButton(primaryController, Constants.Joysticks.A);
+    public static JoystickButton autoShootRoutineButton = new JoystickButton(secondaryController, Constants.Joysticks.Y);
+    public static JoystickButton dumpButton = new JoystickButton(secondaryController, Constants.Joysticks.B);
 
 
 
   // ++ SUBSYSTEMS AND COMMANDS ========================================
   // SUBSYSTEMS -------------------
+    // ++ "utility subsystems"
+  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
+  private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
+
     // ++ robot subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
@@ -92,21 +106,30 @@ public class RobotContainer {
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   private final IntakeIndexerSubsystem m_IntakeIndexerSubsystem = new IntakeIndexerSubsystem();
-    // ++ "utility subsystems"
-  private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
-  private final ShuffleboardSubsystem m_Shuffleboardsubsystem = new ShuffleboardSubsystem();
-  
+  private final HoodSubsystem m_HoodSubsystem = new HoodSubsystem();
   // COMMANDS--------------------
     // ++ teleop commands
   private final TeleopPIDDriveCommand m_PIDDriveCommand = new TeleopPIDDriveCommand(m_DriveSubsystem, primaryController);
   private final ShooterCommand m_ShooterCommand = new ShooterCommand(m_ShooterSubsystem, secondaryController);
-  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem);
+  // ++ m_AcceptCommand probably shouldn't be used in competition, but idk
+  private final AcceptCommand m_AcceptCommand = new AcceptCommand(m_IntakeIndexerSubsystem, false, Constants.IntakeIndexer.acceptDuration);
   private final RebuffCommand m_RebuffCommand = new RebuffCommand(m_IntakeIndexerSubsystem);
   private final SpinTakeCommand m_SpinIntakeCommand = new SpinTakeCommand(m_IntakeIndexerSubsystem, secondaryController);
   private final AutonomousCommand m_AutonomousCommand = new AutonomousCommand(m_DriveSubsystem, m_ShooterSubsystem, m_IntakeIndexerSubsystem);
   private final LookAtCommand m_lookAtCommand = new LookAtCommand(m_DriveSubsystem, true);
 
+  private final ShootRoutineCommandGroup m_AutoShootRoutineCommand = new ShootRoutineCommandGroup(
+    m_DriveSubsystem,
+    m_IntakeIndexerSubsystem,
+    m_ShooterSubsystem,
+    m_HoodSubsystem
+    );
+
+  private final DumpCommandGroup m_DumpCommand = new DumpCommandGroup(m_ShooterSubsystem, m_IntakeIndexerSubsystem, m_HoodSubsystem);
+
     // ++ auto commands
+
+
   // ++ END SUBSYSTEMS/COMMANDS ===============================================
 
 
@@ -119,13 +142,10 @@ public class RobotContainer {
     m_DriveSubsystem.setDefaultCommand(m_PIDDriveCommand);
     m_ShooterSubsystem.setDefaultCommand(m_ShooterCommand);
     m_IntakeIndexerSubsystem.setDefaultCommand(m_SpinIntakeCommand);
-
     configureButtonBindings();
 
-    SmartDashboard.putNumber("spin P", 0);
-    SmartDashboard.putNumber("spin I", 0);
-    SmartDashboard.putNumber("spin FF", 0);
-    SmartDashboard.putNumber("spin D", 0);
+
+
   }
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -136,6 +156,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     secondaryRightBumper.whenPressed(m_RebuffCommand);
     secondaryXButton.whenPressed(m_AcceptCommand);
+    autoShootRoutineButton.whenPressed(m_AutoShootRoutineCommand);
+    dumpButton.whenPressed(m_DumpCommand);
+
+
   }
 
   /**

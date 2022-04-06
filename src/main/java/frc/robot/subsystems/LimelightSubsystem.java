@@ -5,10 +5,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.lang.annotation.Target;
 import java.util.Random;
@@ -16,27 +18,31 @@ import java.util.Random;
 
 /** ++ This class is used to read values from the LimeLight and do calculations based on those numbers. 
  *  Pretty much all of the math for calculating things (like flywheel speed, hood angle, etc) should be done HERE 
- * instead of the corresponding subsystem. 
+ * instead of the corresponding subsystem. (This is basically just a subsystem full of methods that get values)
  */
 public class LimelightSubsystem extends SubsystemBase {
 
   // ++ table object
   static NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   // ++ LimeLight values -- table entry objects
-  NetworkTableEntry tx = limelightTable.getEntry("tx");   // ++ x offset 
-  NetworkTableEntry ty = limelightTable.getEntry("ty");   // ++ y offset
-  NetworkTableEntry ta = limelightTable.getEntry("ta");   // ++ area of target 
+  static NetworkTableEntry tx = limelightTable.getEntry("tx");   // ++ x offset 
+  static NetworkTableEntry ty = limelightTable.getEntry("ty");   // ++ y offset
+  static NetworkTableEntry ta = limelightTable.getEntry("ta");   // ++ area of target 
   static NetworkTableEntry tv = limelightTable.getEntry("tv");   // 1 if limelight sees a valid target, 0 otherwise
-
 
   // ++ random class object to see if shuffleboard is updating properly
   Random Waffles = new Random(); 
+
+  public static boolean continueShooterRoutine = false;
+
   /** Creates a new LimelightSubsystem. */
   static Pose2d target = new Pose2d();
   public static Pose2d getTarget() {
     return target;
   }
+  
   public LimelightSubsystem() {
+    
   }
 
 
@@ -44,32 +50,28 @@ public class LimelightSubsystem extends SubsystemBase {
 
   //  ++ ---------------- target position methods -----------
 
-  /** ++ This method gets the X position of the target the Limelight sees
-   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
-   * This should probably be 0, but I still put it as a param just incase it's necessary. 
+  /** ++ This method gets the X position of the target the Limelight sees. This is also the rotational error of the robot
    * @return the X position of the target (as an angle) */
-  public double getTargetX(double defaultReturn) {
-    return tx.getDouble(defaultReturn);
+  public static double getTargetX() {
+    return tx.getDouble(0.0);
   }
 
-    /** ++ This method gets the Y position of the target the Limelight sees
-   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
-   * This should probably be 0, but I still put it as a param just incase it's necessary. 
+    /** ++ This method gets the Y position of the target the Limelight sees (including limelight angle offset) 
    * @return the Y position of the target (as an angle) */
-  public double getTargetY(double defaultReturn) {
-    return ty.getDouble(defaultReturn);
+  public static double getTargetY() {
+    double angle = ((ty.getDouble( (-Constants.Limelight.limelightAngleOffset) )) + Constants.Limelight.limelightAngleOffset);
+    return angle;
+    // ++ I did a weird default value to make the method return 0 if no value is found
   }
 
     /** ++ This method gets the area of the target the Limelight sees
-   * @param defaultReturn this is the default value for the method to return if there isn't any Limelight value.
-   * This should probably be 0, but I still put it as a param just incase it's necessary. 
    * @return the area position of the target (as a fraction of total camera area) */
-  public double getTargetArea(double defaultReturn) {
-    return ta.getDouble(defaultReturn);
+  public static double getTargetArea() {
+    return ta.getDouble(0.0);
   }
 
   /** ++ this method determines if the Limelight sees any valid targets
-   * @return true if it sees one or more validtargets, false otherwise
+   * @return true if it sees one or more valid targets, false otherwise
    */
   public static Boolean isTargetValid() {
     // ++ NOTE: "ta" returns "1.0" if it sees ANY number of valid targets
@@ -85,9 +87,83 @@ public class LimelightSubsystem extends SubsystemBase {
   // ++ --------------------------------------------------------------------------------
 
 
+  // ++ ======= CALCULATION METHODS ===================================================
+  // ++ these methods are used to calculate the necessary values for the ball's trajectory
+
+
+  // ++ --------------- misc ----------------------------
+
+  /** this finds the distance from the hub based on limelight values (y angle offset) */
+  private static double findDistanceFromHub() {
+    double distance = (Constants.Limelight.shooterToHubHeight / Math.tan( Math.toRadians(getTargetY() )));
+    // ShuffleboardSubsystem.displayCalcDistance( distance );
+    // SmartDashboard.putNumber("calcd distance", distance);
+    SmartDashboard.putNumber("CALCULATED DISTANCE: ", distance);
+    return distance;
+    // return getTargetY();
+  }
+
+  /** ++ this is the function that tells you the necessary flywheel velocity based on the distance. 
+   * NOTE: this is NOT the implementation of this! This just converts from 
+   */
+  private static double flywheelVelocityFromDistance(double distance) {
+    // ++ THIS IS JUST A PLACEHOLDER FOR NOW, WE'LL NEED TO FIND THE ACTUAL FUNCTION WHEN THE ROBOT WORKS
+    return (distance) * 100;
+  }
+  // ++ --------------- end misc  ------------------------
+
+
+
+
+
+  // ++ --------------- trajectory stuff -------------------------------------
+
+  /* ++   >>>>>>>>>>>> ***COOL DESMOS GRAPH*** https://www.desmos.com/calculator/jyxaoog9fd <<<<<<<<<<<<<<<<<<<<<<<<<<
+  *
+  * the graph should help give context for the calculations here.
+  * I'm hoping the comments in the graph should be descriptive enough explain what's going on
+  */
+
+
+
+  /** ++ this finds the B coefficient of the trajectory parabola. look at the desmos graph for context
+   * (desmos graph is in a comment above the definition of this function).
+   * This method should really only be used to find the angle of the hood (below)
+   * @param distanceFromHub this the distance between the robot and the center of the hub
+   * @return the B coefficient
+   */
+  public static double findBCoeff(double distanceFromHub) {
+    double hubHeight = Constants.Limelight.shooterToHubHeight;
+    double arbPointX = distanceFromHub + Constants.Limelight.arbPointXOffset;
+    double arbPointY = hubHeight + Constants.Limelight.arbPointYOffset;
+
+    double bCoeff = ( ( (-(Math.pow(distanceFromHub, 2) * arbPointY)) + (Math.pow(arbPointX, 2) * hubHeight) ) 
+    / ( (Math.pow(arbPointX, 2) * distanceFromHub) - (Math.pow(distanceFromHub, 2) * arbPointX) ) 
+    ); // ++ this is what happens when you do a linear algebra in code
+
+    return bCoeff;
+  }
+  
+  /** ++ this method returns angle the hood should be to make the ball in the hub*/
+  public static double findTargetHoodAngle() {
+    return 90 - Math.toDegrees( Math.atan( findBCoeff( findDistanceFromHub() ) ) );
+  }
+
+  /** ++ this method gives you the necessary velocity of the flywheel  */
+  public static double giveTargetFlywheelVelocity() {
+    return flywheelVelocityFromDistance( findDistanceFromHub() );
+  }
+  // ++ ----------- end trajectory stuff ---------------------------------------
+
+
+  // ++ ======== END CALCULATION METHODS ==============================================
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putNumber("limelight angle: ", getTargetY());
+    SmartDashboard.putBoolean("cont shoot routine?", continueShooterRoutine);
+
     // This method will be called once per scheduler run
 
   }

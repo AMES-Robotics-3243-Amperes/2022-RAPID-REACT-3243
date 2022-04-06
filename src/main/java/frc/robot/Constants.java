@@ -91,12 +91,12 @@ public final class Constants {
         public static final double intakePositionConversionRatio = (1/12);
         public static final double indexPositionConversionRatio = (1/120);
         // ~~ Accept and Rebuff Constants
-        public static final double acceptRotations = -30;
+        public static final double acceptRotations = -20;
         public static final double acceptSpeed = 1;
-        public static final double acceptDuration = 0.2;
-        public static final double rebuffRotations = 30;
+        public static final double acceptDuration = 0.05;
+        public static final double rebuffRotations = 20;
         public static final double rebuffSpeed = -1;
-        public static final double rebuffDuration = 0.2;
+        public static final double rebuffDuration = 0.15;
         // ££ constants for intakeIndexer, everything to do with the Intake/Indexer
         public static final double intakeSpeed = 0.75;
         public static final double indexSpeed = 0.75;
@@ -158,44 +158,93 @@ public final class Constants {
     }
 
 
+    /** ++ this is the class for all the shooting-related stuff. It isn't just for the actual shooter itself- instead, it's 
+     * for anything related to the shooter routine/shooting in general
+     */
     public static final class Shooter {
         // ++ shooter constants
         // CAN
         // ++ motor stuff ----------------------------------
         public static final int flywheelMotorID = 9;
-        public static final int hoodMotorID = 5;
+            // ++ NOTE: this is a servo, so this is the PWM port on the rio
+        public static final int hoodServoPWMID = 0;
 
-        // ++ PID stuff ----
+        // ++ PID stuff --------------
         // ++ flywheel
-        public static final double flywheelPGain = 0.0;
-        public static final double flywheelIGain = 0.0;
+        public static final double flywheelPGain = 0.00055;
+        public static final double flywheelIGain = 0.0000005;
         public static final double flywheelDGain = 0.0;
-        // ++ hood 
-        public static final double hoodPGain = 0.0;
-        public static final double hoodIGain = 0.0;
-        public static final double hoodDGain = 0.0;
-        
-        // ++ ENCODER STUFF -------
-        /**
-         * ++ this is (maybe) the conversion ratio between the angle of the hood motor and the actual angle of the hood
-         * [this ratio needs to be verified]
-         */
-        public static final double motorToHoodAngle = 768/7;
+        public static final double flywheelFFGain = 0.0;
 
-    }
+        // ++ drive
+        public static double limelightDrivePGain;
+        public static double limelightDriveIGain;
+        public static double limelightDriveDGain;
+
+        // ++ max servo angle
+            // ++ this is the maximum angle on the spec sheet, NOT necessarily what it should be on the robot
+        public static final double maxSpecHoodServoAngle = 180;
+
+        // ++ maximum and minimum safe angles the servo can actually be at
+        public static double maxActualServoAngle;
+        public static double minActualServoAngle;
+
+        /** ++ angle offset between servo and hood. It goes from servo to hood angle*/
+        public static final double servoAngleOffset = 0.0;
+
+        // ++ dump constants
+        /** ++ speed the flywheel spins at to dump a ball */
+        public static final double dumpFlywheelRPM =  2500;
+        /** ++ the angle of the hood for dumping */
+        public static final double dumpHoodAngle = 0;
+
+        /** ++ dump flywheel timeout */
+        public static final double dumpFlywheelTimeout = 2.0;
+        /** ++ dump adjust hood timeout */
+        public static final double dumpHoodTimeout = 2.0;
+        /** ++ accept command duration (like a timeout) */
+        public static final double acceptCommandDuration = 2.0;
+
+
+    
+
+
+
+
+        // ++ -------- SHOOTER ROUTINE STUFF ----------------------------
+        
+        // ++ end condition tolerances ----
+            // ++ these are the tolerances that is the acceptable range to finish the shooter routine and fire the cargo
+                // ++ RIGHT NOW ALL OF THESE ARE VERY MUCH BALLPARKS. THIS IS JUST SO THEY HAVE A VALUE
+        public static final double rotationErrorTolerance = 5.0;
+        public static final double hoodErrorTolerance = 5.0;
+        public static final double flywheelSpeedErrorTolerance = 50.0;
+
+        // ++ timeout lengths
+            // ++ FIGURE OUT WHAT THESE SHOULD ACTUALLY BE
+        public static final double hoodTimeoutTime = 0.2;
+        public static final double turnTimeoutTime = 5.0;
+        public static final double flywheelTimeoutTime = 4.0;
+
+
+
+
+
+
+    } // ++ -------------------------
 
     /**  ++ constants for limelight stuff, anything involved with calculations or keys etc */
     public static final class Limelight {
         // ++ ====== actual limelight values ============
             /** angle of the limelight; degrees up from horizontal */
-        public static final double limelightAngleOffset = 25.0;
+        public static final double limelightAngleOffset = 33.0;
 
         // ++ ======= field/robot measurements ============ (all in feet)
 
         public static final double hubHeight = 8.6666666667; // ++ i put this as a decimal approx bc (104/12) was being weird
 
-            /** ++ this is the height of the shooter (where the ball leaves the robot) off the ground */
-        public static final double shooterHeight = 0.0; // ++ measure what this actually si
+        /** ++ this should be the distance of the limelight above the ground */
+        public static final double shooterHeight = 1.333333; 
 
             /** this is the difference in height between the shooter and the hub, in feet */
         public static final double shooterToHubHeight = hubHeight - shooterHeight;

@@ -44,9 +44,24 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static ComplexWidget field;
   // ££ Shooter Feedback
   static SimpleWidget seesTarget;
+<<<<<<< HEAD
   // ££ Climber Feedback
   static SimpleWidget pawlsEngaged;
   static SimpleWidget climberSteps;
+=======
+    // ++ shooter stuff
+  static SimpleWidget 
+      flywheelSpeed, 
+      
+      flywheelPGain, 
+      flywheelIGain, 
+      flywheelDGain, 
+      flywheelFFGain, 
+      servoTarget, 
+      servoLastSet,
+      routineConting, 
+      hubDistance;
+>>>>>>> 080a4bf942394e49240fe76aa1d86def10abb03f
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<ControlOption> m_JoyCurve;
@@ -68,6 +83,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   // // I'm gonna cry
   // ++ me too I'm freezing rn cottonwood's area is coldddddd
+  // :) loser my garage is colder
 
 
     // ++ ==================== DRIVETRAIN WIDGETS/STUFF ===============================================
@@ -104,6 +120,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     movementTab.add(m_Target);
     // ++  =================== END DRIVETRAIN WIDGETS/STUFF ==============================================
 
+
+
     // ~~ ==================== IMU WIDGETS/STUFF =========================================================
     yawShuffle = IMUTab.add("Yaw", 0);
     pitchShuffle = IMUTab.add("Pitch", 0);
@@ -124,6 +142,26 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       pawlsEngaged = driverFeedbackTab.add("Are pawls engaged", false);
       climberSteps = driverFeedbackTab.add("What climber step is it", 0);
       
+
+
+
+    // ++ ==================== SHOOTER STUFF =============================================
+    flywheelSpeed = shooterTab.add("flywheel speed", 0.0);
+
+    flywheelPGain = shooterTab.add("flywheel P gain", Constants.Shooter.flywheelPGain);
+    flywheelIGain = shooterTab.add("flywheel I gain", Constants.Shooter.flywheelIGain);
+    flywheelDGain = shooterTab.add("flywheel D gain", Constants.Shooter.flywheelDGain);
+    flywheelFFGain = shooterTab.add("flywheel FF gain", Constants.Shooter.flywheelFFGain);
+
+    servoTarget = shooterTab.add("servo target", 0.0);
+
+    servoLastSet = shooterTab.add("last servo set", 0.0);
+
+    // hubDistance = shooterTab.add("distance from hub", 999.0);
+
+    // routineConti
+    // ++ ==================== END SHOOTER STUFF =========================================
+
   }
 // why did Maya give me this? When will it be found? How long until it gets taken away from me? Maybe this comment will throw an error somehow...
   // ++ =========================================== DRIVETRAIN METHODS ===================================
@@ -169,6 +207,48 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   // ++ ============================= END DRIVETRAIN METHODS =============================================
 
 
+  // ++ ============================= SHOOTER METHODS ===================================================
+  /** ++ this method returns the pid values for the shooter as an array,
+   * in the order P, I, D, FF */
+  public static double[] getFlywheelPIDValues(){
+    double PIDFValues[] = {
+    flywheelPGain.getEntry().getDouble( Constants.Shooter.flywheelPGain),
+    flywheelIGain.getEntry().getDouble( Constants.Shooter.flywheelIGain),
+    flywheelDGain.getEntry().getDouble( Constants.Shooter.flywheelDGain),
+    flywheelFFGain.getEntry().getDouble( Constants.Shooter.flywheelFFGain),
+    };
+
+    return PIDFValues;
+    
+  }
+
+    // ++ --- display methods
+
+  // public static void displayFlywheelSpeed(double speed) {
+  //   flywheelSpeed.getEntry().setDouble( speed );
+  // }
+
+  public static void displayCalcDistance(double distance) {
+    hubDistance.getEntry().setDouble( distance );
+  }
+
+  public static void displayPrevServoSet(double lastSet) {
+    servoLastSet.getEntry().setDouble(lastSet);
+  }
+
+    // ++ --- read methods
+
+  public static double readTargetHoodAngle() {
+    return servoTarget.getEntry().getDouble(-1);
+  }
+
+  public static double readTargetFlywheelRPM(){
+    return flywheelSpeed.getEntry().getDouble(-1);
+  }
+
+
+  // ++ ============================= END SHOOTER METHODS ===============================================
+
   // ++ ================= IMU stuff ===============================
 
   // roughxpos = driverFeedbackTab.add("roughx", IMUSubsystem.getXPosition()); 
@@ -210,7 +290,10 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
 
+<<<<<<< HEAD
     // ££ ==================== DRIVER STATION ============================================================
+=======
+>>>>>>> 080a4bf942394e49240fe76aa1d86def10abb03f
   }
   public static void arePawlsEngaged(Boolean engaged) {
     pawlsEngaged.getEntry().setBoolean(engaged);

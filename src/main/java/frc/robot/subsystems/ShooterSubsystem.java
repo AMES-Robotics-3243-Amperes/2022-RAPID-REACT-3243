@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.Servo;
+import frc.robot.subsystems.ShuffleboardSubsystem;
 
 import frc.robot.Constants;
 
@@ -31,95 +34,68 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // ++ make motor objects  
   private CANSparkMax flywheelMotor = new CANSparkMax( Constants.Shooter.flywheelMotorID, MotorType.kBrushless ); 
-  private CANSparkMax hoodMotor = new CANSparkMax( Constants.Shooter.hoodMotorID, MotorType.kBrushless ); 
   private Servo servoMotor = new Servo( 0 );
 
   // ++ declare encoder objects
-  public RelativeEncoder hoodEncoder; 
   public RelativeEncoder flywheelEncoder;
   public RelativeEncoder servoEncoder;
 
-  // ++ declare PID objects
-  private SparkMaxPIDController hoodPID;
+  // ++ declare PID objects 
   private SparkMaxPIDController flywheelPID;
 
-  // ££ 
   
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
 
     // ++ define encoder objects
     flywheelEncoder = flywheelMotor.getEncoder();
-    hoodEncoder = hoodMotor.getEncoder();
-    hoodEncoder.setPositionConversionFactor(Constants.Shooter.motorToHoodAngle);
 
     // ++ define PID objects
     flywheelPID = flywheelMotor.getPIDController();
-    hoodPID = hoodMotor.getPIDController();
+
+
 
   }
 
-  // ++ ============== HOOD STUFF ===================================
-
-  public void setHoodAngle(double angle) {
-    hoodPID.setReference(angle, ControlType.kPosition);
-  }
-
-  public void setServoAngle(double servoAngle) {
-    servoMotor.setAngle(servoAngle);
-  }
-
-  public double getHoodAngle(){
-    return hoodEncoder.getPosition();
- }
-
-  /** this sets the P, I, and D values for the hood */
-  public void setHoodPIDValues(){
-    double pGain = Constants.Shooter.hoodPGain;
-    double iGain = Constants.Shooter.hoodIGain;
-    double dGain = Constants.Shooter.hoodDGain;
-    hoodPID.setP(pGain);
-    hoodPID.setI(iGain);
-    hoodPID.setD(dGain);
-  }
-
-
-  // ++ ============== END HOOD STUFF ===============================
 // maya #2 is cooler than u
 
 
 
   // ++ ============ FLYWHEEL STUFF ==============================
 
+  /** ++ this is the main method that should be used to set the flywheel speed */
   public void setFlywheelSpeed(double speed) {
-    // flywheelPID.setReference(speed, ControlType.kVelocity);
-    flywheelMotor.set(speed);
+    flywheelPID.setReference(speed, ControlType.kVelocity);
   }
 
   public void stopFlywheel(){
     flywheelMotor.set(0.0);
   }
 
-  public double getFlywheelSpeed() {
+  /** ++ returns the actual velocity of the flywheel */
+  public double getCurrentFlywheelSpeed() {
     // ++ returns the velocity of the flywheelEncoder
     return flywheelEncoder.getVelocity();
   }
 
   /** this sets the P, I, and D values for the flywheel */
   public void setFlyhweelPIDValues() {
-    double pGain = Constants.Shooter.flywheelPGain; //SmartDashboard.getNumber("shootP", Constants.Shooter.flywheelPGain);
-    double iGain = Constants.Shooter.flywheelIGain; //SmartDashboard.getNumber("shootI", Constants.Shooter.flywheelIGain);
-    double dGain = Constants.Shooter.flywheelDGain; //SmartDashboard.getNumber("shootP", Constants.Shooter.flywheelDGain);
-    flywheelPID.setP(pGain); 
-    flywheelPID.setI(iGain);
-    flywheelPID.setD(dGain);
+    double values[] = ShuffleboardSubsystem.getFlywheelPIDValues();
+    flywheelPID.setP( values[0] ); 
+    flywheelPID.setI( values[1] );
+    flywheelPID.setD( values[2] );
+    flywheelPID.setFF( values[3] );
   }
   // ++ ============ END FLYWHEEL STUFF ==========================
 
 
   @Override
   public void periodic() {
+    
+    
+    
     // This method will be called once per scheduler run
+
 
   }
 
