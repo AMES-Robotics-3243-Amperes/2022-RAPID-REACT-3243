@@ -25,6 +25,7 @@ public class GoToCommand extends CommandBase {
   
   @Override
   public void initialize() {
+    m_subsystem.setPIDValues(0.6, 0, 0);
     if (m_toBall) {
       m_target = ShuffleboardSubsystem.getTargetPose();
     }else {

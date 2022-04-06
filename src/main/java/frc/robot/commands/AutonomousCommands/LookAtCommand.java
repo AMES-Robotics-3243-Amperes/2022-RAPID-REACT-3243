@@ -24,6 +24,7 @@ public class LookAtCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_subsystem.setPIDValues(0.6, 0, 0);
     // If m_toBall is true, the robot will point towards the target ball. If not, it will point to it's original starting position
     if (m_toBall) {
       m_target = ShuffleboardSubsystem.getTargetPose();

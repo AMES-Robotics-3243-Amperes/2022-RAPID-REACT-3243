@@ -78,7 +78,7 @@ public class IMUSubsystem extends SubsystemBase {
 
   public static void setYaw(double angle) {
     imu.reset();
-    imu.setAngleAdjustment(angle);
+    imu.setAngleAdjustment(-angle);
     
   }
 

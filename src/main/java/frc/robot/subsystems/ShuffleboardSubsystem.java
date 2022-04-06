@@ -44,11 +44,9 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static ComplexWidget field;
   // ££ Shooter Feedback
   static SimpleWidget seesTarget;
-<<<<<<< HEAD
   // ££ Climber Feedback
   static SimpleWidget pawlsEngaged;
   static SimpleWidget climberSteps;
-=======
     // ++ shooter stuff
   static SimpleWidget 
       flywheelSpeed, 
@@ -61,7 +59,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       servoLastSet,
       routineConting, 
       hubDistance;
->>>>>>> 080a4bf942394e49240fe76aa1d86def10abb03f
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<ControlOption> m_JoyCurve;
@@ -290,10 +287,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
 
-<<<<<<< HEAD
-    // ££ ==================== DRIVER STATION ============================================================
-=======
->>>>>>> 080a4bf942394e49240fe76aa1d86def10abb03f
   }
   public static void arePawlsEngaged(Boolean engaged) {
     pawlsEngaged.getEntry().setBoolean(engaged);

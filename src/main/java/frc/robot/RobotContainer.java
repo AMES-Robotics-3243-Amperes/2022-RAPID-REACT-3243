@@ -171,7 +171,7 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     //return null;
     // return new TestPid(m_DriveSubsystem);
-    return m_lookAtCommand;
+    return m_AutonomousCommand;
   }
 
   public ClimberSubsystem getClimberSubsystem(){
