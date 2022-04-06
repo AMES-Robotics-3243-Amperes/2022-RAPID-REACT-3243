@@ -293,7 +293,10 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   public static void arePawlsEngaged(Boolean engaged) {
     pawlsEngaged.getEntry().setBoolean(engaged);
   }
-  public static void climberSteps(double climbStep) {
+  public static void allClimberSteps(double climbStep) {
     climberSteps.getEntry().setDouble(climbStep);
+  }
+  public static void doesItSeeTarget(Boolean targetIsSeen) {
+    seesTarget.getEntry().setBoolean(targetIsSeen);
   }
 }

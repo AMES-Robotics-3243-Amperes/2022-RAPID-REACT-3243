@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.ShuffleboardSubsystem;
 
 import java.lang.annotation.Target;
 import java.util.Random;
@@ -164,6 +165,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("limelight angle: ", getTargetY());
     SmartDashboard.putBoolean("cont shoot routine?", continueShooterRoutine);
+    ShuffleboardSubsystem.doesItSeeTarget( isTargetValid() );
 
     // This method will be called once per scheduler run
 

@@ -444,12 +444,14 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     prevStopped = isClimberStepStopped;
+
     ShuffleboardSubsystem.arePawlsEngaged(currentClimberStep == 9);
+
     double c = 0.0;
-      if (currentClimberStep < 9) {
+      while (currentClimberStep < 9) {
         c ++;
       }
-    ShuffleboardSubsystem.climberSteps(c);
+    ShuffleboardSubsystem.allClimberSteps(c);
 
     }
 
