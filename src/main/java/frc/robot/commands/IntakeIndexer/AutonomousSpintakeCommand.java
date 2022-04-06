@@ -26,13 +26,16 @@ public class AutonomousSpintakeCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.reset();
+    timer.start();
+  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_subsystem.setIntakeSpeed(Constants.IntakeIndexer.intakeSpeed);
     m_subsystem.setIndexerSpeed(Constants.IntakeIndexer.indexSpeed);
-    m_subsystem2.setVelocityReference(Constants.DriveTrain.maxWheelSpeed/5, Constants.DriveTrain.maxWheelSpeed/5, Constants.DriveTrain.maxWheelSpeed/5, Constants.DriveTrain.maxWheelSpeed/5);
+    m_subsystem2.setVelocityReference(Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5);
   }
 
   // Called once the command ends or is interrupted.

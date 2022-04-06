@@ -193,10 +193,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setPositionalReference(double flRef, double frRef, double blRef, double brRef) {
-    frontLeftPIDController.setReference(flRef/20, ControlType.kPosition);
-    frontRightPIDController.setReference(frRef/20, ControlType.kPosition);
-    backLeftPIDController.setReference(blRef/20, ControlType.kPosition);
-    backRightPIDController.setReference(brRef/20, ControlType.kPosition);
+    frontLeftPIDController.setReference(flRef, ControlType.kPosition);
+    frontRightPIDController.setReference(frRef, ControlType.kPosition);
+    backLeftPIDController.setReference(blRef, ControlType.kPosition);
+    backRightPIDController.setReference(brRef, ControlType.kPosition);
     frontLeftTarget = flRef;
     frontRightTarget = frRef;
     backLeftTarget = blRef;
@@ -320,7 +320,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // ~~ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {
-    ChassisSpeeds chassisPos = new ChassisSpeeds(transform.getY(), transform.getX(), 0);
+    ChassisSpeeds chassisPos = new ChassisSpeeds(transform.getX(), transform.getY(), 0);
     MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
 
     frontLeftPIDController.setOutputRange(-0.2, 0.2);
@@ -372,10 +372,6 @@ public class DriveSubsystem extends SubsystemBase {
     changeRobotAngle(transform.getRadians());
   }
 
-  public void uTurn() {
-    changeRobotAngle(Math.PI);
-  }
-
   public void lookAt(Pose2d target) {
     Pose2d vector = target.relativeTo(pose);
     double radians = Math.atan2(vector.getY(), vector.getX());
@@ -389,7 +385,7 @@ public class DriveSubsystem extends SubsystemBase {
     double brError = Math.abs(backRightTarget - backRightEncoder.getPosition());
 
     double tolerance = Constants.DriveTrain.errorTolerance;
-    boolean atTargetPosition = ((flError <= tolerance) && (frError <= tolerance) && (blError <= tolerance) && (brError <= tolerance));
+    boolean atTargetPosition = ((flError <= tolerance) || (frError <= tolerance) || (blError <= tolerance) || (brError <= tolerance));
     return atTargetPosition;
   }
 

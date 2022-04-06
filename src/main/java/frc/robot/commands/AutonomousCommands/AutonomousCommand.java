@@ -38,6 +38,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
                 new GoToCommand(drive, true),
                 new AutonomousSpintakeCommand(intake, drive),
                 // new GoToCommand(drive, false);
-                new InstantCommand(drive::uTurn, drive));
+
+                // More cursed coefficients woo! This makes it do a 180, don't ask why this many radians is a U-turn to the robot
+                new TurnCommand(drive, 1.16809131743 * Math.PI));
   }
 }
