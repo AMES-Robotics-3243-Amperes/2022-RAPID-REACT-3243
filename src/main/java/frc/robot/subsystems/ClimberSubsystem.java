@@ -62,6 +62,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public double spinD=0;
 
     // :) climb sequence!
+  public boolean isClimbEnabled = false;
+  public boolean wasClimbEnabled = false;
   public int currentClimberStep = 0;
   public int previousClimberStep = 0;
   public boolean isRunningClimbCommand = false;
@@ -188,7 +190,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
   public void initialize(){
     // :) reset all the encoder positions and angles for the arm spinny
-    climberAngle=0;
+    climberAngle=5;
     climberMotorLEncoder.setPosition(0);
     climberMotorREncoder.setPosition(0);
     currentClimberStep = 0;
@@ -211,6 +213,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void calibrateGrabbers(){
+
     // :) prepare to calibrate everything by setting calibrated to false and calibrating to true
     isCalibrated = false;
 

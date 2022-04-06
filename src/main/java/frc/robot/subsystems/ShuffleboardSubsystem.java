@@ -25,6 +25,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.climber_commands.ClimbManagerCommand;
+import frc.robot.commands.climber_commands.recalibrate_grippers;
 
 import java.util.function.BooleanSupplier;
 

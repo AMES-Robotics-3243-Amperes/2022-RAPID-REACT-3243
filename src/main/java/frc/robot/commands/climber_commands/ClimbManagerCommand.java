@@ -40,11 +40,19 @@ public class ClimbManagerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // :) lock the climbing behind right joystick button
+    if (joystick.getRightStickButton() && m_ClimberSubsystem.wasClimbEnabled == m_ClimberSubsystem.isClimbEnabled && m_ClimberSubsystem.currentClimberStep==0){
+      m_ClimberSubsystem.isClimbEnabled = !m_ClimberSubsystem.isClimbEnabled;
+    }
+    if (!joystick.getRightStickButton()){
+      m_ClimberSubsystem.wasClimbEnabled = m_ClimberSubsystem.isClimbEnabled;
+    }
     
     // :) command process for climbing, starts with robot lined up inside 2nd bar (of 4), intake facing away from driver stations, and nearest grabber clamped on 2nd bar
     
     // :) increment the climber steps when the b button is pressed
-    if (joystick.getBButton() && !joystick.getXButton() && !m_ClimberSubsystem.isRunningClimbCommand && m_ClimberSubsystem.isCalibrated) { // :) only if the claws are calibrated, there is not command running and only the intended button is pressed
+    if (joystick.getBButton() && !joystick.getXButton() && !m_ClimberSubsystem.isRunningClimbCommand && m_ClimberSubsystem.isCalibrated && m_ClimberSubsystem.isClimbEnabled) { // :) only if the claws are calibrated, there is not command running and only the intended button is pressed
       if (m_ClimberSubsystem.currentClimberStep >= 0 && m_ClimberSubsystem.currentClimberStep < 10 && !m_ClimberSubsystem.isClimberStepStopped) { // :) only goes forward up to step 9, and as long as the current command step wasn't interrupted
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep < 0) { // :) in case it wasn't already going forward, redo the undid step
@@ -57,7 +65,7 @@ public class ClimbManagerCommand extends CommandBase {
 
     // :) increment the climber reverse steps when the x button is pressed
     if (joystick.getXButton() && !joystick.getBButton() && !m_ClimberSubsystem.isRunningClimbCommand && m_ClimberSubsystem.isCalibrated   // :) only if the claws are calibrated, there is not command running and only the intended button is pressed
-        && ( (m_ClimberSubsystem.currentClimberStep!=3 && m_ClimberSubsystem.currentClimberStep!=-4 && m_ClimberSubsystem.currentClimberStep<9))) { // :) and the climber is not on the step where it lifted itself up for the first time (as long as it succeeds)
+        && ( (m_ClimberSubsystem.currentClimberStep!=3 && m_ClimberSubsystem.currentClimberStep!=-4 && m_ClimberSubsystem.currentClimberStep<9)) && m_ClimberSubsystem.isClimbEnabled) { // :) and the climber is not on the step where it lifted itself up for the first time (as long as it succeeds)
       if (m_ClimberSubsystem.currentClimberStep < 0 && !m_ClimberSubsystem.isClimberStepStopped) { // :) only go reverse until it reaches 0 or it'll start doing positive stuff
         m_ClimberSubsystem.currentClimberStep += 1;
       } else if (m_ClimberSubsystem.currentClimberStep > 0) { // :) if it wasn't already going in reverse, then first undo the current step
