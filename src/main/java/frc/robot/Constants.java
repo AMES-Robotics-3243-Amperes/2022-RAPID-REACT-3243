@@ -171,7 +171,7 @@ public final class Constants {
 
         // ++ PID stuff --------------
         // ++ flywheel
-        public static final double flywheelPGain = 0.00055;
+        public static final double flywheelPGain = 0.0005;
         public static final double flywheelIGain = 0.0000005;
         public static final double flywheelDGain = 0.0;
         public static final double flywheelFFGain = 0.0;
@@ -194,16 +194,21 @@ public final class Constants {
 
         // ++ dump constants
         /** ++ speed the flywheel spins at to dump a ball */
-        public static final double dumpFlywheelRPM =  2500;
+        public static final double dumpFlywheelRPM =  1500;
         /** ++ the angle of the hood for dumping */
         public static final double dumpHoodAngle = 0;
 
         /** ++ dump flywheel timeout */
         public static final double dumpFlywheelTimeout = 2.0;
         /** ++ dump adjust hood timeout */
-        public static final double dumpHoodTimeout = 2.0;
+        public static final double dumpHoodTimeout = 1.0;
         /** ++ accept command duration (like a timeout) */
         public static final double acceptCommandDuration = 1.0;
+
+
+        // ++ figure out what this should actually be
+        public static final double flywheelRPMFromLaunchPad = 4000;
+
 
 
     
@@ -213,12 +218,13 @@ public final class Constants {
 
         // ++ -------- SHOOTER ROUTINE STUFF ----------------------------
         
+
         // ++ end condition tolerances ----
             // ++ these are the tolerances that is the acceptable range to finish the shooter routine and fire the cargo
                 // ++ RIGHT NOW ALL OF THESE ARE VERY MUCH BALLPARKS. THIS IS JUST SO THEY HAVE A VALUE
         public static final double rotationErrorTolerance = 5.0;
         public static final double hoodErrorTolerance = 5.0;
-        public static final double flywheelSpeedErrorTolerance = 50.0;
+        public static final double flywheelSpeedErrorTolerance = 20.0;
 
         // ++ timeout lengths
             // ++ FIGURE OUT WHAT THESE SHOULD ACTUALLY BE
