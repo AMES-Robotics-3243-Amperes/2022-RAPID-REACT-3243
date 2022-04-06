@@ -30,6 +30,8 @@ public class ShootRoutineFailedRumble extends CommandBase {
   boolean inFirstRumble;
   boolean inSecondRumble;
 
+  double onTime = 0.1;
+  double pauseTime = 0.5;
 
   /** Creates a new RoutineFailedRumble. */
   public ShootRoutineFailedRumble(JoyUtil secondaryController) {
@@ -47,9 +49,11 @@ public class ShootRoutineFailedRumble extends CommandBase {
     clock.reset();
     clock.start();
 
-    controller.stopRumbleRight(); // :) this is code
+    if (controller != null){
+      controller.stopRumbleRight(); // :) this is code
+    }
 
-    inFirstRumble = true;
+    inFirstRumble = false;
     inSecondRumble = false;
   }
 
@@ -58,15 +62,22 @@ public class ShootRoutineFailedRumble extends CommandBase {
   public void execute() {
     controller.rumbleRight(1.0);
 
-    if ( clock.get() >= 0.2 ) {
+    if ( clock.get() >= 0.0 ) {
+      inFirstRumble = true;
+    }
+    if ( clock.get() >= onTime ) {
       inFirstRumble = false;
     }
-    if ( (clock.get() >= 0.5) && (clock.get() <= 0.7) ) {
+    if ( (clock.get() >= pauseTime) && (clock.get() >= (onTime + pauseTime)) ) {
       inSecondRumble = true;
-    }
+    } 
 
-    if (inFirstRumble || inSecondRumble) {
-      controller.rumbleRight(1.0);
+    if (controller != null){
+      if (inFirstRumble || inSecondRumble) {
+        controller.rumbleRight(1.0);
+      } else {
+        controller.stopRumbleRight();
+      }
     }
 
   }
@@ -74,12 +85,14 @@ public class ShootRoutineFailedRumble extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    controller.stopRumbleRight();
+    if (controller != null){
+      controller.stopRumbleRight();
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return ( (clock.get() >= 0.7) || LimelightSubsystem.continueShooterRoutine);
+    return ( (clock.get() >= (onTime + pauseTime)) || LimelightSubsystem.continueShooterRoutine);
   }
 }

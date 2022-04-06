@@ -138,7 +138,7 @@ public final class Constants {
         public static final double rotationLowPassFilterStrength = 0.2;
         // ++ we probably don't want the speed damcursjdjdjdpers as finals incase we want a fastmode/to change them later 
         public static final double driveSpeedDamper = 0.65; 
-        public static final double rotationDamper = 5.0; 
+        public static final double rotationDamper = 8.0; 
 
         // ss This is the multiplier for Fast Mode
         // explained in JoyUtil.java

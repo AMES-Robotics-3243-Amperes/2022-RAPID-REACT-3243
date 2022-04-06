@@ -44,6 +44,6 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
                 // More cursed coefficients woo! This makes it do a 180, don't ask why this many radians is a U-turn to the robot
                 new TurnCommand(drive, 1.16809131743 * Math.PI),
-                new ShootRoutineCommandGroup(drive, intake, shooter, hood));
+                new ShootRoutineCommandGroup(drive, intake, shooter, hood, null));
   }
 }

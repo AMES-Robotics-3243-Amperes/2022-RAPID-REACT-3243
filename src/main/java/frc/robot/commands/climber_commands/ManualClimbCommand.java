@@ -60,10 +60,10 @@ public class ManualClimbCommand extends CommandBase {
     }
 
     if (m_ClimberSubsystem.isTooHot){
-      joystick.setRumble(RumbleType.kLeftRumble, 1);
+      // joystick.setRumble(RumbleType.kLeftRumble, 1);
       // joystick.setRumble(RumbleType.kRightRumble, 1);
     } else {
-      joystick.setRumble(RumbleType.kLeftRumble, 0);
+      // joystick.setRumble(RumbleType.kLeftRumble, 0);
       // joystick.setRumble(RumbleType.kRightRumble, 0);
     }
 
