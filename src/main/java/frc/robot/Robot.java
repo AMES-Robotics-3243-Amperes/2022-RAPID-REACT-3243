@@ -88,6 +88,8 @@ public class Robot extends TimedRobot {
 
     
     m_ClimberSubsystem.resetMotorPosReadings();
+    m_ClimberSubsystem.currentClimberStep = 0;
+    m_ClimberSubsystem.previousClimberStep = 0;
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

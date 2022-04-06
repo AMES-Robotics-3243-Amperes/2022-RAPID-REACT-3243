@@ -199,6 +199,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void resetMotorPosReadings(){
     // :) resetting the encoder positions for the motors to 0
+
     climberMotorREncoder.setPosition(0);
     climberMotorLEncoder.setPosition(0);
 
