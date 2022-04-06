@@ -94,8 +94,6 @@ public class RobotContainer {
   // SUBSYSTEMS -------------------
     // ++ "utility subsystems"
   private final IMUSubsystem m_IMUSubsystem = new IMUSubsystem();
-
-
     // ++ robot subsystems
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
