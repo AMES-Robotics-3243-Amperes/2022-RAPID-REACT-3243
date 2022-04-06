@@ -14,6 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 public class IntakeIndexerSubsystem extends SubsystemBase {
   // private final CANSparkMax dropMotor;
@@ -36,6 +37,9 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     // dropMotor = new CANSparkMax(Constants.IntakeIndexer.dropMotorID, MotorType.kBrushless);
     intakeMotor = new CANSparkMax(Constants.IntakeIndexer.intakeMotorID, MotorType.kBrushless);
     indexMotor = new CANSparkMax(Constants.IntakeIndexer.indexMotorID, MotorType.kBrushless);
+    indexMotor.setIdleMode(IdleMode.kBrake);
+    intakeMotor.setIdleMode(IdleMode.kBrake);
+
 
     // dropEncoder = dropMotor.getEncoder();
     intakeEncoder = intakeMotor.getEncoder();
@@ -83,13 +87,13 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
   public void setIntakeSpeed(double speed) {
     // ~~ This method spins the intake bars
     intakeMotor.set(speed);
-    System.out.println(speed);
+    // System.out.println(speed);
   }
 
   public void setIndexerSpeed(double speed) {
     // ~~ This method spins the indexer wheels.
     indexMotor.set(speed);
-    System.out.println(speed);
+    // System.out.println(speed);
   }
 
   public void stepIndexer(double rotations) {
