@@ -3,7 +3,9 @@ package frc.robot;
 import frc.robot.subsystems.ShuffleboardSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController; 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType; 
 
 
 /** ++ we'll use this class to write methods that help us process joystick inputs
@@ -47,6 +49,13 @@ public final class JoyUtil extends XboxController {
     public void stopRumbleRight() {
         setRumble(RumbleType.kRightRumble, 0.0);
     }
+
+    public void stopBothRumble() {
+        setRumble(RumbleType.kLeftRumble, 0.0);
+        setRumble(RumbleType.kRightRumble, 0.0);
+    }
+
+
 
     // ++ end rumble stuff ------------
 

@@ -203,7 +203,7 @@ public final class Constants {
         /** ++ dump adjust hood timeout */
         public static final double dumpHoodTimeout = 2.0;
         /** ++ accept command duration (like a timeout) */
-        public static final double acceptCommandDuration = 2.0;
+        public static final double acceptCommandDuration = 1.0;
 
 
     
@@ -237,14 +237,14 @@ public final class Constants {
     public static final class Limelight {
         // ++ ====== actual limelight values ============
             /** angle of the limelight; degrees up from horizontal */
-        public static final double limelightAngleOffset = 33.0;
+        public static final double limelightAngleOffset = 40.7;
 
         // ++ ======= field/robot measurements ============ (all in feet)
 
         public static final double hubHeight = 8.6666666667; // ++ i put this as a decimal approx bc (104/12) was being weird
 
         /** ++ this should be the distance of the limelight above the ground */
-        public static final double shooterHeight = 1.333333; 
+        public static final double shooterHeight = 1.41666667; 
 
             /** this is the difference in height between the shooter and the hub, in feet */
         public static final double shooterToHubHeight = hubHeight - shooterHeight;

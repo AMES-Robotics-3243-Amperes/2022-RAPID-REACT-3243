@@ -83,10 +83,10 @@ public class RobotContainer {
   // ++ we make a JoyUtil object instead of an XboxController object; JoyUtil inherits XboxController
   public static JoyUtil primaryController = new JoyUtil( Constants.Joysticks.primaryControllerID );
   public static JoyUtil secondaryController = new JoyUtil( Constants.Joysticks.secondaryControllerID );
-    public static JoystickButton secondaryRightBumper = new JoystickButton(secondaryController, Constants.Joysticks.RightBumper);
-    public static JoystickButton secondaryXButton = new JoystickButton(secondaryController, Constants.Joysticks.X);
-    public static JoystickButton primaryAButton = new JoystickButton(primaryController, Constants.Joysticks.A);
-    public static JoystickButton autoShootRoutineButton = new JoystickButton(secondaryController, Constants.Joysticks.Y);
+    public static JoystickButton rebuffButton = new JoystickButton(secondaryController, Constants.Joysticks.X);
+    public static JoystickButton stepIntakeButton = new JoystickButton(secondaryController, Constants.Joysticks.A);
+    // public static JoystickButton primaryAButton = new JoystickButton(primaryController, Constants.Joysticks.A);
+    public static JoystickButton autoShootRoutineButton = new JoystickButton(secondaryController, Constants.Joysticks.RightBumper);
     public static JoystickButton dumpButton = new JoystickButton(secondaryController, Constants.Joysticks.B);
 
 
@@ -154,8 +154,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    secondaryRightBumper.whenPressed(m_RebuffCommand);
-    secondaryXButton.whenPressed(m_AcceptCommand);
+    rebuffButton.whenPressed(m_RebuffCommand);
+    stepIntakeButton.whenPressed(m_AcceptCommand);
     autoShootRoutineButton.whenPressed(m_AutoShootRoutineCommand);
     dumpButton.whenPressed(m_DumpCommand);
 

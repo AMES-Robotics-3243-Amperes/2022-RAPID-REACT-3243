@@ -40,7 +40,6 @@ public class IntakeIndexerSubsystem extends SubsystemBase {
     indexMotor.setIdleMode(IdleMode.kBrake);
     intakeMotor.setIdleMode(IdleMode.kBrake);
 
-
     // dropEncoder = dropMotor.getEncoder();
     intakeEncoder = intakeMotor.getEncoder();
     indexEncoder = indexMotor.getEncoder();
