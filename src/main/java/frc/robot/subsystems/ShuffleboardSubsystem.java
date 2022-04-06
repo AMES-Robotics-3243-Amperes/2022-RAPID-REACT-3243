@@ -70,7 +70,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
   
-  public ShuffleboardSubsystem(recalibrate_grippers gripperCommand) {
+  public ShuffleboardSubsystem(recalibrate_grippers gripperCalibration) {
     // ++ define all the tabs
     driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
     movementTab = Shuffleboard.getTab("Drivetrain");
@@ -140,7 +140,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       // ££===================== CLIMBER FEEDBACK ==========================================================
       pawlsEngaged = driverFeedbackTab.add("Are pawls engaged", false);
       climberSteps = driverFeedbackTab.add("What climber step is it", 0);
-      recalibrateGrippers = driverFeedbackTab.add("Recalibrate Grippers", gripperCommand);
+      recalibrateGrippers = driverFeedbackTab.add("Recalibrate Grippers", gripperCalibration);
 
 
 
