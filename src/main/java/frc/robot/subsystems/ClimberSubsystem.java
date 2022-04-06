@@ -14,8 +14,10 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.climber_commands.ClimbManagerCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 
 // :) this is gonna be a beast to comment and clean up......
@@ -34,7 +36,7 @@ public class ClimberSubsystem extends SubsystemBase {
   private Servo pawlL0 = new Servo(Constants.Climber.pawlL0);
   private Servo pawlL1 = new Servo(Constants.Climber.pawlL1);
 
-  //getting motor encoders, pids, etc.
+  // :) getting motor encoders, pids, etc.
 
   private SparkMaxPIDController climberMotorRPID = climberMotorR.getPIDController();
   private SparkMaxPIDController climberMotorLPID = climberMotorL.getPIDController();
@@ -172,8 +174,18 @@ public class ClimberSubsystem extends SubsystemBase {
     // :) create these smartdashboard objects in smartdashboard
     SmartDashboard.putNumber("calibration speed", -0.17);
     SmartDashboard.putNumber("calibration current", 20);
-  }
 
+    // ££ Checks if pawls are engaged
+
+    }
+
+  static int c = 0;
+  public int climberStep() {
+    if (currentClimberStep < 9) {
+      c += 1;
+    }
+    return c;
+  }
   public void initialize(){
     // :) reset all the encoder positions and angles for the arm spinny
     climberAngle=0;
@@ -425,7 +437,14 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     prevStopped = isClimberStepStopped;
-  }
+    ShuffleboardSubsystem.arePawlsEngaged(currentClimberStep == 9);
+    double c = 0.0;
+      if (currentClimberStep < 9) {
+        c ++;
+      }
+    ShuffleboardSubsystem.climberSteps(c);
+
+    }
 
   @Override
   public void simulationPeriodic() {

@@ -6,9 +6,10 @@
 // ++ comment for commit test
 
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj.DriverStation;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -22,6 +23,9 @@ import frc.robot.ControlOption;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.commands.climber_commands.ClimbManagerCommand;
+
 import java.util.function.BooleanSupplier;
 
 
@@ -40,6 +44,9 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   static ComplexWidget field;
   // ££ Shooter Feedback
   static SimpleWidget seesTarget;
+  // ££ Climber Feedback
+  static SimpleWidget pawlsEngaged;
+  static SimpleWidget climberSteps;
 
   // ++ this gives a selector thing in Shuffleboard that lets you switch the first power
   private static SendableChooser<ControlOption> m_JoyCurve;
@@ -51,16 +58,15 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   
   public ShuffleboardSubsystem() {
     // ++ define all the tabs
-      driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
-      movementTab = Shuffleboard.getTab("Drivetrain");
-      IMUTab = Shuffleboard.getTab("IMU");
-      shooterTab = Shuffleboard.getTab("Shooter");
-
+    driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
+    movementTab = Shuffleboard.getTab("Drivetrain");
+    IMUTab = Shuffleboard.getTab("IMU");
+    shooterTab = Shuffleboard.getTab("Shooter");
     
 
 
 
-  // // I'm gonna cry\
+  // // I'm gonna cry
   // ++ me too I'm freezing rn cottonwood's area is coldddddd
 
 
@@ -111,12 +117,15 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     // ~~ ==================== END IMU WIDGETS/STUFF =====================================================
     
       // ££ ============================= DRIVER FEEDBACK ================================================
-      field = driverFeedbackTab.add(DriveSubsystem.getField());
+      field = driverFeedbackTab.add("Where you are on the field", DriveSubsystem.getField());
       // ££ ==================== SHOOTER FEEDBACK ==========================================================
-      seesTarget = driverFeedbackTab.add("Sees Target is True", LimelightSubsystem.isTargetValid());
+      seesTarget = driverFeedbackTab.add("Can you see target", LimelightSubsystem.isTargetValid());
+      // ££===================== CLIMBER FEEDBACK ==========================================================
+      pawlsEngaged = driverFeedbackTab.add("Are pawls engaged", false);
+      climberSteps = driverFeedbackTab.add("What climber step is it", 0);
       
   }
-
+// why did Maya give me this? When will it be found? How long until it gets taken away from me? Maybe this comment will throw an error somehow...
   // ++ =========================================== DRIVETRAIN METHODS ===================================
   public static int getFirstPower() {
     //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
@@ -190,7 +199,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     // ~~ ==================== END JOYSTICK CURVE OUTPUTS ================================================
 
     // ~~ ==================== IMU OUTPUTS ===============================================================
-    if (DriverStation.isTest()) {
     yawShuffle.getEntry().setDouble(IMUSubsystem.getYaw());
     pitchShuffle.getEntry().setDouble(IMUSubsystem.getPitch());
     rollShuffle.getEntry().setDouble(IMUSubsystem.getRoll());
@@ -202,8 +210,12 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     zPositionShuffle.getEntry().setDouble(IMUSubsystem.getZPosition());
     // ~~ ==================== END IMU OUTPUTS ===========================================================
 
-
     // ££ ==================== DRIVER STATION ============================================================
   }
-}
+  public static void arePawlsEngaged(Boolean engaged) {
+    pawlsEngaged.getEntry().setBoolean(engaged);
+  }
+  public static void climberSteps(double climbStep) {
+    climberSteps.getEntry().setDouble(climbStep);
+  }
 }
