@@ -448,7 +448,7 @@ public class ClimberSubsystem extends SubsystemBase {
     ShuffleboardSubsystem.arePawlsEngaged(currentClimberStep == 9);
 
     double c = 0.0;
-      while (currentClimberStep < 9) {
+      if (currentClimberStep < 9) {
         c ++;
       }
     ShuffleboardSubsystem.allClimberSteps(c);
