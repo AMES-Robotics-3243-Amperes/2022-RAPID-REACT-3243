@@ -69,13 +69,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
 
   private static SimpleWidget roughxpos, roughypos, roughzpos;
-  public ShuffleboardSubsystem() {
-    // ++ define all the tabs
-    driverFeedbackTab = Shuffleboard.getTab("Driverfeedback");
-    movementTab = Shuffleboard.getTab("Drivetrain");
-    IMUTab = Shuffleboard.getTab("IMU");
-    shooterTab = Shuffleboard.getTab("Shooter");
-  }
   
   public ShuffleboardSubsystem(recalibrate_grippers gripperCalibration) {
     // ++ define all the tabs
