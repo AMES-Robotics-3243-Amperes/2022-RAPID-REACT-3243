@@ -34,8 +34,10 @@ public class AutonomousCommand extends SequentialCommandGroup {
     // AutonomousSpintakeCommand intakeBall = new AutonomousSpintakeCommand(intake, drive);
     // LookAtCommand turnToHub = new LookAtCommand(drive, false);
     // InstantCommand initializeTeleop = new InstantCommand(drive::toTeleopMode, drive);
-    addCommands(new AutonomousTaxiCommand(drive, true),
+    addCommands(new SetPoseCommand(drive),
+                new GoToCommand(drive, true),
                 new AutonomousSpintakeCommand(intake, drive),
-                new LookAtCommand(drive, false));
+                // new GoToCommand(drive, false);
+                new InstantCommand(drive::uTurn, drive));
   }
 }

@@ -8,6 +8,8 @@ import frc.robot.Constants;
 import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** An example command that uses an example subsystem. */
 public class ManualClimbCommand extends CommandBase {
@@ -39,7 +41,7 @@ public class ManualClimbCommand extends CommandBase {
     m_ClimberSubsystem.calibrateGrabbers();
   }
 
-
+  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -47,7 +49,7 @@ public class ManualClimbCommand extends CommandBase {
     // :) gets left and right trigger axes to spin the shaktool climber for fine manual adjustments (shouldn't need this if everything goes well)
     // :) they cancel each other out as well
 
-    if (m_ClimberSubsystem.isRunningClimbCommand == false) {
+    if (!m_ClimberSubsystem.isRunningClimbCommand && m_ClimberSubsystem.isClimbEnabled) {
       if (Math.abs(joystick.getLeftY())>0.1) {
         spinSpeed = joystick.getLeftY()/4;
       } else {

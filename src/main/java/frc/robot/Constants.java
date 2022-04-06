@@ -51,11 +51,11 @@ public final class Constants {
         public static final double velocityConversionRatio = ((wheelDiameter * Math.PI)/(10.71 * 60));
             /** (position conversion) is the same as velocity conversion but has a cursed coefficient for some reason,,,
              * figure out what's going on with that constant */
-        public static final double positionConversionRation = ((2.4 * wheelDiameter * Math.PI)/(4 * 10.71));
+        public static final double positionConversionRation = ((wheelDiameter * Math.PI)/(10.71));
         /**  maximum speed of robot in m/s (max rpm times conversion ratio), this also (I think) converts from RPM to m/s */
         public static final double maxWheelSpeed = maxNEORPM * velocityConversionRatio;
         /** error tolerance for wheel encoders during autnomous */
-        public static final double errorTolerance = 0.1;
+        public static final double errorTolerance = 0.5;
     }
     
     public static final class Climber {

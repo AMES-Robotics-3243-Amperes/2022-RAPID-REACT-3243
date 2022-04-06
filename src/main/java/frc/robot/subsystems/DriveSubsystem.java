@@ -63,6 +63,8 @@ public class DriveSubsystem extends SubsystemBase {
   double backLeftTarget;
   double backRightTarget;
 
+  double angle;
+
   // ~~ mecanum drive kinematics object for calculating wheel speeds and positions from chassis speeds and positions
   MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     Constants.DriveTrain.frontLeftMeters, 
@@ -86,9 +88,9 @@ public class DriveSubsystem extends SubsystemBase {
   private SimpleWidget dGainWidget;
   private SimpleWidget speedErrorThresholdWidget;
 
-  private double gyroOffset = 0.0;
   private double xChange = 0.0;
   private double yChange = 0.0;
+  
 
 
   public DriveSubsystem() {
@@ -138,12 +140,13 @@ public class DriveSubsystem extends SubsystemBase {
 
     resetPose(0.0, 0.0, 0.0);
 
-    odometry = new MecanumDriveOdometry(kinematics, IMUSubsystem.getGyroRotation(), pose);
+    odometry = new MecanumDriveOdometry(kinematics, new Rotation2d(angle), pose);
 
     frontLeftTarget = 0.0;
     frontRightTarget = 0.0;
     backLeftTarget = 0.0;
     backRightTarget = 0.0;
+    
 
     // ~~ =============================================================================
 
@@ -190,10 +193,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setPositionalReference(double flRef, double frRef, double blRef, double brRef) {
-    frontLeftPIDController.setReference(flRef, ControlType.kPosition);
-    frontRightPIDController.setReference(frRef, ControlType.kPosition);
-    backLeftPIDController.setReference(blRef, ControlType.kPosition);
-    backRightPIDController.setReference(brRef, ControlType.kPosition);
+    frontLeftPIDController.setReference(flRef/20, ControlType.kPosition);
+    frontRightPIDController.setReference(frRef/20, ControlType.kPosition);
+    backLeftPIDController.setReference(blRef/20, ControlType.kPosition);
+    backRightPIDController.setReference(brRef/20, ControlType.kPosition);
     frontLeftTarget = flRef;
     frontRightTarget = frRef;
     backLeftTarget = blRef;
@@ -280,7 +283,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @param x x velocity
    * @param y y velocity
    * @param r rotation
-   * @return this doesn't return anything-- but it sets the speeds of the wheels
    */
   public void setReferencesFromWheelSpeeds(double x, double y, double r){
     /* ++ the getWheelSpeeds() method returns a MecanumDriveWheelSpeeds object, 
@@ -290,18 +292,12 @@ public class DriveSubsystem extends SubsystemBase {
     setVelocityReference( getWheelSpeeds(x, y, r) );
   }
 
-
-
-
-
-
-
-
-
   // ~~ resets the Pose2d and encoder positions of all the motors
   public void resetPose(Pose2d newPose) {
     IMUSubsystem.setYaw(newPose.getRotation().getDegrees());
     pose = newPose;
+    angle = pose.getRotation().getRadians();
+    odometry = new MecanumDriveOdometry(kinematics, new Rotation2d(angle), pose);
     setPositionalReference(0.0, 0.0, 0.0, 0.0);
     frontLeftEncoder.setPosition(0.0);
     frontRightEncoder.setPosition(0.0);
@@ -318,15 +314,19 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetPose(double x, double y, double r) {
-    resetPose(new Pose2d(x, y, new Rotation2d()));
+    resetPose(new Pose2d(x, y, new Rotation2d(r)));
   }
 
 
   // ~~ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {
-    ChassisSpeeds chassisPos = new ChassisSpeeds(transform.getX(), transform.getY(), 0);
+    ChassisSpeeds chassisPos = new ChassisSpeeds(transform.getY(), transform.getX(), 0);
     MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
 
+    frontLeftPIDController.setOutputRange(-0.2, 0.2);
+    frontRightPIDController.setOutputRange(-0.2, 0.2);
+    backLeftPIDController.setOutputRange(-0.2, 0.2);
+    backRightPIDController.setOutputRange(-0.2, 0.2);
     frontLeftEncoder.setPosition(0.0);
     frontRightEncoder.setPosition(0.0);
     backLeftEncoder.setPosition(0.0);
@@ -358,19 +358,22 @@ public class DriveSubsystem extends SubsystemBase {
     // ~~ Dumb math to make the angle of the robot continuous instead of linear 
     // ~~ (ie. being at π and rotating π radians puts you at 0, not 2π)
     // ~~ Also means the robot wont do a 360 just to turn from slightly left to slightly right
-    double currentAngle = IMUSubsystem.getGyroRotation().getRadians();
-    double standardDif = Math.abs(radians - currentAngle);
-    double highDif = Math.abs((radians + (2 * Math.PI)) - currentAngle);
-    double lowDif = Math.abs((radians - (2 * Math.PI)) - currentAngle);
-    double lowestDif = Math.min(standardDif, Math.min(lowDif, highDif));
+    Rotation2d currentRotation = IMUSubsystem.getGyroRotation();
+    Rotation2d newRotation = new Rotation2d(radians);
+    Rotation2d transform = newRotation.plus(new Rotation2d(currentRotation.getRadians() * -1));
 
-    if (lowestDif == standardDif) {
-      changeRobotAngle(radians - currentAngle);
-    } else if (lowestDif == lowDif) {
-      changeRobotAngle((radians + (2 * Math.PI)) - currentAngle);
-    }else {
-      changeRobotAngle((radians + (2 * Math.PI)) - currentAngle);
-    }
+    // if (lowestDif == standardDif) {
+    //   changeRobotAngle(radians - currentAngle);
+    // } else if (lowestDif == lowDif) {
+    //   changeRobotAngle((radians + (2 * Math.PI)) - currentAngle);
+    // }else {
+    //   changeRobotAngle((radians + (2 * Math.PI)) - currentAngle);
+    // }
+    changeRobotAngle(transform.getRadians());
+  }
+
+  public void uTurn() {
+    changeRobotAngle(Math.PI);
   }
 
   public void lookAt(Pose2d target) {
@@ -441,7 +444,7 @@ public class DriveSubsystem extends SubsystemBase {
     speedErrorThreshold = speedErrorThresholdWidget.getEntry();
     // ~~ Use odometry object for calculating position
     ChassisSpeeds expectedSpeed = kinematics.toChassisSpeeds(wheelspeeds);
-    ChassisSpeeds actualSpeed = new ChassisSpeeds(IMUSubsystem.getXVelocity(), IMUSubsystem.getYVelocity(), 0.0);
+    ChassisSpeeds actualSpeed = new ChassisSpeeds(-IMUSubsystem.getZVelocity(), IMUSubsystem.getYVelocity(), 0.0);
 
     Double xError = expectedSpeed.vxMetersPerSecond - actualSpeed.vxMetersPerSecond;
     Double yError = expectedSpeed.vyMetersPerSecond - actualSpeed.vyMetersPerSecond;
@@ -455,7 +458,7 @@ public class DriveSubsystem extends SubsystemBase {
     // ~~ Checks if the robot's wheels are slipping to determine if odometry or the imu would be more accurate
     if (speedError < speedErrorThreshold.getDouble(0.1)) {
       // ~~ Calculates position based on odometry
-      pose = odometry.update(IMUSubsystem.getGyroRotation(), wheelspeeds);
+      pose = odometry.update(new Rotation2d(angle), wheelspeeds);
 
       if (DriverStation.isTest()) {
         SmartDashboard.putBoolean("Slipping?", false);
@@ -470,8 +473,8 @@ public class DriveSubsystem extends SubsystemBase {
       pose = new Pose2d(newX, newY, newR);
 
       // ~~ Updates odometry object with data from imu
-      odometry.update(IMUSubsystem.getGyroRotation(), wheelspeeds);
-      odometry.resetPosition(pose, IMUSubsystem.getGyroRotation());
+      odometry.update(new Rotation2d(angle), wheelspeeds);
+      odometry.resetPosition(pose, new Rotation2d(angle));
 
       SmartDashboard.putBoolean("Slipping?", true);
 
