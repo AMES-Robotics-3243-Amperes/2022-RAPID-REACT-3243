@@ -165,18 +165,21 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   // ++ =========================================== DRIVETRAIN METHODS ===================================
   public static int getFirstPower() {
     //return (int)(firstpowershuffle.getEntry().getDouble(Constants.Joysticks.firstPower));
-    return m_JoyCurve.getSelected().getFirstPower();
+    // return m_JoyCurve.getSelected().getFirstPower();
+    return 3;
     
   }
 
   public static int getSecondPower() {
     // return (double)(secondPowerShuffle.getEntry().getNumber((double)Constants.Joysticks.secondPower));
-    return m_JoyCurve.getSelected().getSecondPower();
+    //return m_JoyCurve.getSelected().getSecondPower();
+    return 1;
     
   }
   public static double getaCoeff() {
     // return (double)(aCoeffShuffle.getEntry().getDouble((double)Constants.Joysticks.aCoeff));
-    return m_JoyCurve.getSelected().getACoefficient();
+    //return m_JoyCurve.getSelected().getACoefficient();
+    return 0.7;
     
   }
 
@@ -184,15 +187,18 @@ public class ShuffleboardSubsystem extends SubsystemBase {
     // ++ this returns the b coefficient
     // ++ it's (1- a coeff) becasue that's what the
     //return (double)(1.0 - getaCoeff());
-    return m_JoyCurve.getSelected().getBCoefficient();
+    //return m_JoyCurve.getSelected().getBCoefficient();
+    return 0.3;
   }
 
   public static double getFastmodeMultiplier(){
-    return (double)(fastModeMultiplierShuffle.getEntry().getNumber((double)Constants.Joysticks.fastModeMaxMultiplier));
+    //return (double)(fastModeMultiplierShuffle.getEntry().getNumber((double)Constants.Joysticks.fastModeMaxMultiplier));
+    return 0.5;
   }
 
   public static double getDriveSpeedDamper(){
-    return (double)(totalSpeedDamperShuffle.getEntry().getDouble((double)Constants.Joysticks.driveSpeedDamper));
+    //return (double)(totalSpeedDamperShuffle.getEntry().getDouble((double)Constants.Joysticks.driveSpeedDamper));
+    return 0.65;
   }
 
   public static Pose2d getStartingPose() {
@@ -209,12 +215,14 @@ public class ShuffleboardSubsystem extends SubsystemBase {
   /** ++ this method returns the pid values for the shooter as an array,
    * in the order P, I, D, FF */
   public static double[] getFlywheelPIDValues(){
-    double PIDFValues[] = {
+    /* double PIDFValues[] = {
     flywheelPGain.getEntry().getDouble( Constants.Shooter.flywheelPGain),
     flywheelIGain.getEntry().getDouble( Constants.Shooter.flywheelIGain),
     flywheelDGain.getEntry().getDouble( Constants.Shooter.flywheelDGain),
     flywheelFFGain.getEntry().getDouble( Constants.Shooter.flywheelFFGain),
-    };
+    }; */
+
+    double PIDFValues[] = {0.0005, 0.0000005, 0.0, 0.0};
 
     return PIDFValues;
     

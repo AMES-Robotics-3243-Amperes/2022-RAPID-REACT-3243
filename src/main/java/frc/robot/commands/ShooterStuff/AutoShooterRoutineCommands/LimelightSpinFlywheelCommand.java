@@ -45,8 +45,8 @@ public class LimelightSpinFlywheelCommand extends CommandBase {
     m_ShooterSubsystem.setFlyhweelPIDValues();
 
     // ++ THIS IS WHAT THIS SHOULD ACTUALY BE, THE OTHER CODE IS JUST A TEST \/
-    // flywheelTargetVelocity = LimelightSubsystem.giveTargetFlywheelVelocity();
-    flywheelTargetVelocity = ShuffleboardSubsystem.readTargetFlywheelRPM();
+    flywheelTargetVelocity = LimelightSubsystem.giveTargetFlywheelVelocity();
+    // flywheelTargetVelocity = ShuffleboardSubsystem.readTargetFlywheelRPM();
 
     clock.reset();
     clock.start();

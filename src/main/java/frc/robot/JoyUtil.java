@@ -229,17 +229,12 @@ public final class JoyUtil extends XboxController {
     */
     public double getDPadY() {
         if (getPOV() != -1) {
-            return Math.sin( Math.toRadians(getPOV() -90.0)) * Constants.Joysticks.dPadDamper;
+            return Math.sin( Math.toRadians(getPOV() - 90.0)) * Constants.Joysticks.dPadDamper;
         } else {
             return 0.0;
         }
     }
 
-
-
-
-    public void stopRightRumble() {
-    }
 
 }
 
