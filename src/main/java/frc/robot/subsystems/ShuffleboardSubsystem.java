@@ -137,9 +137,9 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       // ££ ==================== SHOOTER FEEDBACK ==========================================================
       seesTarget = driverFeedbackTab.add("Can you see target", LimelightSubsystem.isTargetValid());
       // ££===================== CLIMBER FEEDBACK ==========================================================
-      pawlsEngaged = SmartDashboard.add("Are pawls engaged", false);
-      climberSteps = SmartDashboard.add("What climber step is it", 0);
-      recalibrateGrippers = SmartDashboard.add("Recalibrate Grippers", gripperCalibration);
+      pawlsEngaged = driverFeedbackTab.add("Are pawls engaged", false);
+      climberSteps = driverFeedbackTab.add("What climber step is it", 0);
+      recalibrateGrippers = driverFeedbackTab.add("Recalibrate Grippers", gripperCalibration);
 
 
 

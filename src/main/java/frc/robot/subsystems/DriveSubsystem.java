@@ -212,6 +212,13 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public void resetOutputRange() {
+    frontLeftPIDController.setOutputRange(-10, 10);
+    frontRightPIDController.setOutputRange(-10, 10);
+    backLeftPIDController.setOutputRange(-10, 10);
+    backRightPIDController.setOutputRange(-10, 10);
+  }
+
   // ~~ Sets the P, I, and D gains of the 4 PID loops
   public void setPIDValues(double kP, double kI, double kD) {
     frontLeftPIDController.setP(kP);
@@ -318,15 +325,20 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
+  public void stopRobot() {
+    setVelocityReference(0,0,0,0);
+  }
+
   // ~~ changes the robots position based off of current position
   public void changeRobotPosition(Pose2d transform) {
     ChassisSpeeds chassisPos = new ChassisSpeeds(transform.getX(), transform.getY(), 0);
     MecanumDriveWheelSpeeds wheelPos = kinematics.toWheelSpeeds(chassisPos);
 
-    frontLeftPIDController.setOutputRange(-0.2, 0.2);
-    frontRightPIDController.setOutputRange(-0.2, 0.2);
-    backLeftPIDController.setOutputRange(-0.2, 0.2);
-    backRightPIDController.setOutputRange(-0.2, 0.2);
+    frontLeftPIDController.setOutputRange(-0.3, 0.3);
+    frontRightPIDController.setOutputRange(-0.3, 0.3);
+    backLeftPIDController.setOutputRange(-0.3, 0.3);
+    backRightPIDController.setOutputRange(-0.3, 0.3);
+
     frontLeftEncoder.setPosition(0.0);
     frontRightEncoder.setPosition(0.0);
     backLeftEncoder.setPosition(0.0);

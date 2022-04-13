@@ -96,8 +96,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final int grabberSoftCurrentLimit = 15;
   public final int grabberHardCurrentLimit = 20;
 
-  private final int climberSoftCurrentLimit = 50;
-  public final int climberHardCurrentLimit = 55;
+  private final int climberSoftCurrentLimit = 60;
+  public final int climberHardCurrentLimit = 65;
 
   private final double maxTemp = 40;
   public boolean isTooHot = false;
@@ -190,7 +190,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
   public void initialize(){
     // :) reset all the encoder positions and angles for the arm spinny
-    climberAngle=5;
+    climberAngle=0;
     climberMotorLEncoder.setPosition(0);
     climberMotorREncoder.setPosition(0);
     currentClimberStep = 0;
@@ -208,7 +208,7 @@ public class ClimberSubsystem extends SubsystemBase {
     grabberR0Encoder.setPosition(0);
     grabberL0Encoder.setPosition(0);
 
-    climberAngle = 5;
+    climberAngle = 0;
     grabberAngles[0]=0;
     grabberAngles[1]=0;
 
@@ -292,11 +292,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
 
     // :) update and spin the motors to their angles UNCOMMENT TO TEST PAWLS
-    // if (DriverStation.getMatchTime()<1.5 && DriverStation.isTeleop()){
-    //   // :) engage pawls when match is nearly over
-    //   pawlServoAngles[0] = Constants.Climber.pawlClosed;
-    //   pawlServoAngles[1] = Constants.Climber.pawlClosed;
-    // }
+    if (DriverStation.getMatchTime()<1.5 && DriverStation.isTeleop()){
+      // :) engage pawls when match is nearly over
+      pawlServoAngles[0] = Constants.Climber.pawlClosed;
+      pawlServoAngles[1] = Constants.Climber.pawlClosed;
+    }
     if (currentClimberStep == 7){
       pawlServoAngles[0] = Constants.Climber.pawlClosed;
     }
@@ -310,6 +310,10 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     if (isCalibrated){
+      if ((DriverStation.getMatchTime()<1.5 && DriverStation.isTeleop())){
+        isClimberStepStopped = true;
+        grabberHoldAngles = grabberAngles;
+      }
 
       if (isClimberStepStopped){ // :) if paused then hold current climber arm position
         climberMotorRPID.setReference(climberHoldAngle, ControlType.kPosition);
@@ -448,7 +452,7 @@ public class ClimberSubsystem extends SubsystemBase {
     ShuffleboardSubsystem.arePawlsEngaged(currentClimberStep == 9);
 
     double c = 0.0;
-      while (currentClimberStep < 9) {
+      if (currentClimberStep < 9) {
         c ++;
       }
     ShuffleboardSubsystem.allClimberSteps(c);

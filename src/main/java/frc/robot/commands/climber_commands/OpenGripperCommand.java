@@ -7,6 +7,7 @@ package frc.robot.commands.climber_commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.JoyUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 
 // :) this command's action really only needs to be run once, and in all honesty it probably doesn't really need to be a command, but I think it's cleaner this way
 
@@ -54,7 +55,7 @@ public class OpenGripperCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // :) stops the command if the position gets achieved successfully or if it was interrupted by pushing the pause button
-    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] > m_ClimberSubsystem.gripperOpenMaximum-1 || (joystick.getStartButton())) { //1 is the error room to stop the function.
+    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] > m_ClimberSubsystem.gripperOpenMaximum-1.5 || joystick.getStartButton() || (DriverStation.getMatchTime()<1.5 && DriverStation.isTeleop())) { //1 is the error room to stop the function.
       if ( joystick.getStartButton()){
         m_ClimberSubsystem.grabberHoldAngles = m_ClimberSubsystem.encoderGrabberAngles;
         m_ClimberSubsystem.climberHoldAngle = m_ClimberSubsystem.encoderClimberAngle;

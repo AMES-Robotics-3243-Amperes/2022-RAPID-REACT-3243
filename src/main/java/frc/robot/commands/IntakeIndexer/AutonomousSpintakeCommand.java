@@ -13,15 +13,15 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class AutonomousSpintakeCommand extends CommandBase {
   private final IntakeIndexerSubsystem m_subsystem;
-  private final DriveSubsystem m_subsystem2;
+  private final double m_duration;
   private final Timer timer;
   /** Creates a new AutonomousSpintakeCommand. */
-  public AutonomousSpintakeCommand(IntakeIndexerSubsystem subsystem, DriveSubsystem subsytem_2) {
+  public AutonomousSpintakeCommand(IntakeIndexerSubsystem subsystem, double duration) {
     m_subsystem = subsystem;
-    m_subsystem2 = subsytem_2;
+    m_duration = duration;
     timer = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_subsystem, m_subsystem2);
+    addRequirements(m_subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -35,7 +35,7 @@ public class AutonomousSpintakeCommand extends CommandBase {
   public void execute() {
     m_subsystem.setIntakeSpeed(Constants.IntakeIndexer.intakeSpeed);
     m_subsystem.setIndexerSpeed(Constants.IntakeIndexer.indexSpeed);
-    m_subsystem2.setVelocityReference(Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5);
+    //m_subsystem2.setVelocityReference(Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5);
   }
 
   // Called once the command ends or is interrupted.
@@ -48,6 +48,6 @@ public class AutonomousSpintakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (timer.get() >= Constants.IntakeIndexer.autonomousIntakeDuration);
+    return (timer.get() >= m_duration);
   }
 }

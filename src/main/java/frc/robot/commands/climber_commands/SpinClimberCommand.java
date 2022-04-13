@@ -47,7 +47,7 @@ public class SpinClimberCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // :) stops the command if the position gets achieved successfully or if it was interrupted by pushing the pause button (start)
-    if (Math.abs(goalRevolution-m_ClimberSubsystem.encoderClimberAngle)<2.5 || (joystick.getStartButton())) { // error room for end command
+    if (Math.abs(goalRevolution-(m_ClimberSubsystem.encoderClimberAngle-m_ClimberSubsystem.climberOffsetAngle))<5.0 || (joystick.getStartButton())) { // error room for end command
       if ( (joystick.getStartButton())){
         m_ClimberSubsystem.grabberHoldAngles = m_ClimberSubsystem.encoderGrabberAngles;
         m_ClimberSubsystem.climberHoldAngle = m_ClimberSubsystem.encoderClimberAngle;

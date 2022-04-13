@@ -53,7 +53,7 @@ public class CloseGripperCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // :) stops the command if the position gets achieved successfully or if it was interrupted by pushing the start button
-    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] < m_ClimberSubsystem.gripperClosedMinimum+1 || (joystick.getStartButton())) { //0.5 is the error room to stop the function.
+    if (m_ClimberSubsystem.encoderGrabberAngles[actuatingSide] < m_ClimberSubsystem.gripperClosedMinimum+2 || (joystick.getStartButton())) { //0.5 is the error room to stop the function.
       if ( (joystick.getStartButton())){
         m_ClimberSubsystem.grabberHoldAngles = m_ClimberSubsystem.encoderGrabberAngles;
         m_ClimberSubsystem.climberHoldAngle = m_ClimberSubsystem.encoderClimberAngle;

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.JoyUtil;
 import frc.robot.commands.IntakeIndexer.AcceptCommand;
+import frc.robot.commands.ShooterStuff.SpinupWaitCommand;
 import frc.robot.commands.ShooterStuff.StopFlywheelCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
@@ -36,7 +37,10 @@ public class ShootRoutineCommandGroup extends SequentialCommandGroup{
                 new LimelightSpinFlywheelCommand(m_ShooterSubsystem),
                 new LimelightMoveHoodCommand(m_HoodSubsystem)
             ),
-            new AcceptCommand(m_IntakeIndexerSubsystem, true, Constants.Shooter.acceptCommandDuration),
+
+            new AcceptCommand(m_IntakeIndexerSubsystem, true, (Constants.Shooter.acceptCommandDuration) ),
+            new SpinupWaitCommand( 0.0 ), //Constants.Shooter.shootPause ),
+            // new AcceptCommand(m_IntakeIndexerSubsystem, true, (Constants.Shooter.acceptCommandDuration / 2) ),
 
 
             new StopFlywheelCommand(m_ShooterSubsystem),

@@ -6,10 +6,14 @@ package frc.robot.commands.AutonomousCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ShooterStuff.ShooterCommand;
 import frc.robot.commands.ShooterStuff.AutoShooterRoutineCommands.ShootRoutineCommandGroup;
+import frc.robot.Constants;
 import frc.robot.commands.IntakeIndexer.AutonomousSpintakeCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
@@ -36,14 +40,19 @@ public class AutonomousCommand extends SequentialCommandGroup {
     // AutonomousSpintakeCommand intakeBall = new AutonomousSpintakeCommand(intake, drive);
     // LookAtCommand turnToHub = new LookAtCommand(drive, false);
     // InstantCommand initializeTeleop = new InstantCommand(drive::toTeleopMode, drive);
+    MecanumDriveWheelSpeeds forwardSpeeds =  new MecanumDriveWheelSpeeds(Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5, Constants.DriveTrain.maxWheelSpeed/-5);
     addCommands(new SetPoseCommand(drive),
                 new GoToCommand(drive, true),
-                new AutonomousSpintakeCommand(intake, drive),
+                new InstantCommand(drive::stopRobot, drive),
+                new WaitCommand(0.75),
+                new ParallelCommandGroup(new AutonomousSpintakeCommand(intake, 2), new DeadreckonDriveCommand(drive, forwardSpeeds, 2)),
                 // new GoToCommand(drive, false);
 
 
                 // More cursed coefficients woo! This makes it do a 180, don't ask why this many radians is a U-turn to the robot
-                new TurnCommand(drive, 1.16809131743 * Math.PI * 1.1),
-                new ShootRoutineCommandGroup(drive, intake, shooter, hood, null));
+                new ParallelCommandGroup(new TurnCommand(drive, (1.275 * Math.PI)), new AutonomousSpintakeCommand(intake, 2)),
+                new ShootRoutineCommandGroup(drive, intake, shooter, hood, null),
+                new InstantCommand(drive::resetOutputRange, drive),
+                new InstantCommand(drive::stopRobot, drive));
   }
 }

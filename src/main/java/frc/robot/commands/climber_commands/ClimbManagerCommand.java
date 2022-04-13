@@ -81,9 +81,10 @@ public class ClimbManagerCommand extends CommandBase {
     // :) negative is backwards direction
     // :') I forgot what this comment means^ so ignore it I guess
 
+
     if (!m_ClimberSubsystem.isRunningClimbCommand && // :) won't start if a command is already running
-        (m_ClimberSubsystem.currentClimberStep!=m_ClimberSubsystem.previousClimberStep) && !m_ClimberSubsystem.isClimberStepStopped// && // :) won't start a new climb command if you canceled the last one, until it is told which direction to go next
-        ){//(DriverStation.isTeleop() && DriverStation.getMatchTime()>1.5)) { // :) won't start a new climb command if match is almost over UNCOMMENT TO TEST PAWLS
+        (m_ClimberSubsystem.currentClimberStep!=m_ClimberSubsystem.previousClimberStep) && !m_ClimberSubsystem.isClimberStepStopped && // :) won't start a new climb command if you canceled the last one, until it is told which direction to go next
+        (DriverStation.isTeleop() && DriverStation.getMatchTime()>1.5)) { // :) won't start a new climb command if match is almost over UNCOMMENT TO TEST PAWLS
       
       // :) this switch statement is basically the climb sequence. They count up from 1 to 9 step by step and the negative versions undo the positive versions (so you can go backwards)
 
@@ -109,7 +110,7 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 3:
           // :) third step: rotates the climber arm down so that it lifts itself up, and grabbers on side 1 line up with next bar
-          new SpinClimberCommand(joystick, m_ClimberSubsystem, -37.16).schedule(); // subtracts by 77.01
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, -41.16).schedule(); // subtracts by 77.01
           break;
         case -3:
           // :) reverse third step
@@ -141,7 +142,7 @@ public class ClimbManagerCommand extends CommandBase {
           break;
         case 7:
           // :) seventh step: rotate the bar down and around so that the side 0 grippers now line up with the final bar
-          new SpinClimberCommand(joystick, m_ClimberSubsystem, -146.7).schedule(); // subtracts by 137.01
+          new SpinClimberCommand(joystick, m_ClimberSubsystem, -152.7).schedule(); // subtracts by 137.01
           break;
         case -7:
           // :) reverse seventh step

@@ -51,7 +51,7 @@ public class ManualClimbCommand extends CommandBase {
 
     if (!m_ClimberSubsystem.isRunningClimbCommand && m_ClimberSubsystem.isClimbEnabled) {
       if (Math.abs(joystick.getLeftY())>0.1) {
-        spinSpeed = joystick.getLeftY()/4;
+        spinSpeed = joystick.getLeftY()/8;
       } else {
         spinSpeed = 0;
       }
